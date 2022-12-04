@@ -1,1 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply h-screen flex flex-col bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-sans
+}

@@ -1,0 +1,17 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core'
+
+@Component({
+  selector: 'app-home-page',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [],
+  template: `
+    <div class="flex flex-col items-center">
+      <img
+        src="../../../assets/cute_cat.jpg"
+        alt="White baby cat"
+        class="max-w-sm rounded-sm"
+      />
+    </div>
+  `,
+})
+export class HomePageComponent {}

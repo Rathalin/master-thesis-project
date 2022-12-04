@@ -1,5 +1,5 @@
-import { NxWelcomeComponent } from './nx-welcome.component'
 import { Route } from '@angular/router'
+import { HomePageComponent } from './pages/home/home-page.component'
 
 export const appRoutes: Route[] = [
   {
@@ -8,6 +8,6 @@ export const appRoutes: Route[] = [
   },
   {
     path: '',
-    component: NxWelcomeComponent,
+    component: HomePageComponent,
   },
 ]
