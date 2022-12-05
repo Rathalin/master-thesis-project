@@ -11,7 +11,7 @@ export class SecondaryButtonDirective {
   }
 
   private readonly styleClasses = [
-    'dark:bg-neutral-600',
-    'dark:hover:bg-neutral-700',
+    'dark:bg-neutral-700',
+    'dark:hover:bg-neutral-600',
   ] as const
 }

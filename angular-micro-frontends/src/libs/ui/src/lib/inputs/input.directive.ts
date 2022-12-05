@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef } from '@angular/core'
+import { Directive, ElementRef } from '@angular/core'
 import { applyStyleClasses } from '../util/applyStyleClasses'
 
 @Directive({
