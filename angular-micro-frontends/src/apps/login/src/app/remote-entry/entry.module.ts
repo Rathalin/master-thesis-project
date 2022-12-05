@@ -5,10 +5,11 @@ import { RouterModule } from '@angular/router'
 import { RemoteEntryComponent } from './entry.component'
 import { remoteRoutes } from './entry.routes'
 import { HomePageComponent } from '../pages/home-page.component'
+import { UiModule } from '@angular-micro-frontends/ui'
 
 @NgModule({
   declarations: [RemoteEntryComponent, HomePageComponent],
-  imports: [CommonModule, RouterModule.forChild(remoteRoutes)],
   providers: [],
+  imports: [CommonModule, RouterModule.forChild(remoteRoutes), UiModule],
 })
 export class RemoteEntryModule {}

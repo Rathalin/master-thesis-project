@@ -7,8 +7,8 @@ import { appRoutes } from './app.routes'
 import { HomePageComponent } from './pages/home/home-page.component'
 import { FooterComponent } from './ui/footer.component'
 import { HeaderComponent } from './ui/header/header.component'
-import { UiModule } from '@angular-micro-frontends/ui'
 import { NavLinkComponent } from './ui/header/nav-link.component'
+import { UiModule } from '@angular-micro-frontends/ui'
 
 @NgModule({
   declarations: [
