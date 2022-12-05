@@ -6,8 +6,9 @@ import { RouterModule } from '@angular/router'
 import { appRoutes } from './app.routes'
 import { HomePageComponent } from './pages/home/home-page.component'
 import { FooterComponent } from './ui/footer.component'
-import { HeaderComponent } from './ui/header.component'
-import { PrimaryButtonComponent } from './ui/buttons/primary-button.component'
+import { HeaderComponent } from './ui/header/header.component'
+import { UiModule } from '@angular-micro-frontends/ui'
+import { NavLinkComponent } from './ui/header/nav-link.component'
 
 @NgModule({
   declarations: [
@@ -15,11 +16,12 @@ import { PrimaryButtonComponent } from './ui/buttons/primary-button.component'
     HomePageComponent,
     FooterComponent,
     HeaderComponent,
-    PrimaryButtonComponent,
+    NavLinkComponent,
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
+    UiModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
