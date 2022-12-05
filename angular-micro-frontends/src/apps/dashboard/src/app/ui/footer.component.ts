@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
   selector: 'dashboard-footer',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <footer class="p-5 flex flex-col items-center">
+    <footer class="bg-neutral-900 p-4 mt-2 flex flex-col items-center">
       <div>Daniel Flockert 2020</div>
     </footer>
   `,
