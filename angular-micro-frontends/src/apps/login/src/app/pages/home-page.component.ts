@@ -1,7 +1,6 @@
 // import { AuthMockService } from '@angular-micro-frontends/auth'
 import { ChangeDetectionStrategy, Component } from '@angular/core'
 import { FormBuilder, Validators } from '@angular/forms'
-import { debounceTime, distinctUntilChanged, Subject, tap } from 'rxjs'
 
 @Component({
   selector: 'login-home-page',
@@ -9,7 +8,7 @@ import { debounceTime, distinctUntilChanged, Subject, tap } from 'rxjs'
   template: `
     <main class="container mx-auto flex flex-col justify-center">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="flex flex-col gap-y-3">
+        <div class="flex flex-col gap-y-2">
           <div class="flex flex-col">
             <label for="username">Username</label>
             <input
@@ -20,10 +19,7 @@ import { debounceTime, distinctUntilChanged, Subject, tap } from 'rxjs'
               formControlName="username"
               uiInput
             />
-            <ui-input-error
-              inputName="username"
-              [submitted]="submitted"
-            ></ui-input-error>
+            <ui-input-error inputName="username"></ui-input-error>
           </div>
           <div class="flex flex-col">
             <label for="password">Password</label>
@@ -34,11 +30,7 @@ import { debounceTime, distinctUntilChanged, Subject, tap } from 'rxjs'
               formControlName="password"
               uiInput
             />
-            <ui-input-error
-              inputName="password"
-              [statusChanges]="loginForm.controls.password.statusChanges"
-              [submitted]="submitted"
-            ></ui-input-error>
+            <ui-input-error inputName="password"></ui-input-error>
           </div>
         </div>
         <div class="mt-4 flex gap-1">
@@ -60,7 +52,7 @@ export class HomePageComponent {
 
   readonly loginForm = this.formBuilder.nonNullable.group({
     username: ['test', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
+    password: ['sd', [Validators.required]],
   })
   submitted = false
 
