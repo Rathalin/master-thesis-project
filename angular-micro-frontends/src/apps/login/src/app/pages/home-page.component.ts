@@ -1,3 +1,4 @@
+// import { AuthMockService } from '@angular-micro-frontends/auth'
 import { ChangeDetectionStrategy, Component } from '@angular/core'
 
 @Component({
@@ -30,4 +31,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
     `,
   ],
 })
-export class HomePageComponent {}
+export class HomePageComponent {
+  // constructor(public authService: AuthMockService) {}
+  // onLoginClick() {
+  //   this.authService.login()
+  // }
+}

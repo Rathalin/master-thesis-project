@@ -9,6 +9,7 @@ import { FooterComponent } from './ui/footer.component'
 import { HeaderComponent } from './ui/header/header.component'
 import { NavLinkComponent } from './ui/header/nav-link.component'
 import { UiModule } from '@angular-micro-frontends/ui'
+// import { AuthMockService } from '@angular-micro-frontends/auth'
 
 @NgModule({
   declarations: [

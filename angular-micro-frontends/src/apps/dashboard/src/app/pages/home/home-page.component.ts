@@ -1,5 +1,5 @@
+// import { AuthMockService } from '@angular-micro-frontends/auth'
 import { ChangeDetectionStrategy, Component } from '@angular/core'
-import { interval, map, startWith, tap } from 'rxjs'
 
 @Component({
   selector: 'app-home-page',
@@ -13,11 +13,12 @@ import { interval, map, startWith, tap } from 'rxjs'
         class="max-w-sm rounded-sm shadow-md"
         loading="eager"
       />
-      <div class="mt-4 flex gap-2">
-        <ui-secondary-button>Click me!</ui-secondary-button>
-        <ui-primary-button>Click me aswell!</ui-primary-button>
-      </div>
+      <!-- <div>
+        {{ authService.isLoggedIn() ? 'Logged in' : 'Not logged in' }}
+      </div> -->
     </div>
   `,
 })
-export class HomePageComponent {}
+export class HomePageComponent {
+  // constructor(public authService: AuthMockService) {}
+}
