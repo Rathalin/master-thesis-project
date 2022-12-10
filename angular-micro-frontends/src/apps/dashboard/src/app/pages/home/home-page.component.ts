@@ -14,8 +14,8 @@ import { interval, map, startWith, tap } from 'rxjs'
         loading="eager"
       />
       <div class="mt-4 flex gap-2">
-        <ui-secondary-button>Click me!</ui-secondary-button>
-        <ui-primary-button>Click me aswell!</ui-primary-button>
+        <button type="button" uiSecondaryButton>Click me!</button>
+        <button type="button" uiPrimaryButton>Click me aswell!</button>
       </div>
     </div>
   `,
