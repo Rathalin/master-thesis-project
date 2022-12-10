@@ -13,9 +13,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
         class="max-w-sm rounded-sm shadow-md"
         loading="eager"
       />
-      <!-- <div>
-        {{ authService.isLoggedIn() ? 'Logged in' : 'Not logged in' }}
-      </div> -->
+      <div class="mt-4 flex gap-2">
+        <button type="button" uiSecondaryButton>Click me!</button>
+        <button type="button" uiPrimaryButton>Click me aswell!</button>
+      </div>
     </div>
   `,
 })
