@@ -4,41 +4,48 @@ import {
   AbstractControl,
   FormBuilder,
   FormGroup,
+  ValidationErrors,
   ValidatorFn,
   Validators,
 } from '@angular/forms'
-import { CustomValidators } from '@angular-micro-frontends/ui'
+import {
+  CustomValidators,
+  GroupErrorMessage,
+} from '@angular-micro-frontends/ui'
 
 @Component({
   selector: 'login-home-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <main class="container mx-auto flex flex-col justify-center">
+    <main class="container px-4 mx-auto flex flex-col justify-center">
+      <h1 class="mx-auto text-3xl">Login</h1>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="flex flex-col gap-y-2">
           <div class="flex flex-col">
-            <label for="student-id">Student ID</label>
+            <label for="company-id">Company ID</label>
             <input
-              id="student-id"
-              label="Student ID"
-              type="email"
+              id="company-id"
+              label="Company ID"
+              type="text"
               autocomplete="off"
-              formControlName="studentId"
+              formControlName="companyId"
               uiInput
             />
-            <ui-input-error controlName="studentId"></ui-input-error>
+            <ui-input-error controlName="companyId"></ui-input-error>
+            <ui-group-error [messages]="errorMessages"></ui-group-error>
           </div>
           <div class="flex flex-col">
-            <label for="username">Username</label>
+            <label for="email">Email</label>
             <input
-              id="username"
-              label="Username"
+              id="email"
+              label="Email"
               type="email"
               autocomplete="off"
-              formControlName="username"
+              formControlName="email"
               uiInput
             />
-            <ui-input-error controlName="username"></ui-input-error>
+            <ui-input-error controlName="email"></ui-input-error>
+            <ui-group-error [messages]="errorMessages"></ui-group-error>
           </div>
           <div class="flex flex-col">
             <label for="password">Password</label>
@@ -71,32 +78,39 @@ export class HomePageComponent {
 
   readonly loginForm = this.formBuilder.nonNullable.group(
     {
-      studentId: ['', [Validators.required, CustomValidators.studentId]],
-      username: ['', [Validators.required, Validators.email]],
+      companyId: ['', [CustomValidators.companyId]],
+      email: ['', [Validators.email]],
       password: ['', [Validators.required]],
     },
     {
-      validators: [this.identifierValidator],
+      validators: [this.loginIdentifierValidator()],
     }
   )
-  submitted = false
+  readonly errorMessages: GroupErrorMessage[] = [
+    {
+      key: 'identifier',
+      messageFn: (_errors: ValidationErrors | null) =>
+        'Company ID or Email required',
+    },
+  ]
 
   onSubmit() {
     console.log(
       this.loginForm.invalid ? 'Login form invalid' : 'Login form valid'
     )
-    this.submitted = true
   }
 
-  identifierValidator(control: AbstractControl) {
-    const group = control as typeof this.loginForm
-    const studentId = group.controls['studentId'].value
-    const username = group.controls['username'].value
+  loginIdentifierValidator(): ValidatorFn {
+    return (control: AbstractControl) => {
+      const group = control as typeof this.loginForm
+      const companyId = group.controls['companyId'].value
+      const email = group.controls['email'].value
 
-    if (studentId == null && username == null) {
-      return { identifier: true }
+      if (companyId === '' && email === '') {
+        return { identifier: true }
+      }
+
+      return null
     }
-
-    return null
   }
 }
