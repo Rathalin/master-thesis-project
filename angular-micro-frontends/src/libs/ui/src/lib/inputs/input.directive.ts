@@ -16,7 +16,7 @@ export class InputDirective {
     'dark:bg-neutral-700',
     'dark:hover:outline-neutral-500',
     'dark:focus-visible:bg-neutral-600',
-    'dark:focus-visible:outline-amber-600',
+    'dark:focus-visible:outline-primary-600',
     'px-3',
     'py-2',
     'rounded-sm',

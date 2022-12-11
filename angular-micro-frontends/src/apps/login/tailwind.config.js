@@ -1,8 +1,14 @@
+const tailwindColors = require('tailwindcss/colors')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{html,ts}'],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: tailwindColors.amber,
+      },
+    },
   },
   plugins: [],
 }

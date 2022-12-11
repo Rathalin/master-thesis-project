@@ -57,7 +57,7 @@ import {
       </ng-container>
       <div
         *ngIf="control == null"
-        class="dark:bg-purple-600 dark:text-white rounded-md px-1"
+        class="dark:bg-purple-600 dark:text-white rounded-md px-1 bg-prime-200"
       >
         Control not found
       </div>
