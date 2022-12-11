@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@angular-micro-frontends/auth": ["src/libs/auth/src/index.ts"],
       "@angular-micro-frontends/ui": ["src/libs/ui/src/index.ts"]
     }
   },

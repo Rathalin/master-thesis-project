@@ -12,7 +12,7 @@ import {
   mergeWith,
   Observable,
   of,
-  tap,
+  startWith,
   map,
 } from 'rxjs'
 
@@ -22,15 +22,22 @@ import {
     <div
       *ngIf="
         formGroupDirective.submitted ||
-        (inputControl?.touched && (inputDebounce$ | async))
+        (control?.touched && control?.dirty && (valueChangesDebounce$ | async))
       "
       class="text-red-500 dark:text-red-400 flex flex-col"
     >
-      <ng-container *ngIf="inputControl?.errors != null">
-        <div *ngIf="inputControl!.errors!['required']">Input is required.</div>
-        <div *ngIf="inputControl!.errors!['pattern']">Invalid input.</div>
-        <div *ngIf="inputControl!.errors!['email']">Invalid email.</div>
+      <ng-container *ngIf="control != null && control.errors != null">
+        <div *ngIf="control.errors['required']">Input is required</div>
+        <div *ngIf="control.errors['pattern']">Invalid input</div>
+        <div *ngIf="control.errors['email']">Invalid email</div>
+
+        <div *ngIf="control.errors['studentId']">Invalid Student ID</div>
       </ng-container>
+    </div>
+    <div *ngIf="showDebug" class="uppercase">
+      <div>{{ control?.touched ? 'touched' : 'untouched' }}</div>
+      <div>{{ control?.dirty ? 'dirty' : 'clean' }}</div>
+      <div>{{ valueChangesDebounce$ | async }}</div>
     </div>
   `,
   styles: [],
@@ -38,35 +45,43 @@ import {
 export class InputErrorComponent implements OnInit, OnChanges {
   constructor(public formGroupDirective: FormGroupDirective) {}
 
-  @Input() inputName = ''
+  @Input() controlName = ''
+  @Input() showDebug = false
 
-  inputControl?: AbstractControl<string>
-  inputDebounce$: Observable<boolean> = of(false)
+  control?: AbstractControl<string>
+  valueChangesDebounceTime = 500
+  valueChangesDebounce$: Observable<boolean> = of(false)
 
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges) {
-    const inputChanges = changes['inputName']
-    if (inputChanges != null) {
-      this.onInputNameChange(inputChanges.currentValue as typeof this.inputName)
+    const controlChanges = changes['controlName']
+    if (controlChanges != null) {
+      this.onControlNameChange(
+        controlChanges.currentValue as typeof this.controlName
+      )
     }
   }
 
-  onInputNameChange(inputName: string) {
-    console.log('onInputNameChange', inputName)
-    this.inputControl = this.formGroupDirective.form?.controls[inputName]
+  onControlNameChange(controlName: string) {
+    this.control = this.formGroupDirective.form?.controls[controlName]
+    if (this.control == null) {
+      throw new Error(`No input with name '${controlName}' found.`)
+    }
 
-    this.inputDebounce$ = this.inputControl.valueChanges.pipe(
-      tap(() => console.log('valueChanges')),
-      map(() => false),
+    this.valueChangesDebounce$ = of(true).pipe(
       mergeWith(
-        this.inputControl.valueChanges.pipe(
-          debounceTime(500),
-          map(() => true)
+        this.control.valueChanges.pipe(
+          map(() => false),
+          mergeWith(
+            this.control.valueChanges.pipe(
+              debounceTime(this.valueChangesDebounceTime),
+              map(() => true)
+            )
+          ),
+          distinctUntilChanged()
         )
-      ),
-      distinctUntilChanged(),
-      tap((value) => console.log('inputDebounce$', value))
+      )
     )
   }
 }

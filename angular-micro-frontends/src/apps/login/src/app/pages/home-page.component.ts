@@ -1,6 +1,13 @@
 // import { AuthMockService } from '@angular-micro-frontends/auth'
 import { ChangeDetectionStrategy, Component } from '@angular/core'
-import { FormBuilder, Validators } from '@angular/forms'
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms'
+import { CustomValidators } from '@angular-micro-frontends/ui'
 
 @Component({
   selector: 'login-home-page',
@@ -9,6 +16,18 @@ import { FormBuilder, Validators } from '@angular/forms'
     <main class="container mx-auto flex flex-col justify-center">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="flex flex-col gap-y-2">
+          <div class="flex flex-col">
+            <label for="student-id">Student ID</label>
+            <input
+              id="student-id"
+              label="Student ID"
+              type="email"
+              autocomplete="off"
+              formControlName="studentId"
+              uiInput
+            />
+            <ui-input-error controlName="studentId"></ui-input-error>
+          </div>
           <div class="flex flex-col">
             <label for="username">Username</label>
             <input
@@ -19,7 +38,7 @@ import { FormBuilder, Validators } from '@angular/forms'
               formControlName="username"
               uiInput
             />
-            <ui-input-error inputName="username"></ui-input-error>
+            <ui-input-error controlName="username"></ui-input-error>
           </div>
           <div class="flex flex-col">
             <label for="password">Password</label>
@@ -30,7 +49,7 @@ import { FormBuilder, Validators } from '@angular/forms'
               formControlName="password"
               uiInput
             />
-            <ui-input-error inputName="password"></ui-input-error>
+            <ui-input-error controlName="password"></ui-input-error>
           </div>
         </div>
         <div class="mt-4 flex gap-1">
@@ -50,10 +69,16 @@ import { FormBuilder, Validators } from '@angular/forms'
 export class HomePageComponent {
   constructor(private readonly formBuilder: FormBuilder) {}
 
-  readonly loginForm = this.formBuilder.nonNullable.group({
-    username: ['test', [Validators.required, Validators.email]],
-    password: ['sd', [Validators.required]],
-  })
+  readonly loginForm = this.formBuilder.nonNullable.group(
+    {
+      studentId: ['', [Validators.required, CustomValidators.studentId]],
+      username: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+    },
+    {
+      validators: [this.identifierValidator],
+    }
+  )
   submitted = false
 
   onSubmit() {
@@ -61,5 +86,17 @@ export class HomePageComponent {
       this.loginForm.invalid ? 'Login form invalid' : 'Login form valid'
     )
     this.submitted = true
+  }
+
+  identifierValidator(control: AbstractControl) {
+    const group = control as typeof this.loginForm
+    const studentId = group.controls['studentId'].value
+    const username = group.controls['username'].value
+
+    if (studentId == null && username == null) {
+      return { identifier: true }
+    }
+
+    return null
   }
 }
