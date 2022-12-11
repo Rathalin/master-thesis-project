@@ -10,15 +10,15 @@ export class InputDirective {
   }
 
   private readonly styleClasses = [
-    'px-3',
-    'py-2',
-    'dark:bg-neutral-700',
-    'dark:focus-visible:bg-neutral-600',
     'outline-1',
     'hover:outline',
     'focus-visible:outline',
-    'dark:hover:outline-amber-600',
-    'dark:focus-visible:outline-neutral-500',
+    'dark:bg-neutral-700',
+    'dark:hover:outline-neutral-500',
+    'dark:focus-visible:bg-neutral-600',
+    'dark:focus-visible:outline-amber-600',
+    'px-3',
+    'py-2',
     'rounded-sm',
     'transition-colors',
     'duration-200',
