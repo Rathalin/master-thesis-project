@@ -8,7 +8,8 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "e2e": "nx e2e angular-micro-frontends-e2e --watch"
+    "e2e": "nx e2e angular-micro-frontends-e2e --watch",
+    "clean": "nx clear-cache && rm -r .angular && rm -r dist && rm -r node_modules rm -r tmp"
   },
   "private": true,
   "dependencies": {

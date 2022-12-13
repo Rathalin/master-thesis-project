@@ -5,7 +5,7 @@ export class CustomValidators {
     if (control.value == null || control.value.length === 0) {
       return null
     }
-    if (/[pP]\d{10}$/s.test(control.value)) {
+    if (/[A-Z]{2}\d{9}/s.test(control.value)) {
       return null
     }
     return { companyId: true }

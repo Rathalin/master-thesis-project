@@ -4,12 +4,13 @@ import { RouterModule } from '@angular/router'
 
 import { RemoteEntryComponent } from './entry.component'
 import { remoteRoutes } from './entry.routes'
-import { HomePageComponent } from '../pages/home-page.component'
+import { HomePageComponent } from './pages/home-page/home-page.component'
 import { UiModule } from '@angular-micro-frontends/ui'
 import { ReactiveFormsModule } from '@angular/forms'
+import { LoginFormComponent } from './pages/home-page/login-form.component'
 
 @NgModule({
-  declarations: [RemoteEntryComponent, HomePageComponent],
+  declarations: [RemoteEntryComponent, HomePageComponent, LoginFormComponent],
   providers: [],
   imports: [
     CommonModule,
@@ -17,5 +18,6 @@ import { ReactiveFormsModule } from '@angular/forms'
     UiModule,
     ReactiveFormsModule,
   ],
+  exports: [LoginFormComponent],
 })
 export class RemoteEntryModule {}
