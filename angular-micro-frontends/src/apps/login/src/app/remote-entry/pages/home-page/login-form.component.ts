@@ -1,9 +1,9 @@
-import { UserService } from '@angular-micro-frontends/auth'
+import { LoginError, UserService } from '@angular-micro-frontends/auth'
 import {
   CustomValidators,
   GroupErrorMessage,
 } from '@angular-micro-frontends/ui'
-import { Component } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import {
   AbstractControl,
   FormBuilder,
@@ -11,6 +11,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'login-login-form',
@@ -52,6 +53,12 @@ import {
             uiInput
           />
           <ui-input-error controlName="password"></ui-input-error>
+          <div
+            *ngIf="loginError != null"
+            class="text-red-500 dark:text-red-400 mt-2 mx-auto"
+          >
+            {{ loginError }}
+          </div>
         </div>
       </div>
       <div class="mt-4 flex items-center justify-center gap-1">
@@ -61,7 +68,7 @@ import {
   `,
   styles: [],
 })
-export class LoginFormComponent {
+export class LoginFormComponent implements OnInit, OnDestroy {
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly userService: UserService
@@ -81,11 +88,24 @@ export class LoginFormComponent {
     {
       key: 'identifier',
       messageFn: (_errors: ValidationErrors | null) =>
-        'Company ID or Email required',
+        'Company ID or Email is required',
     },
   ]
+  loginError: string | null = null
+  loginValueChangesSubscription?: Subscription
+
+  ngOnInit(): void {
+    this.loginValueChangesSubscription = this.loginForm.valueChanges.subscribe(
+      () => (this.loginError = null)
+    )
+  }
+
+  ngOnDestroy(): void {
+    this.loginValueChangesSubscription?.unsubscribe()
+  }
 
   onSubmit() {
+    this.loginError = null
     console.log(
       this.loginForm.invalid ? 'Login form invalid' : 'Login form valid'
     )
@@ -93,7 +113,14 @@ export class LoginFormComponent {
       return
     }
     const { companyId, email, password } = this.loginForm.controls
-    this.userService.login(companyId.value, email.value, password.value)
+    try {
+      this.userService.login(companyId.value, email.value, password.value)
+    } catch (error) {
+      const { key } = error as LoginError
+      if (key === 'invalid-credentials') {
+        this.loginError = 'Invalid credentials'
+      }
+    }
   }
 
   loginIdentifierValidator(): ValidatorFn {

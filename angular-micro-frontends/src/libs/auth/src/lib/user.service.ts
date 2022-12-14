@@ -7,6 +7,11 @@ type User = {
   password: string
 }
 
+export type LoginError = {
+  key: 'invalid-credentials'
+  message: string
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -38,6 +43,11 @@ export class UserService {
       )
     ) {
       this.isUserLoggedInSubject.next(true)
+    } else {
+      throw {
+        key: 'invalid-credentials',
+        message: 'Invalid credentials',
+      } as LoginError
     }
   }
 

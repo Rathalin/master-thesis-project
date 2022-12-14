@@ -10,8 +10,14 @@ import { UserService } from '@angular-micro-frontends/auth'
       <login-login-form
         *ngIf="!(userService.isUserLoggedIn$ | async)"
       ></login-login-form>
-      <div *ngIf="userService.isUserLoggedIn$ | async">
-        You are now logged in.
+      <div
+        *ngIf="userService.isUserLoggedIn$ | async"
+        class="flex flex-col items-center"
+      >
+        <div>You are now logged in.</div>
+        <button type="button" (click)="onLogoutClick()" uiPrimaryButton>
+          Logout
+        </button>
       </div>
     </main>
   `,
@@ -25,4 +31,8 @@ import { UserService } from '@angular-micro-frontends/auth'
 })
 export class HomePageComponent {
   constructor(public readonly userService: UserService) {}
+
+  onLogoutClick() {
+    this.userService.logout()
+  }
 }
