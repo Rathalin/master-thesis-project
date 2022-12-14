@@ -19,7 +19,6 @@ export class AuthGuard implements CanActivate {
   canActivate(_route: ActivatedRouteSnapshot, _state: RouterStateSnapshot) {
     if (!this.userService.isUserLoggedIn) {
       this.router.navigate(['/login'])
-      console.log('redirect to login')
       return false
     }
     return true
@@ -36,7 +35,6 @@ export class LoginGuard implements CanActivate {
   canActivate(_route: ActivatedRouteSnapshot, _state: RouterStateSnapshot) {
     if (this.userService.isUserLoggedIn) {
       this.router.navigate(['/'])
-      console.log('redirect to /')
       return false
     }
     return true

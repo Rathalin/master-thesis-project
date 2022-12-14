@@ -5,5 +5,8 @@ export function applyStyleClasses(
   styleClasses: readonly string[]
 ) {
   const nativeElement = el.nativeElement as HTMLElement
-  nativeElement.className += [...styleClasses].join(' ')
+  nativeElement.className = [
+    ...styleClasses,
+    ...nativeElement.className.split(' '),
+  ].join(' ')
 }
