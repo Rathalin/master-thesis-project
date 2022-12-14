@@ -3,7 +3,7 @@ import {
   CustomValidators,
   GroupErrorMessage,
 } from '@angular-micro-frontends/ui'
-import { Component, Output } from '@angular/core'
+import { Component } from '@angular/core'
 import {
   AbstractControl,
   FormBuilder,
@@ -55,7 +55,7 @@ import {
           <ui-input-error controlName="password"></ui-input-error>
         </div>
       </div>
-      <div class="mt-4 flex gap-1">
+      <div class="mt-4 flex items-center justify-center gap-1">
         <button type="submit" uiPrimaryButton>Login</button>
       </div>
     </form>
