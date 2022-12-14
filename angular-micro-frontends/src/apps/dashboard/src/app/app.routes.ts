@@ -9,7 +9,7 @@ import { HomePageComponent } from './pages/home/home-page.component'
 import { UserService } from '@angular-micro-frontends/auth'
 
 @Injectable()
-class canActivateProtectedRoutes implements CanActivate {
+export class AuthGuard implements CanActivate {
   constructor(private userService: UserService) {}
 
   canActivate(_route: ActivatedRouteSnapshot, _state: RouterStateSnapshot) {
@@ -21,7 +21,7 @@ export const appRoutes: Route[] = [
   {
     path: '',
     component: HomePageComponent,
-    canActivate: [canActivateProtectedRoutes],
+    canActivate: [AuthGuard],
   },
   {
     path: 'login',
