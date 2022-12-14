@@ -15,13 +15,13 @@ import {
 @Component({
   selector: 'login-login-form',
   template: `
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
       <div class="flex flex-col gap-y-2">
         <div class="flex flex-col">
           <label for="company-id">Company ID</label>
           <input
             id="company-id"
-            label="Company ID"
+            name="company-id"
             type="text"
             autocomplete="off"
             formControlName="companyId"
@@ -34,9 +34,8 @@ import {
           <label for="email">Email</label>
           <input
             id="email"
-            label="Email"
+            name="email"
             type="email"
-            autocomplete="off"
             formControlName="email"
             uiInput
           />
@@ -47,7 +46,7 @@ import {
           <label for="password">Password</label>
           <input
             id="password"
-            label="Password"
+            name="password"
             type="password"
             formControlName="password"
             uiInput
