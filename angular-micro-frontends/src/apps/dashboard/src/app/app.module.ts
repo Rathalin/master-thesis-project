@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser'
 
 import { AppComponent } from './app.component'
 import { RouterModule } from '@angular/router'
-import { appRoutes, AuthGuard } from './app.routes'
+import { appRoutes, AuthGuard, LoginGuard } from './app.routes'
 import { HomePageComponent } from './pages/home/home-page.component'
 import { FooterComponent } from './ui/footer.component'
 import { HeaderComponent } from './ui/header/header.component'
@@ -23,7 +23,7 @@ import { UiModule } from '@angular-micro-frontends/ui'
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
     UiModule,
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, LoginGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

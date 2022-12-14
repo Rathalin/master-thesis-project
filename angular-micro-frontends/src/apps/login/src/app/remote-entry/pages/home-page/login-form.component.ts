@@ -11,6 +11,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms'
+import { Router } from '@angular/router'
 import { Subscription } from 'rxjs'
 
 @Component({
@@ -71,7 +72,8 @@ import { Subscription } from 'rxjs'
 export class LoginFormComponent implements OnInit, OnDestroy {
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly router: Router
   ) {}
 
   readonly loginForm = this.formBuilder.nonNullable.group(
@@ -115,6 +117,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     const { companyId, email, password } = this.loginForm.controls
     try {
       this.userService.login(companyId.value, email.value, password.value)
+      this.router.navigate(['/'])
     } catch (error) {
       const { key } = error as LoginError
       if (key === 'invalid-credentials') {
