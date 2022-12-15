@@ -1,0 +1,106 @@
+{
+  "name": "register-company",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "src/apps/register-company/src",
+  "prefix": "angular-micro-frontends",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/src/apps/register-company",
+        "index": "src/apps/register-company/src/index.html",
+        "main": "src/apps/register-company/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "src/apps/register-company/tsconfig.app.json",
+        "assets": [
+          "src/apps/register-company/src/favicon.ico",
+          "src/apps/register-company/src/assets"
+        ],
+        "styles": ["src/apps/register-company/src/styles.css"],
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "src/apps/register-company/webpack.config.js"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "src/apps/register-company/webpack.prod.config.js"
+          }
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nrwl/angular:webpack-dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "register-company:build:production"
+        },
+        "development": {
+          "browserTarget": "register-company:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "port": 4202,
+        "publicHost": "http://localhost:4202"
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "register-company:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "src/apps/register-company/**/*.ts",
+          "src/apps/register-company/**/*.html"
+        ]
+      }
+    },
+    "serve-static": {
+      "executor": "@nrwl/angular:file-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "register-company:build",
+        "port": 4202
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "register-company:build:development"
+        },
+        "production": {
+          "buildTarget": "register-company:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}
