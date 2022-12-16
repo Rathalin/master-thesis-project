@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
     <div class="flex flex-col items-center mt-10">
       <h1 class="text-3xl mb-4">Welcome to Module Federation</h1>
       <img
-        src="../../../assets/cute_cat.jpg"
+        src="../../../assets/cute_cat.png"
         alt="White baby cat"
         class="max-w-sm rounded-sm shadow-md"
         loading="eager"
