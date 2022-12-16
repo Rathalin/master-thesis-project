@@ -58,4 +58,10 @@ export const appRoutes: Route[] = [
       import('register-company/Module').then((m) => m.RemoteEntryModule),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'cat-gallery',
+    loadChildren: () =>
+      import('cat-gallery/Module').then((m) => m.RemoteEntryModule),
+    canActivate: [AuthGuard],
+  },
 ]

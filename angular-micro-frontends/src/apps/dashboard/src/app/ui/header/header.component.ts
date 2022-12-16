@@ -14,6 +14,9 @@ import { Router } from '@angular/router'
           <dashboard-nav-link routerLink="/register-company">
             Register Company
           </dashboard-nav-link>
+          <dashboard-nav-link routerLink="/cat-gallery">
+            Cat Gallery
+          </dashboard-nav-link>
         </menu>
       </nav>
       <div class="w-3/12 flex justify-end items-center">
