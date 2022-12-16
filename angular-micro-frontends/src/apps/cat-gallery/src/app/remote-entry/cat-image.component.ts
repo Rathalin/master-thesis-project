@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
   selector: 'cat-gallery-cat-image',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="bg-primary-500 rounded-lg">
+    <div class="bg-slate-900 rounded-lg">
       <img class="rounded-lg" [src]="src" [alt]="alt" />
     </div>
   `,
