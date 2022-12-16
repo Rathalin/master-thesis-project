@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="bg-slate-900 rounded-lg">
-      <img class="rounded-lg" [src]="src" [alt]="alt" />
+      <img class="rounded-lg" [src]="src" [alt]="alt" loading="lazy" />
     </div>
   `,
   styles: [],
