@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [],
   template: `
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center mt-10">
       <h1 class="text-3xl mb-4">Welcome to Module Federation</h1>
       <img
         src="../../../assets/cute_cat.jpg"

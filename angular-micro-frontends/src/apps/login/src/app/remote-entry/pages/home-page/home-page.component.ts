@@ -5,7 +5,9 @@ import { UserService } from '@angular-micro-frontends/auth'
   selector: 'login-home-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <main class="container px-4 mx-auto flex flex-col justify-center max-w-sm">
+    <main
+      class="container px-4 mx-auto flex flex-col justify-center max-w-sm mt-10"
+    >
       <h1 class="mx-auto text-3xl">Login</h1>
       <login-login-form
         *ngIf="!(userService.isUserLoggedIn$ | async)"
