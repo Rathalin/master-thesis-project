@@ -53,6 +53,12 @@ export const appRoutes: Route[] = [
     canActivate: [LoginGuard],
   },
   {
+    path: 'user-profile',
+    loadChildren: () =>
+      import('user-profile/Module').then((m) => m.RemoteEntryModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'register-company',
     loadChildren: () =>
       import('register-company/Module').then((m) => m.RemoteEntryModule),

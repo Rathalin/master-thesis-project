@@ -28,9 +28,15 @@ export class UserService {
 
   private isUserLoggedInSubject = new BehaviorSubject(false)
   isUserLoggedIn$ = this.isUserLoggedInSubject.asObservable()
+  private currentUserSubject = new BehaviorSubject<User | null>(null)
+  currentUser$ = this.currentUserSubject.asObservable()
 
   get isUserLoggedIn() {
     return this.isUserLoggedInSubject.value
+  }
+
+  get currentUser() {
+    return this.currentUserSubject.value
   }
 
   login(username: string, email: string, password: string) {
@@ -42,6 +48,7 @@ export class UserService {
           user.password === password
       )
     ) {
+      this.currentUserSubject.next({ username, email, password })
       this.isUserLoggedInSubject.next(true)
     } else {
       throw {
@@ -53,5 +60,6 @@ export class UserService {
 
   logout() {
     this.isUserLoggedInSubject.next(false)
+    this.currentUserSubject.next(null)
   }
 }

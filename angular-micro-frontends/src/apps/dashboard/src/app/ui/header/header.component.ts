@@ -11,6 +11,9 @@ import { Router } from '@angular/router'
       <nav class="w-6/12 flex justify-center">
         <menu class="flex items-center gap-6 p-3">
           <dashboard-nav-link routerLink="/">Home</dashboard-nav-link>
+          <dashboard-nav-link routerLink="/user-profile">
+            Profile
+          </dashboard-nav-link>
           <dashboard-nav-link routerLink="/register-company">
             Register Company
           </dashboard-nav-link>
