@@ -12,7 +12,7 @@ import {
   Validators,
 } from '@angular/forms'
 import { Router } from '@angular/router'
-import { Subscription } from 'rxjs'
+import { BehaviorSubject, Subscription } from 'rxjs'
 
 @Component({
   selector: 'login-login-form',
@@ -54,11 +54,8 @@ import { Subscription } from 'rxjs'
             uiInput
           />
           <ui-input-error controlName="password"></ui-input-error>
-          <div
-            *ngIf="loginError != null"
-            class="text-red-500 dark:text-red-400 mt-2 mx-auto"
-          >
-            {{ loginError }}
+          <div *ngIf="true" class="text-red-500 dark:text-red-400 mt-2 mx-auto">
+            {{ loginError$ | async }}
           </div>
         </div>
       </div>
@@ -93,12 +90,13 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         'Company ID or Email is required',
     },
   ]
-  loginError: string | null = null
+  loginErrorSubject = new BehaviorSubject<string | null>(null)
+  loginError$ = this.loginErrorSubject.asObservable()
   loginValueChangesSubscription?: Subscription
 
   ngOnInit(): void {
     this.loginValueChangesSubscription = this.loginForm.valueChanges.subscribe(
-      () => (this.loginError = null)
+      () => this.loginErrorSubject.next(null)
     )
   }
 
@@ -106,8 +104,8 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     this.loginValueChangesSubscription?.unsubscribe()
   }
 
-  onSubmit() {
-    this.loginError = null
+  async onSubmit() {
+    this.loginErrorSubject.next(null)
     console.log(
       this.loginForm.invalid ? 'Login form invalid' : 'Login form valid'
     )
@@ -115,13 +113,23 @@ export class LoginFormComponent implements OnInit, OnDestroy {
       return
     }
     const { companyId, email, password } = this.loginForm.controls
-    try {
-      this.userService.login(companyId.value, email.value, password.value)
-      this.router.navigate(['/'])
-    } catch (error) {
-      const { key } = error as LoginError
-      if (key === 'invalid-credentials') {
-        this.loginError = 'Invalid credentials'
+
+    let loginError: LoginError | null
+    if (companyId.value !== '') {
+      loginError = await this.userService.autheticate({
+        username: companyId.value,
+        password: password.value,
+      })
+    } else {
+      loginError = await this.userService.autheticate({
+        email: email.value,
+        password: password.value,
+      })
+    }
+    this.router.navigate(['/'])
+    if (loginError != null) {
+      if (loginError.key === 'invalid-credentials') {
+        this.loginErrorSubject.next('Invalid credentials')
       }
     }
   }

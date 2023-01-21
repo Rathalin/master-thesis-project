@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@angular-micro-frontends/auth": ["src/libs/auth/src/index.ts"],
-      "@angular-micro-frontends/ui": ["src/libs/ui/src/index.ts"]
+      "@angular-micro-frontends/ui": ["src/libs/ui/src/index.ts"],
+      "@strapi-backend/types": ["../strapi-backend/schemas.d.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
