@@ -42,7 +42,7 @@
         "very-good"
       ]
     },
-    "notes": {
+    "note": {
       "type": "richtext",
       "maxLength": 1000
     },
