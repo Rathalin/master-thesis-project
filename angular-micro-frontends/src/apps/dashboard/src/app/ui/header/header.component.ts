@@ -17,9 +17,6 @@ import { Router } from '@angular/router'
           <dashboard-nav-link routerLink="/user-profile">
             Profile
           </dashboard-nav-link>
-          <dashboard-nav-link routerLink="/register-company">
-            Register Company
-          </dashboard-nav-link>
           <dashboard-nav-link routerLink="/cat-gallery">
             Cat Gallery
           </dashboard-nav-link>

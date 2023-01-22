@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "authors",
+  "info": {
+    "singularName": "author",
+    "pluralName": "authors",
+    "displayName": "Author",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "firstname": {
+      "type": "string"
+    },
+    "lastname": {
+      "type": "string"
+    },
+    "book": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::book.book",
+      "inversedBy": "author"
+    }
+  }
+}

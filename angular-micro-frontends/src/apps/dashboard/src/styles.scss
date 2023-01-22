@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  color-scheme: dark light;
+}
+
 body {
-  @apply min-h-screen flex flex-col bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-sans
+  @apply min-h-screen flex flex-col bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-sans;
 }

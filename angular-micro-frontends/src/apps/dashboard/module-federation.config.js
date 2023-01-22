@@ -1,4 +1,4 @@
 module.exports = {
   name: 'dashboard',
-  remotes: ['login', 'register-company', 'cat-gallery', 'user-profile'],
+  remotes: ['login', 'cat-gallery', 'user-profile'],
 }
