@@ -23,7 +23,8 @@
         "scripts": [],
         "customWebpackConfig": {
           "path": "src/apps/dashboard/webpack.config.js"
-        }
+        },
+        "allowedCommonJsDependencies": ["axios"]
       },
       "configurations": {
         "production": {

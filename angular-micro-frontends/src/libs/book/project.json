@@ -1,0 +1,32 @@
+{
+  "name": "book",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "src/libs/book/src",
+  "prefix": "book",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "options": {
+        "project": "src/libs/book/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "src/libs/book/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "src/libs/book/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["src/libs/book/**/*.ts", "src/libs/book/**/*.html"]
+      }
+    }
+  },
+  "tags": []
+}

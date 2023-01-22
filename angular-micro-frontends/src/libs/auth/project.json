@@ -3,7 +3,7 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "src/libs/auth/src",
-  "prefix": "angular-micro-frontends",
+  "prefix": "auth",
   "targets": {
     "build": {
       "executor": "@nrwl/angular:ng-packagr-lite",
