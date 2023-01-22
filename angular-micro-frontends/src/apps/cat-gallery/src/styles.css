@@ -1,7 +1,0 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  @apply min-h-screen flex flex-col bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-sans;
-}
