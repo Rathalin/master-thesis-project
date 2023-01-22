@@ -2,14 +2,13 @@ import { ChangeDetectionStrategy } from '@angular/core'
 import { Component } from '@angular/core'
 
 @Component({
-  selector: 'dashboard-root',
+  selector: 'dashboard-app',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <dashboard-header></dashboard-header>
     <main class="flex-1">
       <router-outlet></router-outlet>
     </main>
-    <dashboard-footer></dashboard-footer>
   `,
   styles: [
     `
@@ -19,6 +18,6 @@ import { Component } from '@angular/core'
     `,
   ],
 })
-export class AppComponent {
+export class DashboardAppComponent {
   title = 'dashboard'
 }

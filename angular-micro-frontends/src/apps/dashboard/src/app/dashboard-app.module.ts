@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 
-import { AppComponent } from './app.component'
+import { DashboardAppComponent } from './dashboard-app.component'
 import { RouterModule } from '@angular/router'
-import { appRoutes, AuthGuard, LoginGuard } from './app.routes'
-import { HomePageComponent } from './pages/home/home-page.component'
+import { appRoutes, AuthGuard, LoginGuard } from './dashboard-app.routes'
+import { HomePageComponent } from './home-page.component'
 import { FooterComponent } from './ui/footer.component'
 import { HeaderComponent } from './ui/header/header.component'
 import { NavLinkComponent } from './ui/header/nav-link.component'
@@ -12,7 +12,7 @@ import { UiModule } from '@angular-micro-frontends/ui'
 
 @NgModule({
   declarations: [
-    AppComponent,
+    DashboardAppComponent,
     HomePageComponent,
     FooterComponent,
     HeaderComponent,
@@ -24,6 +24,6 @@ import { UiModule } from '@angular-micro-frontends/ui'
     UiModule,
   ],
   providers: [AuthGuard, LoginGuard],
-  bootstrap: [AppComponent],
+  bootstrap: [DashboardAppComponent],
 })
-export class AppModule {}
+export class DashboardAppModule {}

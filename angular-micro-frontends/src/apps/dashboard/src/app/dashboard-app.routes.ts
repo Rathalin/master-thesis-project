@@ -6,7 +6,7 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router'
-import { HomePageComponent } from './pages/home/home-page.component'
+import { HomePageComponent } from './home-page.component'
 import { AuthService } from '@angular-micro-frontends/auth'
 
 @Injectable()

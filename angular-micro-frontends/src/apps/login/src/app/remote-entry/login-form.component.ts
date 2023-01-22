@@ -11,7 +11,7 @@ import { BehaviorSubject, Subscription } from 'rxjs'
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="flex flex-col gap-y-2">
         <div class="flex flex-col">
-          <label for="identifier">ID or Email</label>
+          <label for="identifier">Username or Email</label>
           <input
             id="identifier"
             name="identifier"
@@ -51,7 +51,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   ) {}
 
   readonly loginForm = this.formBuilder.nonNullable.group({
-    identifier: ['', [CustomValidators.companyIdOrEmail]],
+    identifier: ['', [Validators.required]],
     password: ['', [Validators.required]],
   })
   loginErrorSubject = new BehaviorSubject<string | null>(null)
@@ -70,9 +70,6 @@ export class LoginFormComponent implements OnInit, OnDestroy {
 
   async onSubmit() {
     this.loginErrorSubject.next(null)
-    console.log(
-      this.loginForm.invalid ? 'Login form invalid' : 'Login form valid'
-    )
     if (this.loginForm.invalid) {
       return
     }
