@@ -31,7 +31,9 @@ import {
         <div *ngIf="control.errors['pattern']">Invalid input</div>
         <div *ngIf="control.errors['email']">Invalid email</div>
 
-        <div *ngIf="control.errors['companyId']">Invalid Company ID</div>
+        <div *ngIf="control.errors['companyIdOrEmail']">
+          Invalid ID or Email
+        </div>
       </ng-container>
     </div>
 

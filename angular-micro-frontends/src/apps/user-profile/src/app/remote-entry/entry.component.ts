@@ -1,13 +1,13 @@
-import { UserService } from '@angular-micro-frontends/auth'
+import { AuthService } from '@angular-micro-frontends/auth'
 import { Component } from '@angular/core'
 
 @Component({
   selector: 'angular-micro-frontends-user-profile-entry',
   template: `
     <ng-container>
-      <div *ngIf="userService.currentUser$ | async as user; else noUser">
-        <h1>Welcome {{ user.username }}</h1>
-        <div>Email: {{ user.email }}</div>
+      <div *ngIf="authService.auth$ | async as auth; else noUser">
+        <h1>Welcome {{ auth.user.username }}</h1>
+        <div>Email: {{ auth.user.email }}</div>
       </div>
       <ng-template #noUser>
         <h1>No user. This page should not be visible without login.</h1>
@@ -16,5 +16,5 @@ import { Component } from '@angular/core'
   `,
 })
 export class RemoteEntryComponent {
-  constructor(public userService: UserService) {}
+  constructor(public authService: AuthService) {}
 }

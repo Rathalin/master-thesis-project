@@ -1,25 +1,26 @@
 import { Injectable } from '@angular/core'
 import axios from 'axios'
 import { BehaviorSubject, map } from 'rxjs'
-import { Observable } from 'rxjs'
 
 export type LoginError = {
   key: 'invalid-credentials'
   message: string
 }
 
-type User = {
+export type DateString = string
+
+export type User = {
   id: number
   username: string
   email: string
   provider: string
   confirmed: boolean
   blocked: boolean
-  createdAt: string
-  updatedAt: string
+  createdAt: DateString
+  updatedAt: DateString
 }
 
-type Authentication = {
+export type Authentication = {
   jwt: string
   user: User
 }
@@ -27,7 +28,7 @@ type Authentication = {
 @Injectable({
   providedIn: 'root',
 })
-export class UserService {
+export class AuthService {
   private authSubject = new BehaviorSubject<Authentication | null>(null)
   auth$ = this.authSubject.asObservable()
   isAuthenticated$ = this.auth$.pipe(map((auth) => auth != null))
@@ -41,25 +42,15 @@ export class UserService {
   }
 
   async autheticate(
-    credentials:
-      | {
-          username: string
-          password: string
-        }
-      | {
-          email: string
-          password: string
-        }
+    identifier: string,
+    password: string
   ): Promise<LoginError | null> {
     try {
       const response = await axios.post<Authentication>(
         'http://localhost:1337/api/auth/local',
         {
-          identifier:
-            'username' in credentials
-              ? credentials.username
-              : credentials.email,
-          password: credentials.password,
+          identifier,
+          password,
         }
       )
       console.log(response.data)

@@ -1,4 +1,4 @@
-import { UserService } from '@angular-micro-frontends/auth'
+import { AuthService } from '@angular-micro-frontends/auth'
 import { ChangeDetectionStrategy, Component } from '@angular/core'
 import { Router } from '@angular/router'
 
@@ -6,7 +6,10 @@ import { Router } from '@angular/router'
   selector: 'dashboard-header',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <header class="flex justify-center mb-4 p-1 dark:bg-neutral-900 shadow-sm">
+    <header
+      *ngIf="authService.isAuthenticated$ | async"
+      class="flex justify-center mb-4 p-1 dark:bg-neutral-900 shadow-sm"
+    >
       <div class="invisible w-3/12 flex justify-start"></div>
       <nav class="w-6/12 flex justify-center">
         <menu class="flex items-center gap-6 p-3">
@@ -33,12 +36,12 @@ import { Router } from '@angular/router'
 })
 export class HeaderComponent {
   constructor(
-    private readonly userService: UserService,
+    public readonly authService: AuthService,
     private readonly router: Router
   ) {}
 
   onLogoutClick() {
-    this.userService.logout()
+    this.authService.logout()
     this.router.navigate(['/login'])
   }
 }

@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core'
-import { UserService } from '@angular-micro-frontends/auth'
+import { AuthService } from '@angular-micro-frontends/auth'
 
 @Component({
   selector: 'login-home-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <main
-      class="container px-4 mx-auto flex flex-col justify-center max-w-sm mt-10"
+      class="container px-4 mx-auto flex flex-col justify-center max-w-sm mt-16"
     >
       <h1 class="mx-auto text-3xl">Login</h1>
       <login-login-form
-        *ngIf="!(userService.isUserLoggedIn$ | async)"
+        *ngIf="!(authService.isAuthenticated$ | async)"
       ></login-login-form>
       <div
-        *ngIf="userService.isUserLoggedIn$ | async"
+        *ngIf="authService.isAuthenticated$ | async"
         class="flex flex-col items-center"
       >
         <div>You are now logged in.</div>
@@ -32,9 +32,9 @@ import { UserService } from '@angular-micro-frontends/auth'
   ],
 })
 export class HomePageComponent {
-  constructor(public readonly userService: UserService) {}
+  constructor(public readonly authService: AuthService) {}
 
   onLogoutClick() {
-    this.userService.logout()
+    this.authService.logout()
   }
 }

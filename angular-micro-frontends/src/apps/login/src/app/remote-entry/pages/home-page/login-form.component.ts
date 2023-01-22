@@ -1,48 +1,25 @@
-import { LoginError, UserService } from '@angular-micro-frontends/auth'
-import {
-  CustomValidators,
-  GroupErrorMessage,
-} from '@angular-micro-frontends/ui'
+import { LoginError, AuthService } from '@angular-micro-frontends/auth'
+import { CustomValidators } from '@angular-micro-frontends/ui'
 import { Component, OnDestroy, OnInit } from '@angular/core'
-import {
-  AbstractControl,
-  FormBuilder,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms'
+import { FormBuilder, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { BehaviorSubject, Subscription } from 'rxjs'
 
 @Component({
   selector: 'login-login-form',
   template: `
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="flex flex-col gap-y-2">
         <div class="flex flex-col">
-          <label for="company-id">Company ID</label>
+          <label for="identifier">ID or Email</label>
           <input
-            id="company-id"
-            name="company-id"
+            id="identifier"
+            name="identifier"
             type="text"
-            autocomplete="off"
-            formControlName="companyId"
+            formControlName="identifier"
             uiInput
           />
-          <ui-input-error controlName="companyId"></ui-input-error>
-          <ui-group-error [messages]="errorMessages"></ui-group-error>
-        </div>
-        <div class="flex flex-col">
-          <label for="email">Email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            formControlName="email"
-            uiInput
-          />
-          <ui-input-error controlName="email"></ui-input-error>
-          <ui-group-error [messages]="errorMessages"></ui-group-error>
+          <ui-input-error controlName="identifier"></ui-input-error>
         </div>
         <div class="flex flex-col">
           <label for="password">Password</label>
@@ -69,27 +46,14 @@ import { BehaviorSubject, Subscription } from 'rxjs'
 export class LoginFormComponent implements OnInit, OnDestroy {
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly userService: UserService,
+    private readonly authService: AuthService,
     private readonly router: Router
   ) {}
 
-  readonly loginForm = this.formBuilder.nonNullable.group(
-    {
-      companyId: ['', [CustomValidators.companyId]],
-      email: ['', [Validators.email]],
-      password: ['', [Validators.required]],
-    },
-    {
-      validators: [this.loginIdentifierValidator()],
-    }
-  )
-  readonly errorMessages: GroupErrorMessage[] = [
-    {
-      key: 'identifier',
-      messageFn: (_errors: ValidationErrors | null) =>
-        'Company ID or Email is required',
-    },
-  ]
+  readonly loginForm = this.formBuilder.nonNullable.group({
+    identifier: ['', [CustomValidators.companyIdOrEmail]],
+    password: ['', [Validators.required]],
+  })
   loginErrorSubject = new BehaviorSubject<string | null>(null)
   loginError$ = this.loginErrorSubject.asObservable()
   loginValueChangesSubscription?: Subscription
@@ -112,39 +76,17 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     if (this.loginForm.invalid) {
       return
     }
-    const { companyId, email, password } = this.loginForm.controls
+    const { identifier, password } = this.loginForm.controls
 
-    let loginError: LoginError | null
-    if (companyId.value !== '') {
-      loginError = await this.userService.autheticate({
-        username: companyId.value,
-        password: password.value,
-      })
-    } else {
-      loginError = await this.userService.autheticate({
-        email: email.value,
-        password: password.value,
-      })
-    }
+    const loginError = await this.authService.autheticate(
+      identifier.value,
+      password.value
+    )
     this.router.navigate(['/'])
     if (loginError != null) {
       if (loginError.key === 'invalid-credentials') {
         this.loginErrorSubject.next('Invalid credentials')
       }
-    }
-  }
-
-  loginIdentifierValidator(): ValidatorFn {
-    return (control: AbstractControl) => {
-      const group = control as typeof this.loginForm
-      const companyId = group.controls['companyId'].value
-      const email = group.controls['email'].value
-
-      if (companyId === '' && email === '') {
-        return { identifier: true }
-      }
-
-      return null
     }
   }
 }

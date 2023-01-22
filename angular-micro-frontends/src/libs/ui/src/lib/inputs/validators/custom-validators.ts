@@ -1,13 +1,16 @@
-import { AbstractControl, ValidationErrors } from '@angular/forms'
+import { AbstractControl, ValidationErrors, Validators } from '@angular/forms'
 
 export class CustomValidators {
-  static companyId(control: AbstractControl<string>): ValidationErrors | null {
+  static companyIdOrEmail(control: AbstractControl<string>) {
     if (control.value == null || control.value.length === 0) {
       return null
     }
-    if (/[A-Z]{2}\d{9}/s.test(control.value)) {
+    if (
+      /[A-Z]{2}\d{9}/s.test(control.value) ||
+      Validators.email(control) == null
+    ) {
       return null
     }
-    return { companyId: true }
+    return { companyIdOrEmail: true }
   }
 }
