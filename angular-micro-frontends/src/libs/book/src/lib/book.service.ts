@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core'
 import { BehaviorSubject, Subject } from 'rxjs'
-// import { Apollo } from 'apollo-angular'
-// import { GET_BOOKS } from './graphql/queries/allBooks.query'
-// import { GetAllBooksQuery } from './graphql/generated/generated'
 
 @Injectable({
   providedIn: 'root',
