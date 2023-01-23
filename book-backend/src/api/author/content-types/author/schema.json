@@ -32,12 +32,6 @@
       "type": "media",
       "multiple": false
     },
-    "book": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::book.book",
-      "mappedBy": "author"
-    },
     "books": {
       "type": "relation",
       "relation": "manyToMany",

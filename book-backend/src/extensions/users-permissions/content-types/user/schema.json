@@ -62,12 +62,6 @@
       "target": "plugin::users-permissions.role",
       "inversedBy": "users",
       "configurable": false
-    },
-    "book_ownership": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::book-ownership.book-ownership",
-      "mappedBy": "usersPermissionsUser"
     }
   }
 }

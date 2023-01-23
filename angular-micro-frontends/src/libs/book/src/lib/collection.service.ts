@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core'
 import { QueryError } from 'src/libs/book/src/lib/types'
 import { BehaviorSubject } from 'rxjs'
+import { AuthService } from '@angular-micro-frontends/auth'
 
 @Injectable({
   providedIn: 'root',
 })
 export class CollectionService {
+  constructor(protected readonly authService: AuthService) {}
+
   protected readonly url = 'http://localhost:1337/api'
   protected readonly initialQueryState = {
     data: null,
@@ -21,6 +24,8 @@ export class CollectionService {
     try {
       const response = await fetch(this.apiUrl(path))
       const data = await response.json()
+      console.log(path)
+      console.log(data)
       subject.next({
         ...subject.value,
         data,

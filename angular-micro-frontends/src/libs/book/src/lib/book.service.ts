@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { BehaviorSubject, Subject } from 'rxjs'
+import { BehaviorSubject, Subject, merge } from 'rxjs'
 import { Query, BookCollection } from 'src/libs/book/src/lib/types'
 import { CollectionService } from './collection.service'
 

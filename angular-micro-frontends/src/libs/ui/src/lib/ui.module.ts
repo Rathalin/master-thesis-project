@@ -8,7 +8,7 @@ import { InputErrorComponent } from './inputs/error-handling/input-error.compone
 import { GroupErrorComponent } from './inputs/error-handling/group-error.component'
 import { LoadingComponent } from './state/loading.component'
 import { ErrorComponent } from './state/error.component'
-import { ReorderableTableComponent } from './table/reorderable-table.component'
+import { CardDirective } from './card/card.directive'
 
 @NgModule({
   imports: [CommonModule],
@@ -21,7 +21,7 @@ import { ReorderableTableComponent } from './table/reorderable-table.component'
     GroupErrorComponent,
     LoadingComponent,
     ErrorComponent,
-    ReorderableTableComponent,
+    CardDirective,
   ],
   exports: [
     InputDirective,
@@ -32,7 +32,7 @@ import { ReorderableTableComponent } from './table/reorderable-table.component'
     GroupErrorComponent,
     LoadingComponent,
     ErrorComponent,
-    ReorderableTableComponent,
+    CardDirective,
   ],
 })
 export class UiModule {}

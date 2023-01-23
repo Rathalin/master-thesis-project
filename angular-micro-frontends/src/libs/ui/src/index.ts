@@ -8,5 +8,4 @@ export * from './lib/inputs/validators/custom-validators'
 export * from './lib/inputs/error-handling/group-error.component'
 export * from './lib/state/loading.component'
 export * from './lib/state/error.component'
-
-export * from './lib/table/reorderable-table.component'
+export * from './lib/card/card.directive'

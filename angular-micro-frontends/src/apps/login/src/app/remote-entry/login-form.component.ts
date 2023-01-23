@@ -50,8 +50,8 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   ) {}
 
   readonly loginForm = this.formBuilder.nonNullable.group({
-    identifier: ['', [Validators.required]],
-    password: ['', [Validators.required]],
+    identifier: ['Rathalin', [Validators.required]],
+    password: ['asdf123', [Validators.required]],
   })
   loginErrorSubject = new BehaviorSubject<string | null>(null)
   loginError$ = this.loginErrorSubject.asObservable()

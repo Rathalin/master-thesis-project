@@ -1,21 +1,22 @@
 import { Collection, DateString } from './helper.types'
 
 type BookAttributes = {
-  pages: number
   title: string
-  createdAt: DateString
-  updatedAt: DateString
+  pages: number
+  year: number
 }
 export type BookCollection = Collection<BookAttributes>
 
 type BookOwnershipAttributes = {
-  title: String
+  book: {
+    data: BookCollection
+  }
   startReadingDate: DateString | null
   finishReadingDate: DateString | null
-  rating: string | null
-  note: number[] | null
-  pages: number
+  rating: 'very-bad' | 'bad' | 'neutral' | 'good' | 'very-good' | null
   currentPage: number | null
+  note: string | null
+  order: number | null
 }
 export type BookOwnershipCollection = Collection<BookOwnershipAttributes>
 

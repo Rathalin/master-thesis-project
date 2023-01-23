@@ -51,6 +51,7 @@ export class AuthService {
           password,
         }
       )
+      console.log(response.data)
       this.authSubject.next(response.data)
     } catch (_error) {
       return {

@@ -37,11 +37,10 @@
       "type": "integer",
       "min": 0
     },
-    "usersPermissionsUser": {
+    "user": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "book_ownership"
+      "target": "plugin::users-permissions.user"
     },
     "note": {
       "type": "richtext",
