@@ -6,8 +6,10 @@ import { Component } from '@angular/core'
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <dashboard-header></dashboard-header>
-    <main class="flex-1">
-      <router-outlet></router-outlet>
+    <main class="flex-1 mx-2">
+      <div class="container mx-auto">
+        <router-outlet></router-outlet>
+      </div>
     </main>
   `,
   styles: [

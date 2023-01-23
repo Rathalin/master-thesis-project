@@ -37,6 +37,12 @@
       "relation": "oneToOne",
       "target": "api::book.book",
       "mappedBy": "author"
+    },
+    "books": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::book.book",
+      "mappedBy": "authors"
     }
   }
 }

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "book-ownership",
     "pluralName": "book-ownerships",
-    "displayName": "BookOwnership"
+    "displayName": "BookOwnership",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -45,6 +46,12 @@
     "note": {
       "type": "richtext",
       "maxLength": 1000
+    },
+    "order": {
+      "type": "integer",
+      "min": 0,
+      "unique": false,
+      "required": false
     }
   }
 }

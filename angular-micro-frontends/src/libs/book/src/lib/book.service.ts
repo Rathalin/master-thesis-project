@@ -1,39 +1,18 @@
 import { Injectable } from '@angular/core'
 import { BehaviorSubject, Subject } from 'rxjs'
+import { Query, BookCollection } from 'src/libs/book/src/lib/types'
+import { CollectionService } from './collection.service'
 
 @Injectable({
   providedIn: 'root',
 })
-export class BookService {
-  private booksSubject = new Subject<
-    Res<{
-      id: number
-      attributes: {
-        title: string
-        createdAt: DateString
-        updatedAt: DateString
-        pages: number
-      }
-    }>
-  >()
-  private books$ = this.booksSubject.asObservable()
-}
+export class BookService extends CollectionService {
+  private readonly booksSubject = new BehaviorSubject<Query<BookCollection>>(
+    super.initialQueryState
+  )
+  public readonly booksQuery$ = this.booksSubject.asObservable()
 
-export type DateString = string
-
-export type Res<TData> = {
-  data?: TData
-  error?: Error
-}
-
-export type Data<TData> = {
-  data: TData[]
-  meta: {
-    pagination: {
-      page: number
-      pageSize: number
-      pageCount: number
-      total: number
-    }
+  public async queryBooks() {
+    await super.query('/books', this.booksSubject)
   }
 }

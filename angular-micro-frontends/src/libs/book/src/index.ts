@@ -1,2 +1,6 @@
 export * from './lib/book.module'
 export * from './lib/book.service'
+export * from './lib/book-ownership.service'
+export * from './lib/author.service'
+export * from './lib/types/helper.types'
+export * from './lib/types/collection.types'

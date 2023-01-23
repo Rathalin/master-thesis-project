@@ -7,22 +7,20 @@ export type LoginError = {
   message: string
 }
 
-export type DateString = string
-
-export type User = {
-  id: number
-  username: string
-  email: string
-  provider: string
-  confirmed: boolean
-  blocked: boolean
-  createdAt: DateString
-  updatedAt: DateString
-}
+type DateString = string
 
 export type Authentication = {
   jwt: string
-  user: User
+  user: {
+    id: number
+    username: string
+    email: string
+    provider: string
+    confirmed: boolean
+    blocked: boolean
+    createdAt: DateString
+    updatedAt: DateString
+  }
 }
 
 @Injectable({
@@ -53,7 +51,6 @@ export class AuthService {
           password,
         }
       )
-      console.log(response.data)
       this.authSubject.next(response.data)
     } catch (_error) {
       return {
