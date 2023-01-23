@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "book_ownerships",
+  "info": {
+    "singularName": "book-ownership",
+    "pluralName": "book-ownerships",
+    "displayName": "BookOwnership"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "book": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::book.book"
+    },
+    "startReading": {
+      "type": "date"
+    },
+    "finishReading": {
+      "type": "date"
+    },
+    "rating": {
+      "type": "enumeration",
+      "enum": [
+        "very-bad",
+        "bad",
+        "neutral",
+        "good",
+        "very-good"
+      ]
+    },
+    "currentPage": {
+      "type": "integer",
+      "min": 0
+    },
+    "usersPermissionsUser": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "book_ownership"
+    },
+    "note": {
+      "type": "richtext",
+      "maxLength": 1000
+    }
+  }
+}

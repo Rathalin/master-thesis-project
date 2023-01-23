@@ -63,10 +63,10 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "book": {
+    "book_ownership": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::book.book",
+      "target": "api::book-ownership.book-ownership",
       "mappedBy": "usersPermissionsUser"
     }
   }

@@ -13,16 +13,30 @@
   "pluginOptions": {},
   "attributes": {
     "firstname": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "maxLength": 50
     },
     "lastname": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "maxLength": 50
+    },
+    "dateOfBirth": {
+      "type": "date"
+    },
+    "profileImage": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
     },
     "book": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::book.book",
-      "inversedBy": "author"
+      "mappedBy": "author"
     }
   }
 }
