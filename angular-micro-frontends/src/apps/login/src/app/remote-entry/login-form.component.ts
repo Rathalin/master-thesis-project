@@ -1,5 +1,4 @@
-import { LoginError, AuthService } from '@angular-micro-frontends/auth'
-import { CustomValidators } from '@angular-micro-frontends/ui'
+import { AuthService } from '@angular-micro-frontends/auth'
 import { Component, OnDestroy, OnInit } from '@angular/core'
 import { FormBuilder, Validators } from '@angular/forms'
 import { Router } from '@angular/router'

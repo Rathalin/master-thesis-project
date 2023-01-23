@@ -6,8 +6,9 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router'
-import { HomePageComponent } from './home-page.component'
+import { HomePageComponent } from './pages/home-page/home-page.component'
 import { AuthService } from '@angular-micro-frontends/auth'
+import { OverviewPageComponent } from './pages/overview-page/overview-page.component'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -45,6 +46,11 @@ export const appRoutes: Route[] = [
   {
     path: '',
     component: HomePageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'overview',
+    component: OverviewPageComponent,
     canActivate: [AuthGuard],
   },
   {

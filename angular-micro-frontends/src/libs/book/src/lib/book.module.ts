@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { GraphQLModule } from './graphql/grahql.module'
+import { GraphQLModule, createApollo } from './graphql/graph-ql.module'
 
 @NgModule({
   imports: [CommonModule, GraphQLModule],

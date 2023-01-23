@@ -6,6 +6,8 @@ import { SecondaryButtonDirective } from './buttons/secondary-button.directive'
 import { SubtleButtonDirective } from './buttons/subtle-button.directive'
 import { InputErrorComponent } from './inputs/error-handling/input-error.component'
 import { GroupErrorComponent } from './inputs/error-handling/group-error.component'
+import { LoadingComponent } from './state/loading.component'
+import { ErrorComponent } from './state/error.component'
 
 @NgModule({
   imports: [CommonModule],
@@ -16,6 +18,8 @@ import { GroupErrorComponent } from './inputs/error-handling/group-error.compone
     SubtleButtonDirective,
     InputErrorComponent,
     GroupErrorComponent,
+    LoadingComponent,
+    ErrorComponent,
   ],
   exports: [
     InputDirective,
@@ -24,6 +28,8 @@ import { GroupErrorComponent } from './inputs/error-handling/group-error.compone
     SubtleButtonDirective,
     InputErrorComponent,
     GroupErrorComponent,
+    LoadingComponent,
+    ErrorComponent,
   ],
 })
 export class UiModule {}
