@@ -28,6 +28,7 @@ import {
               bookOwnershipQuery.data.data.attributes.book.data.attributes.title
             }}
           </div>
+          <dashboard-book-ownership-form></dashboard-book-ownership-form>
         </ng-container>
         <ui-loading *ngIf="bookOwnershipQuery.isLoading"></ui-loading>
         <ui-error *ngIf="bookOwnershipQuery.error != null"></ui-error>

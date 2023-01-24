@@ -30,7 +30,7 @@ import { BehaviorSubject, Subscription } from 'rxjs'
             uiInput
           />
           <ui-input-error controlName="password"></ui-input-error>
-          <div *ngIf="true" class="text-red-500 dark:text-red-400 mt-2 mx-auto">
+          <div class="text-red-500 dark:text-red-400 mt-2 mx-auto">
             {{ loginError$ | async }}
           </div>
         </div>

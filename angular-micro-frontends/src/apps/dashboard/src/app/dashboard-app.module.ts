@@ -12,6 +12,7 @@ import { UiModule } from '@angular-micro-frontends/ui'
 import { BookOwnershipPageComponent } from './pages/book-ownership-page/book-ownership-page.component'
 import { PageNotFoundComponent } from './pages/page-not-found.component'
 import { BookOwnershipFormComponent } from './pages/book-ownership-page/book-ownership-form.component'
+import { ReactiveFormsModule } from '@angular/forms'
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { BookOwnershipFormComponent } from './pages/book-ownership-page/book-own
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
     UiModule,
   ],

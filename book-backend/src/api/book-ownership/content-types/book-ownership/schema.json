@@ -26,11 +26,12 @@
     "rating": {
       "type": "enumeration",
       "enum": [
-        "very-bad",
-        "bad",
-        "neutral",
-        "good",
-        "very-good"
+        "No Rating",
+        "Very bad",
+        "Bad",
+        "Ok",
+        "Good",
+        "Very Good"
       ]
     },
     "currentPage": {
