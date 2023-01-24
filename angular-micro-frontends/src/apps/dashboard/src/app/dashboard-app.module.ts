@@ -9,7 +9,9 @@ import { FooterComponent } from './ui/footer.component'
 import { HeaderComponent } from './ui/header/header.component'
 import { NavLinkComponent } from './ui/header/nav-link.component'
 import { UiModule } from '@angular-micro-frontends/ui'
-import { OverviewPageComponent } from './pages/overview-page/overview-page.component'
+import { BookOwnershipPageComponent } from './pages/book-ownership-page/book-ownership-page.component'
+import { PageNotFoundComponent } from './pages/page-not-found.component'
+import { BookOwnershipFormComponent } from './pages/book-ownership-page/book-ownership-form.component'
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { OverviewPageComponent } from './pages/overview-page/overview-page.compo
     FooterComponent,
     HeaderComponent,
     NavLinkComponent,
-    OverviewPageComponent,
+    BookOwnershipPageComponent,
+    PageNotFoundComponent,
+    BookOwnershipFormComponent,
   ],
   imports: [
     BrowserModule,

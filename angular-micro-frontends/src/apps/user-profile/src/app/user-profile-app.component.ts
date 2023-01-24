@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 
 @Component({
-  selector: 'angular-micro-frontends-root',
+  selector: 'user-profile-app',
   template: '<router-outlet></router-outlet>',
 })
-export class AppComponent {}
+export class UserProfileAppComponent {}

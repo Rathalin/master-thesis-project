@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core'
-import { BookOwnershipCollection, Query } from 'src/libs/book/src/lib/types'
+import {
+  BookOwnershipCollection,
+  QueryMany,
+  QueryOne,
+} from 'src/libs/book/src/lib/types'
 import { BehaviorSubject } from 'rxjs'
 import { CollectionService } from './collection.service'
 import * as qs from 'qs'
-import { AuthService } from '@angular-micro-frontends/auth'
 
 @Injectable({
   providedIn: 'root',
@@ -12,12 +15,12 @@ export class BookOwnershipService extends CollectionService {
   // Book ownerships
 
   private readonly bookOwnershipsSubject = new BehaviorSubject<
-    Query<BookOwnershipCollection>
+    QueryMany<BookOwnershipCollection>
   >(this.initialQueryState)
-  public readonly bookOwnershipsQuery$ =
+  private readonly bookOwnershipsQuery$ =
     this.bookOwnershipsSubject.asObservable()
 
-  public async queryBookOwnerships() {
+  public queryBookOwnerships() {
     console.log(this.authService)
     const query = qs.stringify(
       {
@@ -34,18 +37,50 @@ export class BookOwnershipService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    await this.query(`/book-ownerships?${query}`, this.bookOwnershipsSubject)
+    this.query(`/book-ownerships?${query}`, this.bookOwnershipsSubject).then()
+    return this.bookOwnershipsQuery$
+  }
+
+  // Book ownership by id
+
+  private readonly bookOwnershipSubject = new BehaviorSubject<
+    QueryOne<BookOwnershipCollection>
+  >(this.initialQueryState)
+  private readonly bookOwnershipQuery$ =
+    this.bookOwnershipSubject.asObservable()
+
+  public queryBookOwnership(id: number) {
+    const query = qs.stringify(
+      {
+        populate: ['book'],
+        filters: {
+          user: {
+            id: {
+              $eq: this.authService.currentUser?.id ?? -1,
+            },
+          },
+        },
+      },
+      {
+        encodeValuesOnly: true,
+      }
+    )
+    this.query(
+      `/book-ownerships/${id}?${query}`,
+      this.bookOwnershipSubject
+    ).then()
+    return this.bookOwnershipQuery$
   }
 
   // Currently reading books
 
   private readonly currentlyReadingBooksSubject = new BehaviorSubject<
-    Query<BookOwnershipCollection>
+    QueryMany<BookOwnershipCollection>
   >(this.initialQueryState)
-  public readonly currentlyReadingBooksQuery$ =
+  private readonly currentlyReadingBooksQuery$ =
     this.currentlyReadingBooksSubject.asObservable()
 
-  public async queryCurrentlyReadingBooks() {
+  public queryCurrentlyReadingBooks() {
     const query = qs.stringify(
       {
         populate: ['book'],
@@ -75,20 +110,22 @@ export class BookOwnershipService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    await this.query(
+    this.query(
       `/book-ownerships?${query}`,
       this.currentlyReadingBooksSubject
-    )
+    ).then()
+    return this.currentlyReadingBooksQuery$
   }
 
   // Read next books
 
   private readonly readNextBooksSubject = new BehaviorSubject<
-    Query<BookOwnershipCollection>
+    QueryMany<BookOwnershipCollection>
   >(this.initialQueryState)
-  public readonly readNextBooksQuery$ = this.readNextBooksSubject.asObservable()
+  private readonly readNextBooksQuery$ =
+    this.readNextBooksSubject.asObservable()
 
-  public async queryReadNextBooks() {
+  public queryReadNextBooks() {
     const query = qs.stringify(
       {
         populate: ['book'],
@@ -113,18 +150,19 @@ export class BookOwnershipService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    await this.query(`/book-ownerships?${query}`, this.readNextBooksSubject)
+    this.query(`/book-ownerships?${query}`, this.readNextBooksSubject).then()
+    return this.readNextBooksQuery$
   }
 
   // Recently read books
 
   private readonly recentlyReadBooksSubject = new BehaviorSubject<
-    Query<BookOwnershipCollection>
+    QueryMany<BookOwnershipCollection>
   >(this.initialQueryState)
-  public readonly recentlyReadBooksQuery$ =
+  private readonly recentlyReadBooksQuery$ =
     this.recentlyReadBooksSubject.asObservable()
 
-  public async queryRecentlyReadBooks() {
+  public queryRecentlyReadBooks() {
     const query = qs.stringify(
       {
         populate: ['book'],
@@ -149,6 +187,10 @@ export class BookOwnershipService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    await this.query(`/book-ownerships?${query}`, this.recentlyReadBooksSubject)
+    this.query(
+      `/book-ownerships?${query}`,
+      this.recentlyReadBooksSubject
+    ).then()
+    return this.recentlyReadBooksQuery$
   }
 }

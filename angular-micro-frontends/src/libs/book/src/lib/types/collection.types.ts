@@ -26,3 +26,10 @@ type AuthorAttributes = {
   dateOfBirth: DateString | null
 }
 export type AuthorCollection = Collection<AuthorAttributes>
+
+export type BookOwnershipRating =
+  | 'very-bad'
+  | 'bad'
+  | 'neutral'
+  | 'good'
+  | 'very-good'

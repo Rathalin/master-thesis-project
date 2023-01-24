@@ -1,11 +1,17 @@
-export type Query<TData> = {
-  data: FindMany<TData> | null
+export type QueryMany<TData> = {
+  data: WithMeta<TData[]> | null
   error: QueryError | null
   isLoading: boolean
 }
 
-export type FindMany<TData> = {
-  data: TData[]
+export type QueryOne<TData> = {
+  data: WithMeta<TData> | null
+  error: QueryError | null
+  isLoading: boolean
+}
+
+export type WithMeta<TData> = {
+  data: TData
   meta: {
     pagination: {
       page: number

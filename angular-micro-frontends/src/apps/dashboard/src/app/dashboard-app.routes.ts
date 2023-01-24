@@ -8,7 +8,8 @@ import {
 } from '@angular/router'
 import { HomePageComponent } from './pages/home-page/home-page.component'
 import { AuthService } from '@angular-micro-frontends/auth'
-import { OverviewPageComponent } from './pages/overview-page/overview-page.component'
+import { BookOwnershipPageComponent } from './pages/book-ownership-page/book-ownership-page.component'
+import { PageNotFoundComponent } from './pages/page-not-found.component'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -49,8 +50,8 @@ export const appRoutes: Route[] = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'overview',
-    component: OverviewPageComponent,
+    path: 'my-book/:id',
+    component: BookOwnershipPageComponent,
     canActivate: [AuthGuard],
   },
   {
@@ -62,6 +63,11 @@ export const appRoutes: Route[] = [
     path: 'user-profile',
     loadChildren: () =>
       import('user-profile/Module').then((m) => m.RemoteEntryModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
     canActivate: [AuthGuard],
   },
 ]

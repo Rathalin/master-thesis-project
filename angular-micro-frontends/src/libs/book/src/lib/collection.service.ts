@@ -19,6 +19,7 @@ export class CollectionService {
   protected async query<T>(path: string, subject: BehaviorSubject<T>) {
     subject.next({
       ...subject.value,
+      error: null,
       isLoading: true,
     })
     try {
@@ -29,6 +30,7 @@ export class CollectionService {
       subject.next({
         ...subject.value,
         data,
+        error: null,
         isLoading: false,
       })
     } catch (error) {
