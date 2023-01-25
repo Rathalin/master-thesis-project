@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import {
-  BookOwnershipCollection,
+  BookOwnershipContentType,
   QueryMany,
   QueryOne,
 } from 'src/libs/book/src/lib/types'
@@ -15,7 +15,7 @@ export class BookOwnershipService extends CollectionService {
   // Book ownerships
 
   private readonly bookOwnershipsSubject = new BehaviorSubject<
-    QueryMany<BookOwnershipCollection>
+    QueryMany<BookOwnershipContentType>
   >(this.initialQueryState)
   private readonly bookOwnershipsQuery$ =
     this.bookOwnershipsSubject.asObservable()
@@ -44,7 +44,7 @@ export class BookOwnershipService extends CollectionService {
   // Book ownership by id
 
   private readonly bookOwnershipSubject = new BehaviorSubject<
-    QueryOne<BookOwnershipCollection>
+    QueryOne<BookOwnershipContentType>
   >(this.initialQueryState)
   private readonly bookOwnershipQuery$ =
     this.bookOwnershipSubject.asObservable()
@@ -75,7 +75,7 @@ export class BookOwnershipService extends CollectionService {
   // Currently reading books
 
   private readonly currentlyReadingBooksSubject = new BehaviorSubject<
-    QueryMany<BookOwnershipCollection>
+    QueryMany<BookOwnershipContentType>
   >(this.initialQueryState)
   private readonly currentlyReadingBooksQuery$ =
     this.currentlyReadingBooksSubject.asObservable()
@@ -120,7 +120,7 @@ export class BookOwnershipService extends CollectionService {
   // Read next books
 
   private readonly readNextBooksSubject = new BehaviorSubject<
-    QueryMany<BookOwnershipCollection>
+    QueryMany<BookOwnershipContentType>
   >(this.initialQueryState)
   private readonly readNextBooksQuery$ =
     this.readNextBooksSubject.asObservable()
@@ -157,7 +157,7 @@ export class BookOwnershipService extends CollectionService {
   // Recently read books
 
   private readonly recentlyReadBooksSubject = new BehaviorSubject<
-    QueryMany<BookOwnershipCollection>
+    QueryMany<BookOwnershipContentType>
   >(this.initialQueryState)
   private readonly recentlyReadBooksQuery$ =
     this.recentlyReadBooksSubject.asObservable()

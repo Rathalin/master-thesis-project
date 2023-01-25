@@ -1,31 +1,31 @@
-import { Collection, DateString } from './helper.types'
+import { ContentType, DateString } from './helper.types'
 
 export type BookAttributes = {
   title: string
   pages: number
   year: number
 }
-export type BookCollection = Collection<BookAttributes>
+export type BookContentType = ContentType<BookAttributes>
 
 export type BookOwnershipAttributes = {
   book: {
-    data: BookCollection
+    data: BookContentType
   }
-  startReadingDate: DateString | null
-  finishReadingDate: DateString | null
+  startReading: DateString | null
+  finishReading: DateString | null
   rating: BookOwnershipRating | null
   currentPage: number | null
   note: string | null
   order: number | null
 }
-export type BookOwnershipCollection = Collection<BookOwnershipAttributes>
+export type BookOwnershipContentType = ContentType<BookOwnershipAttributes>
 
 export type AuthorAttributes = {
   firstname: string
   lastname: string
   dateOfBirth: DateString | null
 }
-export type AuthorCollection = Collection<AuthorAttributes>
+export type AuthorContentType = ContentType<AuthorAttributes>
 
 export const BookOwnershipRatingOptions = [
   'No Rating',

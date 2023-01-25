@@ -50,9 +50,20 @@ export const appRoutes: Route[] = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'my-book/new',
+    component: BookOwnershipPageComponent,
+    canActivate: [AuthGuard],
+    data: {
+      mode: 'CREATE',
+    },
+  },
+  {
     path: 'my-book/:id',
     component: BookOwnershipPageComponent,
     canActivate: [AuthGuard],
+    data: {
+      mode: 'EDIT',
+    },
   },
   {
     path: 'login',

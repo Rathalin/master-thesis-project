@@ -1,18 +1,29 @@
 import {
-  BookOwnershipCollection,
+  BookContentType,
+  BookOwnershipContentType,
   BookOwnershipService,
   BookService,
+  QueryMany,
   QueryOne,
 } from '@angular-micro-frontends/book'
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core'
 import { ActivatedRoute, Route, Router } from '@angular/router'
 import {
   BehaviorSubject,
   Observable,
   Subject,
   combineLatest,
+  filter,
+  map,
   of,
   switchMap,
+  tap,
 } from 'rxjs'
 
 @Component({
@@ -20,18 +31,14 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container>
-      <h1>Your book</h1>
-      <ng-container *ngIf="this.bookOwnership$ | async as bookOwnershipQuery">
-        <ng-container *ngIf="bookOwnershipQuery.data != null">
-          <div>
-            {{
-              bookOwnershipQuery.data.data.attributes.book.data.attributes.title
-            }}
-          </div>
-          <dashboard-book-ownership-form></dashboard-book-ownership-form>
-        </ng-container>
-        <ui-loading *ngIf="bookOwnershipQuery.isLoading"></ui-loading>
-        <ui-error *ngIf="bookOwnershipQuery.error != null"></ui-error>
+      <ng-container>
+        <h1 *ngIf="mode$ | async as mode" class="text-3xl uppercase">
+          {{ mode === 'CREATE' ? 'Create' : 'Edit' }}
+        </h1>
+        <dashboard-book-ownership-form
+          [bookOptionsQuery]="bookOptions$ | async"
+          [bookOwnershipQuery]="bookOwnership$ | async"
+        ></dashboard-book-ownership-form>
       </ng-container>
     </ng-container>
   `,
@@ -40,16 +47,22 @@ import {
 export class BookOwnershipPageComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
-    public readonly bookOwnershipService: BookOwnershipService
+    public readonly bookOwnershipService: BookOwnershipService,
+    public readonly bookService: BookService
   ) {}
 
-  public bookOwnership$?: Observable<QueryOne<BookOwnershipCollection>>
+  public bookOwnership$?: Observable<QueryOne<BookOwnershipContentType>>
+  public bookOptions$?: Observable<QueryMany<BookContentType>>
+  public mode$?: Observable<'CREATE' | 'EDIT'>
 
   ngOnInit(): void {
     this.bookOwnership$ = this.route.params.pipe(
+      filter((params) => params['id'] != null),
       switchMap((params) =>
         this.bookOwnershipService.queryBookOwnership(+params['id'])
       )
     )
+    this.bookOptions$ = this.bookService.queryBooks()
+    this.mode$ = this.route.data.pipe(map((data) => data['mode']))
   }
 }

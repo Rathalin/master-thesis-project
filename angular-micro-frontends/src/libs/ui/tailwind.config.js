@@ -11,7 +11,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: tailwindColors.amber,
+        primary: tailwindColors.purple,
       },
     },
   },

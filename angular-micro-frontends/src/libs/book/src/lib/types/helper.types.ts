@@ -29,7 +29,7 @@ export type QueryError = {
   details: unknown
 }
 
-export type Collection<T> = {
+export type ContentType<T> = {
   id: number
   attributes: {
     createdAt: DateString

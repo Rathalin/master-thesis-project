@@ -11,12 +11,12 @@ export class InputDirective {
 
   private readonly styleClasses = [
     'outline-1',
-    'hover:outline',
+    'hover:outline disabled:hover:outline-none',
     'focus-visible:outline',
-    'dark:bg-neutral-700',
-    'dark:hover:outline-neutral-500',
-    'dark:focus-visible:bg-neutral-600',
-    'dark:focus-visible:outline-primary-600',
+    'dark:bg-slate-700',
+    'dark:hover:outline-slate-500',
+    'dark:focus-visible:bg-slate-600 disabled:dark:focus-visible:bg-slate-700',
+    'dark:focus-visible:outline-primary-600 disabled:dark:focus-visible:outline-none',
     'px-3',
     'py-2',
     'rounded-sm',

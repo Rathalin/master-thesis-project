@@ -1,11 +1,16 @@
 import {
   AuthorService,
-  BookOwnershipCollection,
+  BookOwnershipContentType,
   BookOwnershipService,
   BookService,
   QueryMany,
 } from '@angular-micro-frontends/book'
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core'
 import { Observable } from 'rxjs'
 
 @Component({
@@ -38,10 +43,11 @@ import { Observable } from 'rxjs'
           *ngIf="this.currentlyReadingBooksQuery$ | async as readingQuery"
         >
           <ul *ngIf="readingQuery.data != null">
-            <li *ngFor="let readingBook of readingQuery.data.data">
-              <a [routerLink]="['/my-book', readingBook.id]">
-                {{ readingBook.attributes.book.data.attributes.title }}
-              </a>
+            <li
+              *ngFor="let readingBook of readingQuery.data.data"
+              [routerLink]="['/my-book', readingBook.id]"
+            >
+              {{ readingBook.attributes.book.data.attributes.title }}
             </li>
           </ul>
           <ui-loading *ngIf="readingQuery.isLoading"></ui-loading>
@@ -53,10 +59,11 @@ import { Observable } from 'rxjs'
         <h1>Read next</h1>
         <ng-container *ngIf="this.readNextBooksQuery$ | async as readNextQuery">
           <ul *ngIf="readNextQuery.data != null" uiCard>
-            <li *ngFor="let readNextBook of readNextQuery.data.data">
-              <a [routerLink]="['/my-book', readNextBook.id]">
-                {{ readNextBook.attributes.book.data.attributes.title }}
-              </a>
+            <li
+              *ngFor="let readNextBook of readNextQuery.data.data"
+              [routerLink]="['/my-book', readNextBook.id]"
+            >
+              {{ readNextBook.attributes.book.data.attributes.title }}
             </li>
           </ul>
           <ui-loading *ngIf="readNextQuery.isLoading"></ui-loading>
@@ -70,20 +77,27 @@ import { Observable } from 'rxjs'
           *ngIf="this.recentlyReadBooksQuery$ | async as recentlyReadQuery"
         >
           <ul *ngIf="recentlyReadQuery.data != null" uiCard>
-            <li *ngFor="let recentlyReadBook of recentlyReadQuery.data.data">
-              <a [routerLink]="['/my-book', recentlyReadBook.id]">
-                {{ recentlyReadBook.attributes.book.data.attributes.title }}
-              </a>
+            <li
+              *ngFor="let recentlyReadBook of recentlyReadQuery.data.data"
+              [routerLink]="['/my-book', recentlyReadBook.id]"
+            >
+              {{ recentlyReadBook.attributes.book.data.attributes.title }}
             </li>
           </ul>
           <ui-loading *ngIf="recentlyReadQuery.isLoading"></ui-loading>
           <ui-error *ngIf="recentlyReadQuery.error"></ui-error>
         </ng-container>
       </article>
+
+      <article id="add-book" class="pt-4">
+        <a routerLink="/my-book/new" uiPrimaryButton>Add a new book</a>
+      </article>
     </main>
   `,
 })
 export class HomePageComponent implements OnInit {
+  @Input() public mode: 'CREATE' | 'EDIT' = 'CREATE'
+
   constructor(
     public readonly bookService: BookService,
     public readonly bookOwnershipService: BookOwnershipService,
@@ -91,11 +105,11 @@ export class HomePageComponent implements OnInit {
   ) {}
 
   public currentlyReadingBooksQuery$?: Observable<
-    QueryMany<BookOwnershipCollection>
+    QueryMany<BookOwnershipContentType>
   >
-  public readNextBooksQuery$?: Observable<QueryMany<BookOwnershipCollection>>
+  public readNextBooksQuery$?: Observable<QueryMany<BookOwnershipContentType>>
   public recentlyReadBooksQuery$?: Observable<
-    QueryMany<BookOwnershipCollection>
+    QueryMany<BookOwnershipContentType>
   >
 
   ngOnInit(): void {
