@@ -4,8 +4,7 @@ import {
   BookOwnershipContentType,
   BookOwnershipService,
   BookService,
-  QueryMany,
-  QueryOne,
+  Query,
   WithId,
 } from '@angular-micro-frontends/book'
 import {
@@ -35,12 +34,24 @@ import {
   template: `
     <ng-container>
       <ng-container>
-        <h1 *ngIf="mode != null" class="text-3xl uppercase">
-          {{ mode === 'CREATE' ? 'Create' : 'Edit' }}
+        <h1 *ngIf="mode != null" class="text-3xl mb-5">
+          <ng-container *ngIf="mode === 'create'; else titleCreate">
+            <span>Create</span>
+          </ng-container>
+          <ng-template #titleCreate>
+            <span>Update</span>
+            <span
+              *ngIf="bookOwnershipBookTitle$ | async as bookOwnershipBookTitle"
+              class="uppercase"
+            >
+              {{ bookOwnershipBookTitle }}
+            </span>
+          </ng-template>
         </h1>
         <dashboard-book-ownership-form
           [bookOptionsQuery]="bookOptions$ | async"
           [bookOwnershipQuery]="bookOwnership$ | async"
+          [mode]="mode"
           (save)="onSubmit($event)"
         ></dashboard-book-ownership-form>
       </ng-container>
@@ -55,9 +66,10 @@ export class BookOwnershipPageComponent implements OnInit {
     public readonly bookService: BookService
   ) {}
 
-  public bookOwnership$?: Observable<QueryOne<BookOwnershipContentType>>
-  public bookOptions$?: Observable<QueryMany<BookContentType>>
-  public mode: 'CREATE' | 'EDIT' | null = null
+  public bookOwnership$?: Observable<Query<BookOwnershipContentType>>
+  public bookOwnershipBookTitle$?: Observable<string>
+  public bookOptions$?: Observable<Query<BookContentType[]>>
+  public mode: 'create' | 'update' = 'create'
 
   ngOnInit(): void {
     this.bookOwnership$ = this.route.params.pipe(
@@ -66,13 +78,21 @@ export class BookOwnershipPageComponent implements OnInit {
         this.bookOwnershipService.queryBookOwnership(+params['id'])
       )
     )
+    this.bookOwnershipBookTitle$ = this.bookOwnership$.pipe(
+      map(
+        (bookOwnershipQuery) =>
+          bookOwnershipQuery.data?.data?.attributes?.book?.data?.attributes
+            ?.title
+      ),
+      filter((title): title is string => title != null)
+    )
     this.bookOptions$ = this.bookService.queryBooks()
-    this.mode = this.route.snapshot.params['id'] != null ? 'EDIT' : 'CREATE'
+    this.mode = this.route.snapshot.params['id'] != null ? 'update' : 'create'
   }
 
   onSubmit(bookOwnership: WithId<BookOwnershipAttributes>) {
     if (this.mode === null) return
-    if (this.mode === 'CREATE') {
+    if (this.mode === 'create') {
       this.bookOwnershipService.createBookOwnership(bookOwnership)
     } else {
       this.bookOwnershipService.updateBookOwnership(bookOwnership)

@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core'
 import {
   BookOwnershipAttributes,
   BookOwnershipContentType,
-  MutateOne,
-  QueryMany,
-  QueryOne,
+  Mutation,
   WithId,
 } from 'src/libs/book/src/lib/types'
 import { BehaviorSubject } from 'rxjs'
@@ -15,14 +13,6 @@ import * as qs from 'qs'
   providedIn: 'root',
 })
 export class BookOwnershipService extends CollectionService {
-  // Book ownerships
-
-  private readonly bookOwnershipsSubject = new BehaviorSubject<
-    QueryMany<BookOwnershipContentType>
-  >(this.initialQueryState)
-  private readonly bookOwnershipsQuery$ =
-    this.bookOwnershipsSubject.asObservable()
-
   public queryBookOwnerships() {
     console.log(this.authService)
     const query = qs.stringify(
@@ -40,18 +30,10 @@ export class BookOwnershipService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    this.query(`/book-ownerships?${query}`, this.bookOwnershipsSubject).then()
-    return this.bookOwnershipsQuery$
+    return this.query<BookOwnershipContentType[]>(`/book-ownerships?${query}`)
   }
 
   // Book ownership by id
-
-  private readonly bookOwnershipSubject = new BehaviorSubject<
-    QueryOne<BookOwnershipContentType>
-  >(this.initialQueryState)
-  private readonly bookOwnershipQuery$ =
-    this.bookOwnershipSubject.asObservable()
-
   public queryBookOwnership(id: number) {
     const query = qs.stringify(
       {
@@ -68,20 +50,12 @@ export class BookOwnershipService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    this.query(
-      `/book-ownerships/${id}?${query}`,
-      this.bookOwnershipSubject
-    ).then()
-    return this.bookOwnershipQuery$
+    return this.query<BookOwnershipContentType>(
+      `/book-ownerships/${id}?${query}`
+    )
   }
 
   // Currently reading books
-
-  private readonly currentlyReadingBooksSubject = new BehaviorSubject<
-    QueryMany<BookOwnershipContentType>
-  >(this.initialQueryState)
-  private readonly currentlyReadingBooksQuery$ =
-    this.currentlyReadingBooksSubject.asObservable()
 
   public queryCurrentlyReadingBooks() {
     const query = qs.stringify(
@@ -113,20 +87,10 @@ export class BookOwnershipService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    this.query(
-      `/book-ownerships?${query}`,
-      this.currentlyReadingBooksSubject
-    ).then()
-    return this.currentlyReadingBooksQuery$
+    return this.query<BookOwnershipContentType[]>(`/book-ownerships?${query}`)
   }
 
   // Read next books
-
-  private readonly readNextBooksSubject = new BehaviorSubject<
-    QueryMany<BookOwnershipContentType>
-  >(this.initialQueryState)
-  private readonly readNextBooksQuery$ =
-    this.readNextBooksSubject.asObservable()
 
   public queryReadNextBooks() {
     const query = qs.stringify(
@@ -158,17 +122,10 @@ export class BookOwnershipService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    this.query(`/book-ownerships?${query}`, this.readNextBooksSubject).then()
-    return this.readNextBooksQuery$
+    return this.query<BookOwnershipContentType[]>(`/book-ownerships?${query}`)
   }
 
   // Recently read books
-
-  private readonly recentlyReadBooksSubject = new BehaviorSubject<
-    QueryMany<BookOwnershipContentType>
-  >(this.initialQueryState)
-  private readonly recentlyReadBooksQuery$ =
-    this.recentlyReadBooksSubject.asObservable()
 
   public queryRecentlyReadBooks() {
     const query = qs.stringify(
@@ -195,64 +152,44 @@ export class BookOwnershipService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    this.query(
-      `/book-ownerships?${query}`,
-      this.recentlyReadBooksSubject
-    ).then()
-    return this.recentlyReadBooksQuery$
+    return this.query<BookOwnershipContentType[]>(`/book-ownerships?${query}`)
   }
 
   // Create new book ownership
 
-  private readonly createBookOwnershipSubject = new BehaviorSubject<
-    MutateOne<BookOwnershipContentType>
-  >(this.initialMutateState)
-  private readonly createBookOwnershipMutation$ =
-    this.createBookOwnershipSubject.asObservable()
-
   public createBookOwnership(bookOwnershipData: BookOwnershipAttributes) {
-    this.create(
-      `/book-ownerships`,
-      {
-        book: bookOwnershipData.book.data.id,
-        user: this.authService.currentUser?.id ?? -1,
-        startReading: bookOwnershipData.startReading,
-        finishReading: bookOwnershipData.finishReading,
-        rating: bookOwnershipData.rating,
-        currentPage: bookOwnershipData.currentPage,
-        note: bookOwnershipData.note,
-        order: bookOwnershipData.order,
-      },
-      this.createBookOwnershipSubject
-    ).then()
-    return this.recentlyReadBooksQuery$
+    const payload = {
+      book: bookOwnershipData.book.data.id,
+      user: this.authService.currentUser?.id ?? -1,
+      startReading: bookOwnershipData.startReading,
+      finishReading: bookOwnershipData.finishReading,
+      rating: bookOwnershipData.rating,
+      currentPage: bookOwnershipData.currentPage,
+      note: bookOwnershipData.note,
+      order: bookOwnershipData.order,
+    }
+    return this.create<BookOwnershipContentType, typeof payload>(
+      `/book-ownerships`
+    )
   }
 
   // Update book ownership
 
-  private readonly updateBookOwnershipSubject = new BehaviorSubject<
-    MutateOne<BookOwnershipContentType>
-  >(this.initialMutateState)
-  private readonly updateBookOwnershipMutation$ =
-    this.updateBookOwnershipSubject.asObservable()
-
   public updateBookOwnership(
     bookOwnershipData: WithId<BookOwnershipAttributes>
   ) {
-    this.update(
-      `/book-ownerships/${bookOwnershipData.id}`,
-      {
-        book: bookOwnershipData.book.data.id,
-        user: this.authService.currentUser?.id ?? -1,
-        startReading: bookOwnershipData.startReading,
-        finishReading: bookOwnershipData.finishReading,
-        rating: bookOwnershipData.rating,
-        currentPage: bookOwnershipData.currentPage,
-        note: bookOwnershipData.note,
-        order: bookOwnershipData.order,
-      },
-      this.updateBookOwnershipSubject
-    ).then()
-    return this.recentlyReadBooksQuery$
+    const payload = {
+      book: bookOwnershipData.book.data.id,
+      user: this.authService.currentUser?.id ?? -1,
+      startReading: bookOwnershipData.startReading,
+      finishReading: bookOwnershipData.finishReading,
+      rating: bookOwnershipData.rating,
+      currentPage: bookOwnershipData.currentPage,
+      note: bookOwnershipData.note,
+      order: bookOwnershipData.order,
+    }
+    return this.update<BookOwnershipContentType, typeof payload>(
+      `/book-ownerships/${bookOwnershipData.id}`
+    )
   }
 }

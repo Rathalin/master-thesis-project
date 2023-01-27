@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
-import { QueryError } from 'src/libs/book/src/lib/types'
-import { BehaviorSubject } from 'rxjs'
+import { Mutation, Query, QueryError } from 'src/libs/book/src/lib/types'
+import { BehaviorSubject, Subject } from 'rxjs'
 import { AuthService } from '@angular-micro-frontends/auth'
 
 @Injectable({
@@ -10,107 +10,101 @@ export class CollectionService {
   constructor(protected readonly authService: AuthService) {}
 
   protected readonly url = 'http://localhost:1337/api'
-  protected readonly initialQueryState = {
-    data: null,
-    error: null,
-    isLoading: false,
-  } as const
-  protected readonly initialMutateState = this.initialQueryState
 
-  protected async query<T>(path: string, subject: BehaviorSubject<T>) {
-    subject.next({
-      ...subject.value,
+  protected query<T>(path: string) {
+    const query = new BehaviorSubject<Query<T>>({
+      data: null,
       error: null,
       isLoading: true,
     })
-    try {
-      const response = await fetch(this.apiUrl(path))
-      const data = await response.json()
-      subject.next({
-        ...subject.value,
-        data,
-        error: null,
-        isLoading: false,
-      })
-    } catch (error) {
-      subject.next({
-        ...subject.value,
-        error: error as QueryError,
-        isLoading: false,
-      })
-    }
+    fetch(this.apiUrl(path))
+      .then((response) => response.json())
+      .then((data) =>
+        query.next({
+          ...query.value,
+          data,
+          error: null,
+          isLoading: false,
+        })
+      )
+      .catch((error) =>
+        query.next({
+          ...query.value,
+          error: error as QueryError,
+          isLoading: false,
+        })
+      )
+    return query.asObservable()
   }
 
-  protected async create<TSubject, TData extends object>(
+  protected create<TResult, TPayload extends object>(
     path: string,
-    data: TData,
-    subject: BehaviorSubject<TSubject>
+    payload?: TPayload
   ) {
-    subject.next({
-      ...subject.value,
+    const mutation = new BehaviorSubject<Mutation<TResult>>({
+      data: null,
       error: null,
       isLoading: true,
     })
-    try {
-      const response = await fetch(this.apiUrl(path), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data }),
-      })
-      const responseData = await response.json()
-      console.log(path)
-      console.log(responseData)
-      subject.next({
-        ...subject.value,
-        responseData,
-        error: null,
-        isLoading: false,
-      })
-    } catch (error) {
-      subject.next({
-        ...subject.value,
-        error: error as QueryError,
-        isLoading: false,
-      })
-    }
+    fetch(this.apiUrl(path), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ payload }),
+    })
+      .then((response) => response.json())
+      .then((result) =>
+        mutation.next({
+          ...mutation.value,
+          data: result,
+          error: null,
+          isLoading: false,
+        })
+      )
+      .catch((error) =>
+        mutation.next({
+          ...mutation.value,
+          error: error as QueryError,
+          isLoading: false,
+        })
+      )
+    return mutation.asObservable()
   }
 
-  protected async update<TSubject, TData extends object>(
+  protected update<TResult, TPayload extends object>(
     path: string,
-    data: TData,
-    subject: BehaviorSubject<TSubject>
+    payload?: TPayload
   ) {
-    subject.next({
-      ...subject.value,
+    const mutation = new BehaviorSubject<Mutation<TResult>>({
+      data: null,
       error: null,
       isLoading: true,
     })
-    try {
-      const response = await fetch(this.apiUrl(path), {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data }),
-      })
-      const responseData = await response.json()
-      console.log(path)
-      console.log(responseData)
-      subject.next({
-        ...subject.value,
-        responseData,
-        error: null,
-        isLoading: false,
-      })
-    } catch (error) {
-      subject.next({
-        ...subject.value,
-        error: error as QueryError,
-        isLoading: false,
-      })
-    }
+    fetch(this.apiUrl(path), {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ payload }),
+    })
+      .then((response) => response.json())
+      .then((result) =>
+        mutation.next({
+          ...mutation.value,
+          data: result,
+          error: null,
+          isLoading: false,
+        })
+      )
+      .catch((error) =>
+        mutation.next({
+          ...mutation.value,
+          error: error as QueryError,
+          isLoading: false,
+        })
+      )
+    return mutation.asObservable()
   }
 
   protected apiUrl(path: string) {

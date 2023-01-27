@@ -1,16 +1,10 @@
-export type QueryMany<TData> = {
-  data: WithMeta<TData[]> | null
-  error: QueryError | null
-  isLoading: boolean
-}
-
-export type QueryOne<TData> = {
+export type Query<TData> = {
   data: WithMeta<TData> | null
   error: QueryError | null
   isLoading: boolean
 }
 
-export type MutateOne<TData> = {
+export type Mutation<TData> = {
   data: WithMeta<TData> | null
   error: QueryError | null
   isLoading: boolean
@@ -36,15 +30,16 @@ export type QueryError = {
 }
 
 export type ContentType<T> = {
-  id: number
+  id: ID
   attributes: {
     createdAt: DateString
     updatedAt: DateString
   } & T
 }
 
-export type DateString = string
-
 export type WithId<T> = {
-  id: number
+  id: ID
 } & T
+
+export type DateString = string
+export type ID = number

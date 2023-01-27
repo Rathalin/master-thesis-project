@@ -3,7 +3,7 @@ import {
   BookOwnershipContentType,
   BookOwnershipService,
   BookService,
-  QueryMany,
+  Query,
 } from '@angular-micro-frontends/book'
 import {
   ChangeDetectionStrategy,
@@ -105,12 +105,10 @@ export class HomePageComponent implements OnInit {
   ) {}
 
   public currentlyReadingBooksQuery$?: Observable<
-    QueryMany<BookOwnershipContentType>
+    Query<BookOwnershipContentType[]>
   >
-  public readNextBooksQuery$?: Observable<QueryMany<BookOwnershipContentType>>
-  public recentlyReadBooksQuery$?: Observable<
-    QueryMany<BookOwnershipContentType>
-  >
+  public readNextBooksQuery$?: Observable<Query<BookOwnershipContentType[]>>
+  public recentlyReadBooksQuery$?: Observable<Query<BookOwnershipContentType[]>>
 
   ngOnInit(): void {
     this.currentlyReadingBooksQuery$ =

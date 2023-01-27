@@ -8,8 +8,7 @@ import {
   BookService,
   ContentType,
   DateString,
-  QueryMany,
-  QueryOne,
+  Query,
   WithId,
 } from '@angular-micro-frontends/book'
 import {
@@ -33,7 +32,7 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
     <ng-container>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="flex flex-col gap-y-2">
-          <div class="flex flex-col">
+          <div *ngIf="mode === 'create'" class="flex flex-col">
             <label for="book">Book</label>
             <select id="book" name="book" formControlName="book" uiInput>
               <ng-container
@@ -73,9 +72,7 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
               type="number"
               formControlName="currentPage"
               [min]="1"
-              [readOnly]="
-                (form.controls.startReading.valueChanges | async) == null
-              "
+              class="dark:bg-slate-700 disabled:hover:bg-slate-700 disabled:hover:outline-none"
               uiInput
             />
             <ui-input-error controlName="currentPage"></ui-input-error>
@@ -87,7 +84,6 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
               id="finishReading"
               name="finishReading"
               type="date"
-              ß
               formControlName="finishReading"
               uiInput
             />
@@ -124,9 +120,10 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
   `,
   styles: [],
 })
-export class BookOwnershipFormComponent implements OnChanges {
-  @Input() bookOptionsQuery: QueryMany<BookContentType> | null = null
-  @Input() bookOwnershipQuery: QueryOne<BookOwnershipContentType> | null = null
+export class BookOwnershipFormComponent implements OnInit, OnChanges {
+  @Input() bookOptionsQuery: Query<BookContentType[]> | null = null
+  @Input() bookOwnershipQuery: Query<BookOwnershipContentType> | null = null
+  @Input() mode: 'create' | 'update' = 'create'
   @Output() save = new EventEmitter<WithId<BookOwnershipAttributes>>()
 
   constructor(public readonly bookService: BookService) {}
@@ -141,6 +138,18 @@ export class BookOwnershipFormComponent implements OnChanges {
     note: new FormControl<string | null>(null),
   })
   public ratingOptions = BookOwnershipRatingOptions
+
+  ngOnInit(): void {
+    this.form.controls.startReading.valueChanges.subscribe((value) => {
+      if (value == null) {
+        this.form.controls.currentPage.disable()
+        this.form.controls.finishReading.disable()
+      } else {
+        this.form.controls.currentPage.enable()
+        this.form.controls.finishReading.enable()
+      }
+    })
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['bookOwnershipQuery'] != null) {
