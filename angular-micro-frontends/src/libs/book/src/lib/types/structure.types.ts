@@ -44,3 +44,7 @@ export type ContentType<T> = {
 }
 
 export type DateString = string
+
+export type WithId<T> = {
+  id: number
+} & T

@@ -41,7 +41,7 @@ export class CollectionService {
     }
   }
 
-  protected async mutate<TSubject, TData extends object>(
+  protected async create<TSubject, TData extends object>(
     path: string,
     data: TData,
     subject: BehaviorSubject<TSubject>
@@ -54,6 +54,42 @@ export class CollectionService {
     try {
       const response = await fetch(this.apiUrl(path), {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data }),
+      })
+      const responseData = await response.json()
+      console.log(path)
+      console.log(responseData)
+      subject.next({
+        ...subject.value,
+        responseData,
+        error: null,
+        isLoading: false,
+      })
+    } catch (error) {
+      subject.next({
+        ...subject.value,
+        error: error as QueryError,
+        isLoading: false,
+      })
+    }
+  }
+
+  protected async update<TSubject, TData extends object>(
+    path: string,
+    data: TData,
+    subject: BehaviorSubject<TSubject>
+  ) {
+    subject.next({
+      ...subject.value,
+      error: null,
+      isLoading: true,
+    })
+    try {
+      const response = await fetch(this.apiUrl(path), {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },

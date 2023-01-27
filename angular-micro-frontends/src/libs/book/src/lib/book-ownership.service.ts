@@ -5,6 +5,7 @@ import {
   MutateOne,
   QueryMany,
   QueryOne,
+  WithId,
 } from 'src/libs/book/src/lib/types'
 import { BehaviorSubject } from 'rxjs'
 import { CollectionService } from './collection.service'
@@ -145,6 +146,11 @@ export class BookOwnershipService extends CollectionService {
                 $null: true,
               },
             },
+            {
+              finishReading: {
+                $null: true,
+              },
+            },
           ],
         },
       },
@@ -205,36 +211,48 @@ export class BookOwnershipService extends CollectionService {
     this.createBookOwnershipSubject.asObservable()
 
   public createBookOwnership(bookOwnershipData: BookOwnershipAttributes) {
-    const query = qs.stringify(
+    this.create(
+      `/book-ownerships`,
       {
-        populate: ['book'],
-        filters: {
-          $and: [
-            {
-              user: {
-                id: {
-                  $eq: this.authService.currentUser?.id ?? -1,
-                },
-              },
-            },
-            {
-              finishReading: {
-                $notNull: true,
-              },
-            },
-          ],
-        },
+        book: bookOwnershipData.book.data.id,
+        user: this.authService.currentUser?.id ?? -1,
+        startReading: bookOwnershipData.startReading,
+        finishReading: bookOwnershipData.finishReading,
+        rating: bookOwnershipData.rating,
+        currentPage: bookOwnershipData.currentPage,
+        note: bookOwnershipData.note,
+        order: bookOwnershipData.order,
       },
+      this.createBookOwnershipSubject
+    ).then()
+    return this.recentlyReadBooksQuery$
+  }
+
+  // Update book ownership
+
+  private readonly updateBookOwnershipSubject = new BehaviorSubject<
+    MutateOne<BookOwnershipContentType>
+  >(this.initialMutateState)
+  private readonly updateBookOwnershipMutation$ =
+    this.updateBookOwnershipSubject.asObservable()
+
+  public updateBookOwnership(
+    bookOwnershipData: WithId<BookOwnershipAttributes>
+  ) {
+    this.update(
+      `/book-ownerships/${bookOwnershipData.id}`,
       {
-        encodeValuesOnly: true,
-      }
-    )
-    console.log(`/book-ownerships?${query}`, bookOwnershipData)
-    // this.mutate(
-    //   `/book-ownerships?${query}`,
-    //   bookOwnershipData,
-    //   this.createBookOwnershipSubject
-    // ).then()
+        book: bookOwnershipData.book.data.id,
+        user: this.authService.currentUser?.id ?? -1,
+        startReading: bookOwnershipData.startReading,
+        finishReading: bookOwnershipData.finishReading,
+        rating: bookOwnershipData.rating,
+        currentPage: bookOwnershipData.currentPage,
+        note: bookOwnershipData.note,
+        order: bookOwnershipData.order,
+      },
+      this.updateBookOwnershipSubject
+    ).then()
     return this.recentlyReadBooksQuery$
   }
 }

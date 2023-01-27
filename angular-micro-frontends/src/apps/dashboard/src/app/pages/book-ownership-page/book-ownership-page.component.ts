@@ -6,6 +6,7 @@ import {
   BookService,
   QueryMany,
   QueryOne,
+  WithId,
 } from '@angular-micro-frontends/book'
 import {
   ChangeDetectionStrategy,
@@ -23,6 +24,7 @@ import {
   filter,
   map,
   of,
+  startWith,
   switchMap,
   tap,
 } from 'rxjs'
@@ -33,7 +35,7 @@ import {
   template: `
     <ng-container>
       <ng-container>
-        <h1 *ngIf="mode$ | async as mode" class="text-3xl uppercase">
+        <h1 *ngIf="mode != null" class="text-3xl uppercase">
           {{ mode === 'CREATE' ? 'Create' : 'Edit' }}
         </h1>
         <dashboard-book-ownership-form
@@ -55,7 +57,7 @@ export class BookOwnershipPageComponent implements OnInit {
 
   public bookOwnership$?: Observable<QueryOne<BookOwnershipContentType>>
   public bookOptions$?: Observable<QueryMany<BookContentType>>
-  public mode$?: Observable<'CREATE' | 'EDIT'>
+  public mode: 'CREATE' | 'EDIT' | null = null
 
   ngOnInit(): void {
     this.bookOwnership$ = this.route.params.pipe(
@@ -65,10 +67,15 @@ export class BookOwnershipPageComponent implements OnInit {
       )
     )
     this.bookOptions$ = this.bookService.queryBooks()
-    this.mode$ = this.route.data.pipe(map((data) => data['mode']))
+    this.mode = this.route.snapshot.params['id'] != null ? 'EDIT' : 'CREATE'
   }
 
-  onSubmit(bookOwnership: BookOwnershipAttributes) {
-    this.bookOwnershipService.createBookOwnership(bookOwnership)
+  onSubmit(bookOwnership: WithId<BookOwnershipAttributes>) {
+    if (this.mode === null) return
+    if (this.mode === 'CREATE') {
+      this.bookOwnershipService.createBookOwnership(bookOwnership)
+    } else {
+      this.bookOwnershipService.updateBookOwnership(bookOwnership)
+    }
   }
 }

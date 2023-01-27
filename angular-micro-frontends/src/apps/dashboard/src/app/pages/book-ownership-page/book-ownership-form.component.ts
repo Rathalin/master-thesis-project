@@ -10,6 +10,7 @@ import {
   DateString,
   QueryMany,
   QueryOne,
+  WithId,
 } from '@angular-micro-frontends/book'
 import {
   ChangeDetectionStrategy,
@@ -126,11 +127,12 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
 export class BookOwnershipFormComponent implements OnChanges {
   @Input() bookOptionsQuery: QueryMany<BookContentType> | null = null
   @Input() bookOwnershipQuery: QueryOne<BookOwnershipContentType> | null = null
-  @Output() save = new EventEmitter<BookOwnershipAttributes>()
+  @Output() save = new EventEmitter<WithId<BookOwnershipAttributes>>()
 
   constructor(public readonly bookService: BookService) {}
 
   public readonly form = new FormGroup({
+    id: new FormControl<number | null>(null),
     book: new FormControl<BookContentType | null>(null, [Validators.required]),
     startReading: new FormControl<DateString | null>(null),
     finishReading: new FormControl<DateString | null>(null),
@@ -147,11 +149,13 @@ export class BookOwnershipFormComponent implements OnChanges {
       if (bookOwnershipQuery != null && bookOwnershipQuery.data != null) {
         const { book, startReading, finishReading, rating, currentPage, note } =
           bookOwnershipQuery.data.data.attributes
+        const { id } = bookOwnershipQuery.data.data
         const bookOriginal = this.bookOptionsQuery?.data?.data.find(
           (b) => b.id === book.data.id
         )
         // console.log(bookOriginal)
         this.form.patchValue({
+          id,
           book: bookOriginal,
           startReading,
           finishReading,
@@ -168,10 +172,11 @@ export class BookOwnershipFormComponent implements OnChanges {
     if (this.form.invalid) {
       return
     }
-    const { book, startReading, finishReading, rating, currentPage, note } =
+    const { id, book, startReading, finishReading, rating, currentPage, note } =
       this.form.controls
     // console.log(book)
     this.save.emit({
+      id: id.value ?? -1,
       book: {
         data: {
           ...book.value!,
