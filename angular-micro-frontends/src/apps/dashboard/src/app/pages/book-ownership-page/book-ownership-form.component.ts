@@ -42,7 +42,7 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
               >
                 <option
                   *ngFor="let book of bookOptionsQuery.data.data"
-                  [value]="book"
+                  [ngValue]="book"
                   [selected]="book === form.controls.book.value"
                 >
                   {{ book.attributes.title }}
@@ -96,11 +96,23 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
           <div class="flex flex-col">
             <label for="rating">Rating</label>
             <select id="rating" name="rating" formControlName="rating" uiInput>
-              <option *ngFor="let option of ratingOptions" [value]="option">
+              <option *ngFor="let option of ratingOptions" [ngValue]="option">
                 {{ option }}
               </option>
             </select>
             <ui-input-error controlName="rating"></ui-input-error>
+          </div>
+
+          <div class="flex flex-col">
+            <label for="note">Note</label>
+            <textarea
+              id="note"
+              name="note"
+              type="text"
+              formControlName="note"
+              uiInput
+            ></textarea>
+            <ui-input-error controlName="note"></ui-input-error>
           </div>
         </div>
         <div class="mt-4 flex items-center justify-center gap-1">
@@ -114,7 +126,7 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
 export class BookOwnershipFormComponent implements OnChanges {
   @Input() bookOptionsQuery: QueryMany<BookContentType> | null = null
   @Input() bookOwnershipQuery: QueryOne<BookOwnershipContentType> | null = null
-  @Output() submit = new EventEmitter<BookOwnershipAttributes>()
+  @Output() save = new EventEmitter<BookOwnershipAttributes>()
 
   constructor(public readonly bookService: BookService) {}
 
@@ -135,20 +147,19 @@ export class BookOwnershipFormComponent implements OnChanges {
       if (bookOwnershipQuery != null && bookOwnershipQuery.data != null) {
         const { book, startReading, finishReading, rating, currentPage, note } =
           bookOwnershipQuery.data.data.attributes
-        console.log(
-          this.bookOptionsQuery?.data?.data.find((b) => b.id === book.data.id)
+        const bookOriginal = this.bookOptionsQuery?.data?.data.find(
+          (b) => b.id === book.data.id
         )
+        // console.log(bookOriginal)
         this.form.patchValue({
-          book: this.bookOptionsQuery?.data?.data.find(
-            (b) => b.id === book.data.id
-          ),
+          book: bookOriginal,
           startReading,
           finishReading,
           rating,
           currentPage,
           note,
         })
-        console.log('New form state', this.form.getRawValue())
+        // console.log('New form state', this.form.getRawValue())
       }
     }
   }
@@ -159,7 +170,8 @@ export class BookOwnershipFormComponent implements OnChanges {
     }
     const { book, startReading, finishReading, rating, currentPage, note } =
       this.form.controls
-    this.submit.emit({
+    // console.log(book)
+    this.save.emit({
       book: {
         data: {
           ...book.value!,

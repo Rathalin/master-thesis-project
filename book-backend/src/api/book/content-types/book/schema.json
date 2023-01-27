@@ -19,7 +19,7 @@
     },
     "pages": {
       "type": "integer",
-      "required": true,
+      "required": false,
       "min": 1
     },
     "cover": {

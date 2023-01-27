@@ -1,2 +1,2 @@
-export * from './helper.types'
-export * from './collection.types'
+export * from './structure.types'
+export * from './content.types'

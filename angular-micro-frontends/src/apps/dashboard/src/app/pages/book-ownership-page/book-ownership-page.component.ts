@@ -1,5 +1,6 @@
 import {
   BookContentType,
+  BookOwnershipAttributes,
   BookOwnershipContentType,
   BookOwnershipService,
   BookService,
@@ -38,6 +39,7 @@ import {
         <dashboard-book-ownership-form
           [bookOptionsQuery]="bookOptions$ | async"
           [bookOwnershipQuery]="bookOwnership$ | async"
+          (save)="onSubmit($event)"
         ></dashboard-book-ownership-form>
       </ng-container>
     </ng-container>
@@ -64,5 +66,9 @@ export class BookOwnershipPageComponent implements OnInit {
     )
     this.bookOptions$ = this.bookService.queryBooks()
     this.mode$ = this.route.data.pipe(map((data) => data['mode']))
+  }
+
+  onSubmit(bookOwnership: BookOwnershipAttributes) {
+    this.bookOwnershipService.createBookOwnership(bookOwnership)
   }
 }

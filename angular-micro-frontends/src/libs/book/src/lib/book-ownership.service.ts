@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core'
 import {
+  BookOwnershipAttributes,
   BookOwnershipContentType,
+  MutateOne,
   QueryMany,
   QueryOne,
 } from 'src/libs/book/src/lib/types'
@@ -191,6 +193,48 @@ export class BookOwnershipService extends CollectionService {
       `/book-ownerships?${query}`,
       this.recentlyReadBooksSubject
     ).then()
+    return this.recentlyReadBooksQuery$
+  }
+
+  // Create new book ownership
+
+  private readonly createBookOwnershipSubject = new BehaviorSubject<
+    MutateOne<BookOwnershipContentType>
+  >(this.initialMutateState)
+  private readonly createBookOwnershipMutation$ =
+    this.createBookOwnershipSubject.asObservable()
+
+  public createBookOwnership(bookOwnershipData: BookOwnershipAttributes) {
+    const query = qs.stringify(
+      {
+        populate: ['book'],
+        filters: {
+          $and: [
+            {
+              user: {
+                id: {
+                  $eq: this.authService.currentUser?.id ?? -1,
+                },
+              },
+            },
+            {
+              finishReading: {
+                $notNull: true,
+              },
+            },
+          ],
+        },
+      },
+      {
+        encodeValuesOnly: true,
+      }
+    )
+    console.log(`/book-ownerships?${query}`, bookOwnershipData)
+    // this.mutate(
+    //   `/book-ownerships?${query}`,
+    //   bookOwnershipData,
+    //   this.createBookOwnershipSubject
+    // ).then()
     return this.recentlyReadBooksQuery$
   }
 }

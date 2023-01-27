@@ -10,6 +10,12 @@ export type QueryOne<TData> = {
   isLoading: boolean
 }
 
+export type MutateOne<TData> = {
+  data: WithMeta<TData> | null
+  error: QueryError | null
+  isLoading: boolean
+}
+
 export type WithMeta<TData> = {
   data: TData
   meta: {

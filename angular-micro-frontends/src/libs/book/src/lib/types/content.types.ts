@@ -1,9 +1,9 @@
-import { ContentType, DateString } from './helper.types'
+import { ContentType, DateString } from './structure.types'
 
 export type BookAttributes = {
   title: string
-  pages: number
-  year: number
+  pages: number | null
+  year: number | null
 }
 export type BookContentType = ContentType<BookAttributes>
 
