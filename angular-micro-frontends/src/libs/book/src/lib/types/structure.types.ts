@@ -1,28 +1,23 @@
-export type Query<TData> = {
-  data: WithMeta<TData> | null
-  error: QueryError | null
-  isLoading: boolean
-}
-
-export type Mutation<TData> = {
-  data: WithMeta<TData> | null
-  error: QueryError | null
+export type Result<TData> = {
+  result: WithMeta<TData> | null
+  error: unknown | null
   isLoading: boolean
 }
 
 export type WithMeta<TData> = {
-  data: TData
-  meta: {
-    pagination: {
+  data: TData | null
+  meta?: {
+    pagination?: {
       page: number
       pageSize: number
       pageCount: number
       total: number
     }
   }
+  error?: OperationError
 }
 
-export type QueryError = {
+export type OperationError = {
   status: number
   name: string
   message: string

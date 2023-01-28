@@ -8,6 +8,7 @@ import { InputErrorComponent } from './inputs/error-handling/input-error.compone
 import { GroupErrorComponent } from './inputs/error-handling/group-error.component'
 import { LoadingComponent } from './state/loading.component'
 import { ErrorComponent } from './state/error.component'
+import { SuccessComponent } from './state/success.component'
 
 @NgModule({
   imports: [CommonModule],
@@ -20,6 +21,7 @@ import { ErrorComponent } from './state/error.component'
     GroupErrorComponent,
     LoadingComponent,
     ErrorComponent,
+    SuccessComponent,
   ],
   exports: [
     InputDirective,
@@ -30,6 +32,7 @@ import { ErrorComponent } from './state/error.component'
     GroupErrorComponent,
     LoadingComponent,
     ErrorComponent,
+    SuccessComponent,
   ],
 })
 export class UiModule {}

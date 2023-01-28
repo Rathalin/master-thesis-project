@@ -3,7 +3,7 @@ import {
   BookOwnershipContentType,
   BookOwnershipService,
   BookService,
-  Query,
+  Result,
 } from '@angular-micro-frontends/book'
 import {
   ChangeDetectionStrategy,
@@ -42,9 +42,9 @@ import { Observable } from 'rxjs'
         <ng-container
           *ngIf="this.currentlyReadingBooksQuery$ | async as readingQuery"
         >
-          <ul *ngIf="readingQuery.data != null">
+          <ul *ngIf="readingQuery.result != null">
             <li
-              *ngFor="let readingBook of readingQuery.data.data"
+              *ngFor="let readingBook of readingQuery.result.data"
               [routerLink]="['/my-book', readingBook.id]"
             >
               {{ readingBook.attributes.book.data.attributes.title }}
@@ -58,9 +58,9 @@ import { Observable } from 'rxjs'
       <article id="read-next">
         <h1>Read next</h1>
         <ng-container *ngIf="this.readNextBooksQuery$ | async as readNextQuery">
-          <ul *ngIf="readNextQuery.data != null" uiCard>
+          <ul *ngIf="readNextQuery.result != null" uiCard>
             <li
-              *ngFor="let readNextBook of readNextQuery.data.data"
+              *ngFor="let readNextBook of readNextQuery.result.data"
               [routerLink]="['/my-book', readNextBook.id]"
             >
               {{ readNextBook.attributes.book.data.attributes.title }}
@@ -76,9 +76,9 @@ import { Observable } from 'rxjs'
         <ng-container
           *ngIf="this.recentlyReadBooksQuery$ | async as recentlyReadQuery"
         >
-          <ul *ngIf="recentlyReadQuery.data != null" uiCard>
+          <ul *ngIf="recentlyReadQuery.result != null" uiCard>
             <li
-              *ngFor="let recentlyReadBook of recentlyReadQuery.data.data"
+              *ngFor="let recentlyReadBook of recentlyReadQuery.result.data"
               [routerLink]="['/my-book', recentlyReadBook.id]"
             >
               {{ recentlyReadBook.attributes.book.data.attributes.title }}
@@ -96,8 +96,6 @@ import { Observable } from 'rxjs'
   `,
 })
 export class HomePageComponent implements OnInit {
-  @Input() public mode: 'CREATE' | 'EDIT' = 'CREATE'
-
   constructor(
     public readonly bookService: BookService,
     public readonly bookOwnershipService: BookOwnershipService,
@@ -105,10 +103,12 @@ export class HomePageComponent implements OnInit {
   ) {}
 
   public currentlyReadingBooksQuery$?: Observable<
-    Query<BookOwnershipContentType[]>
+    Result<BookOwnershipContentType[]>
   >
-  public readNextBooksQuery$?: Observable<Query<BookOwnershipContentType[]>>
-  public recentlyReadBooksQuery$?: Observable<Query<BookOwnershipContentType[]>>
+  public readNextBooksQuery$?: Observable<Result<BookOwnershipContentType[]>>
+  public recentlyReadBooksQuery$?: Observable<
+    Result<BookOwnershipContentType[]>
+  >
 
   ngOnInit(): void {
     this.currentlyReadingBooksQuery$ =
@@ -116,9 +116,5 @@ export class HomePageComponent implements OnInit {
     this.readNextBooksQuery$ = this.bookOwnershipService.queryReadNextBooks()
     this.recentlyReadBooksQuery$ =
       this.bookOwnershipService.queryRecentlyReadBooks()
-  }
-
-  onBookOwnershipClick(id: number): void {
-    // TODO
   }
 }

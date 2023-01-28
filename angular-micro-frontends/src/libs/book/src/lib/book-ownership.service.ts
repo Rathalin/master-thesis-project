@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core'
 import {
   BookOwnershipAttributes,
   BookOwnershipContentType,
-  Mutation,
+  ID,
   WithId,
 } from 'src/libs/book/src/lib/types'
-import { BehaviorSubject } from 'rxjs'
 import { CollectionService } from './collection.service'
 import * as qs from 'qs'
 
@@ -33,7 +32,6 @@ export class BookOwnershipService extends CollectionService {
     return this.query<BookOwnershipContentType[]>(`/book-ownerships?${query}`)
   }
 
-  // Book ownership by id
   public queryBookOwnership(id: number) {
     const query = qs.stringify(
       {
@@ -54,8 +52,6 @@ export class BookOwnershipService extends CollectionService {
       `/book-ownerships/${id}?${query}`
     )
   }
-
-  // Currently reading books
 
   public queryCurrentlyReadingBooks() {
     const query = qs.stringify(
@@ -90,8 +86,6 @@ export class BookOwnershipService extends CollectionService {
     return this.query<BookOwnershipContentType[]>(`/book-ownerships?${query}`)
   }
 
-  // Read next books
-
   public queryReadNextBooks() {
     const query = qs.stringify(
       {
@@ -125,8 +119,6 @@ export class BookOwnershipService extends CollectionService {
     return this.query<BookOwnershipContentType[]>(`/book-ownerships?${query}`)
   }
 
-  // Recently read books
-
   public queryRecentlyReadBooks() {
     const query = qs.stringify(
       {
@@ -155,8 +147,6 @@ export class BookOwnershipService extends CollectionService {
     return this.query<BookOwnershipContentType[]>(`/book-ownerships?${query}`)
   }
 
-  // Create new book ownership
-
   public createBookOwnership(bookOwnershipData: BookOwnershipAttributes) {
     const payload = {
       book: bookOwnershipData.book.data.id,
@@ -168,12 +158,10 @@ export class BookOwnershipService extends CollectionService {
       note: bookOwnershipData.note,
       order: bookOwnershipData.order,
     }
-    return this.create<BookOwnershipContentType, typeof payload>(
+    return this.create<typeof payload, BookOwnershipContentType>(
       `/book-ownerships`
     )
   }
-
-  // Update book ownership
 
   public updateBookOwnership(
     bookOwnershipData: WithId<BookOwnershipAttributes>
@@ -188,8 +176,12 @@ export class BookOwnershipService extends CollectionService {
       note: bookOwnershipData.note,
       order: bookOwnershipData.order,
     }
-    return this.update<BookOwnershipContentType, typeof payload>(
+    return this.update<typeof payload, BookOwnershipContentType>(
       `/book-ownerships/${bookOwnershipData.id}`
     )
+  }
+
+  public deleteBookOwnership(id: ID) {
+    return this.delete<BookOwnershipContentType>(`/book-ownerships/${id}`)
   }
 }

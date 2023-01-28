@@ -4,7 +4,8 @@ import {
   BookOwnershipContentType,
   BookOwnershipService,
   BookService,
-  Query,
+  ID,
+  Result,
   WithId,
 } from '@angular-micro-frontends/book'
 import {
@@ -34,11 +35,11 @@ import {
   template: `
     <ng-container>
       <ng-container>
-        <h1 *ngIf="mode != null" class="text-3xl mb-5">
-          <ng-container *ngIf="mode === 'create'; else titleCreate">
-            <span>Create</span>
+        <h1 *ngIf="mode != null" class="text-3xl mb-5 flex items-center gap-3">
+          <ng-container *ngIf="mode === 'create'; else titleUpdate">
+            <span>Add a new Book</span>
           </ng-container>
-          <ng-template #titleCreate>
+          <ng-template #titleUpdate>
             <span>Update</span>
             <span
               *ngIf="bookOwnershipBookTitle$ | async as bookOwnershipBookTitle"
@@ -46,6 +47,15 @@ import {
             >
               {{ bookOwnershipBookTitle }}
             </span>
+            <button
+              *ngIf="bookOwnership$ | async as bookOwnershipQuery"
+              type="button"
+              class="text-base dark:bg-red-600 dark:hover:bg-red-500"
+              (click)="onDelete(bookOwnershipQuery.result?.data?.id ?? -1)"
+              uiSecondaryButton
+            >
+              Delete
+            </button>
           </ng-template>
         </h1>
         <dashboard-book-ownership-form
@@ -54,6 +64,13 @@ import {
           [mode]="mode"
           (save)="onSubmit($event)"
         ></dashboard-book-ownership-form>
+        <ng-container *ngIf="bookOwnershipMutations$ | async as mutation">
+          <ui-loading *ngIf="mutation.isLoading"></ui-loading>
+          <ui-error
+            *ngIf="mutation.error != null"
+            text="Could not reach the server."
+          ></ui-error>
+        </ng-container>
       </ng-container>
     </ng-container>
   `,
@@ -66,12 +83,14 @@ export class BookOwnershipPageComponent implements OnInit {
     public readonly bookService: BookService
   ) {}
 
-  public bookOwnership$?: Observable<Query<BookOwnershipContentType>>
+  public bookOptions$?: Observable<Result<BookContentType[]>>
+  public bookOwnership$?: Observable<Result<BookOwnershipContentType>>
   public bookOwnershipBookTitle$?: Observable<string>
-  public bookOptions$?: Observable<Query<BookContentType[]>>
-  public mode: 'create' | 'update' = 'create'
+  public bookOwnershipMutations$?: Observable<Result<BookOwnershipContentType>>
+  public mode: 'update' | 'create' = 'create'
 
   ngOnInit(): void {
+    this.bookOptions$ = this.bookService.queryBooks()
     this.bookOwnership$ = this.route.params.pipe(
       filter((params) => params['id'] != null),
       switchMap((params) =>
@@ -81,21 +100,30 @@ export class BookOwnershipPageComponent implements OnInit {
     this.bookOwnershipBookTitle$ = this.bookOwnership$.pipe(
       map(
         (bookOwnershipQuery) =>
-          bookOwnershipQuery.data?.data?.attributes?.book?.data?.attributes
+          bookOwnershipQuery.result?.data?.attributes?.book?.data?.attributes
             ?.title
       ),
       filter((title): title is string => title != null)
     )
-    this.bookOptions$ = this.bookService.queryBooks()
-    this.mode = this.route.snapshot.params['id'] != null ? 'update' : 'create'
+    this.mode =
+      this.route.snapshot.params['id'] != null
+        ? ('update' as const)
+        : ('create' as const)
   }
 
   onSubmit(bookOwnership: WithId<BookOwnershipAttributes>) {
     if (this.mode === null) return
     if (this.mode === 'create') {
-      this.bookOwnershipService.createBookOwnership(bookOwnership)
+      this.bookOwnershipMutations$ =
+        this.bookOwnershipService.createBookOwnership(bookOwnership)
     } else {
-      this.bookOwnershipService.updateBookOwnership(bookOwnership)
+      this.bookOwnershipMutations$ =
+        this.bookOwnershipService.updateBookOwnership(bookOwnership)
     }
+  }
+
+  onDelete(id: ID) {
+    this.bookOwnershipMutations$ =
+      this.bookOwnershipService.deleteBookOwnership(id)
   }
 }

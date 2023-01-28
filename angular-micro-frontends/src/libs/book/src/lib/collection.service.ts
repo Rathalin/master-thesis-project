@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Mutation, Query, QueryError } from 'src/libs/book/src/lib/types'
+import { Result, OperationError } from 'src/libs/book/src/lib/types'
 import { BehaviorSubject, Subject } from 'rxjs'
 import { AuthService } from '@angular-micro-frontends/auth'
 
@@ -12,8 +12,8 @@ export class CollectionService {
   protected readonly url = 'http://localhost:1337/api'
 
   protected query<T>(path: string) {
-    const query = new BehaviorSubject<Query<T>>({
-      data: null,
+    const query = new BehaviorSubject<Result<T>>({
+      result: null,
       error: null,
       isLoading: true,
     })
@@ -21,8 +21,7 @@ export class CollectionService {
       .then((response) => response.json())
       .then((data) =>
         query.next({
-          ...query.value,
-          data,
+          result: data,
           error: null,
           isLoading: false,
         })
@@ -30,19 +29,19 @@ export class CollectionService {
       .catch((error) =>
         query.next({
           ...query.value,
-          error: error as QueryError,
+          error,
           isLoading: false,
         })
       )
     return query.asObservable()
   }
 
-  protected create<TResult, TPayload extends object>(
+  protected create<TPayload extends object, TResult>(
     path: string,
     payload?: TPayload
   ) {
-    const mutation = new BehaviorSubject<Mutation<TResult>>({
-      data: null,
+    const mutation = new BehaviorSubject<Result<TResult>>({
+      result: null,
       error: null,
       isLoading: true,
     })
@@ -56,8 +55,7 @@ export class CollectionService {
       .then((response) => response.json())
       .then((result) =>
         mutation.next({
-          ...mutation.value,
-          data: result,
+          result,
           error: null,
           isLoading: false,
         })
@@ -65,19 +63,19 @@ export class CollectionService {
       .catch((error) =>
         mutation.next({
           ...mutation.value,
-          error: error as QueryError,
+          error,
           isLoading: false,
         })
       )
     return mutation.asObservable()
   }
 
-  protected update<TResult, TPayload extends object>(
+  protected update<TPayload extends object, TResult>(
     path: string,
     payload?: TPayload
   ) {
-    const mutation = new BehaviorSubject<Mutation<TResult>>({
-      data: null,
+    const mutation = new BehaviorSubject<Result<TResult>>({
+      result: null,
       error: null,
       isLoading: true,
     })
@@ -91,8 +89,7 @@ export class CollectionService {
       .then((response) => response.json())
       .then((result) =>
         mutation.next({
-          ...mutation.value,
-          data: result,
+          result,
           error: null,
           isLoading: false,
         })
@@ -100,8 +97,35 @@ export class CollectionService {
       .catch((error) =>
         mutation.next({
           ...mutation.value,
-          error: error as QueryError,
+          error,
           isLoading: false,
+        })
+      )
+    return mutation.asObservable()
+  }
+
+  protected delete<TResult>(path: string) {
+    const mutation = new BehaviorSubject<Result<TResult>>({
+      result: null,
+      error: null,
+      isLoading: true,
+    })
+    fetch(this.apiUrl(path), {
+      method: 'DELETE',
+    })
+      .then((response) => response.json())
+      .then((result) =>
+        mutation.next({
+          result,
+          error: null,
+          isLoading: true,
+        })
+      )
+      .catch((error) =>
+        mutation.next({
+          ...mutation.value,
+          error,
+          isLoading: true,
         })
       )
     return mutation.asObservable()

@@ -8,7 +8,7 @@ import {
   BookService,
   ContentType,
   DateString,
-  Query,
+  Result,
   WithId,
 } from '@angular-micro-frontends/book'
 import {
@@ -37,11 +37,11 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
             <select id="book" name="book" formControlName="book" uiInput>
               <ng-container
                 *ngIf="
-                  bookOptionsQuery != null && bookOptionsQuery.data != null
+                  bookOptionsQuery != null && bookOptionsQuery.result != null
                 "
               >
                 <option
-                  *ngFor="let book of bookOptionsQuery.data.data"
+                  *ngFor="let book of bookOptionsQuery.result.data"
                   [ngValue]="book"
                   [selected]="book === form.controls.book.value"
                 >
@@ -112,7 +112,8 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
             <ui-input-error controlName="note"></ui-input-error>
           </div>
         </div>
-        <div class="mt-4 flex items-center justify-center gap-1">
+        <div class="mt-4 flex items-center justify-center gap-3">
+          <a routerLink="/" uiSecondaryButton>Back</a>
           <button type="submit" uiPrimaryButton>Save</button>
         </div>
       </form>
@@ -121,8 +122,8 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
   styles: [],
 })
 export class BookOwnershipFormComponent implements OnInit, OnChanges {
-  @Input() bookOptionsQuery: Query<BookContentType[]> | null = null
-  @Input() bookOwnershipQuery: Query<BookOwnershipContentType> | null = null
+  @Input() bookOptionsQuery: Result<BookContentType[]> | null = null
+  @Input() bookOwnershipQuery: Result<BookOwnershipContentType> | null = null
   @Input() mode: 'create' | 'update' = 'create'
   @Output() save = new EventEmitter<WithId<BookOwnershipAttributes>>()
 
@@ -155,11 +156,11 @@ export class BookOwnershipFormComponent implements OnInit, OnChanges {
     if (changes['bookOwnershipQuery'] != null) {
       const bookOwnershipQuery = changes['bookOwnershipQuery']
         .currentValue as typeof this.bookOwnershipQuery
-      if (bookOwnershipQuery != null && bookOwnershipQuery.data != null) {
+      if (bookOwnershipQuery?.result?.data != null) {
         const { book, startReading, finishReading, rating, currentPage, note } =
-          bookOwnershipQuery.data.data.attributes
-        const { id } = bookOwnershipQuery.data.data
-        const bookOriginal = this.bookOptionsQuery?.data?.data.find(
+          bookOwnershipQuery.result.data.attributes
+        const { id } = bookOwnershipQuery.result.data
+        const bookOriginal = this.bookOptionsQuery?.result?.data?.find(
           (b) => b.id === book.data.id
         )
         // console.log(bookOriginal)

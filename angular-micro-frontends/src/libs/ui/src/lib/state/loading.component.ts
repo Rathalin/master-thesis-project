@@ -1,9 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core'
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
 
 @Component({
   selector: 'ui-loading',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <div class="text-blue-600 dark:text-blue-400">Loading...</div> `,
+  template: `
+    <div class="dark:bg-blue-600 px-6 py-2 rounded-full">{{ text }}</div>
+  `,
   styles: [],
 })
-export class LoadingComponent {}
+export class LoadingComponent {
+  @Input() text: string = 'Loading...'
+}

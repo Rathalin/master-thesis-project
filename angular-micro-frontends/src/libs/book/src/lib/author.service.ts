@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { CollectionService } from './collection.service'
 import { BehaviorSubject } from 'rxjs'
-import { AuthorContentType, Query } from 'src/libs/book/src/lib/types'
+import { AuthorContentType, Result } from 'src/libs/book/src/lib/types'
 
 @Injectable({
   providedIn: 'root',
