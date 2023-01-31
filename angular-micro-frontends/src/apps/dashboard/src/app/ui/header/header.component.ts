@@ -19,7 +19,8 @@ import { Router } from '@angular/router'
           </dashboard-nav-link>
         </menu>
       </nav>
-      <div class="w-3/12 flex justify-end items-center">
+      <div class="w-3/12 flex justify-end items-center gap-2">
+        <div>{{ authService.currentUser?.username }}</div>
         <button type="button" (click)="onLogoutClick()" uiSecondaryButton>
           Logout
         </button>

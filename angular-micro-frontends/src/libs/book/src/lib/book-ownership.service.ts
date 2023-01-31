@@ -13,7 +13,6 @@ import * as qs from 'qs'
 })
 export class BookOwnershipService extends CollectionService {
   public queryBookOwnerships() {
-    console.log(this.authService)
     const query = qs.stringify(
       {
         populate: ['book'],
@@ -149,17 +148,20 @@ export class BookOwnershipService extends CollectionService {
 
   public createBookOwnership(bookOwnershipData: BookOwnershipAttributes) {
     const payload = {
-      book: bookOwnershipData.book.data.id,
-      user: this.authService.currentUser?.id ?? -1,
-      startReading: bookOwnershipData.startReading,
-      finishReading: bookOwnershipData.finishReading,
-      rating: bookOwnershipData.rating,
-      currentPage: bookOwnershipData.currentPage,
-      note: bookOwnershipData.note,
-      order: bookOwnershipData.order,
+      data: {
+        book: bookOwnershipData.book.data.id,
+        user: this.authService.currentUser?.id ?? -1,
+        startReading: bookOwnershipData.startReading,
+        finishReading: bookOwnershipData.finishReading,
+        rating: bookOwnershipData.rating,
+        currentPage: bookOwnershipData.currentPage,
+        note: bookOwnershipData.note,
+        order: bookOwnershipData.order,
+      },
     }
     return this.create<typeof payload, BookOwnershipContentType>(
-      `/book-ownerships`
+      `/book-ownerships`,
+      payload
     )
   }
 
@@ -167,17 +169,20 @@ export class BookOwnershipService extends CollectionService {
     bookOwnershipData: WithId<BookOwnershipAttributes>
   ) {
     const payload = {
-      book: bookOwnershipData.book.data.id,
-      user: this.authService.currentUser?.id ?? -1,
-      startReading: bookOwnershipData.startReading,
-      finishReading: bookOwnershipData.finishReading,
-      rating: bookOwnershipData.rating,
-      currentPage: bookOwnershipData.currentPage,
-      note: bookOwnershipData.note,
-      order: bookOwnershipData.order,
+      data: {
+        book: bookOwnershipData.book.data.id,
+        user: this.authService.currentUser?.id ?? -1,
+        startReading: bookOwnershipData.startReading,
+        finishReading: bookOwnershipData.finishReading,
+        rating: bookOwnershipData.rating,
+        currentPage: bookOwnershipData.currentPage,
+        note: bookOwnershipData.note,
+        order: bookOwnershipData.order,
+      },
     }
     return this.update<typeof payload, BookOwnershipContentType>(
-      `/book-ownerships/${bookOwnershipData.id}`
+      `/book-ownerships/${bookOwnershipData.id}`,
+      payload
     )
   }
 

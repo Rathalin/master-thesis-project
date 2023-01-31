@@ -33,6 +33,7 @@ export class CollectionService {
           isLoading: false,
         })
       )
+      .finally(() => query.complete())
     return query.asObservable()
   }
 
@@ -50,7 +51,7 @@ export class CollectionService {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ payload }),
+      body: JSON.stringify(payload),
     })
       .then((response) => response.json())
       .then((result) =>
@@ -67,6 +68,7 @@ export class CollectionService {
           isLoading: false,
         })
       )
+      .finally(() => mutation.complete())
     return mutation.asObservable()
   }
 
@@ -84,7 +86,7 @@ export class CollectionService {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ payload }),
+      body: JSON.stringify(payload),
     })
       .then((response) => response.json())
       .then((result) =>
@@ -101,6 +103,7 @@ export class CollectionService {
           isLoading: false,
         })
       )
+      .finally(() => mutation.complete())
     return mutation.asObservable()
   }
 
@@ -128,6 +131,7 @@ export class CollectionService {
           isLoading: true,
         })
       )
+      .finally(() => mutation.complete())
     return mutation.asObservable()
   }
 

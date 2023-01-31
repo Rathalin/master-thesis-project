@@ -21,6 +21,7 @@ import {
   Observable,
   Subject,
   combineLatest,
+  combineLatestAll,
   filter,
   map,
   of,
@@ -48,23 +49,28 @@ import {
               {{ bookOwnershipBookTitle }}
             </span>
             <button
-              *ngIf="bookOwnership$ | async as bookOwnershipQuery"
+              *ngIf="bookOwnership$ | async as bookOwnership"
               type="button"
               class="text-base dark:bg-red-600 dark:hover:bg-red-500"
-              (click)="onDelete(bookOwnershipQuery.result?.data?.id ?? -1)"
+              (click)="onDelete(bookOwnership.id)"
               uiSecondaryButton
             >
               Delete
             </button>
           </ng-template>
         </h1>
-        <dashboard-book-ownership-form
-          [bookOptionsQuery]="bookOptions$ | async"
-          [bookOwnershipQuery]="bookOwnership$ | async"
-          [mode]="mode"
-          (save)="onSubmit($event)"
-        ></dashboard-book-ownership-form>
+        <ng-container *ngIf="bookOptions$ | async as bookOptions">
+          <dashboard-book-ownership-form
+            [bookOptions]="bookOptions"
+            [bookOwnership]="bookOwnership$ | async"
+            [mode]="mode"
+            (save)="onSubmit($event)"
+          ></dashboard-book-ownership-form>
+        </ng-container>
         <ng-container *ngIf="bookOwnershipMutations$ | async as mutation">
+          <ui-success
+            *ngIf="mutation.result != null && mutation.result.error == null"
+          ></ui-success>
           <ui-loading *ngIf="mutation.isLoading"></ui-loading>
           <ui-error
             *ngIf="mutation.error != null"
@@ -83,27 +89,49 @@ export class BookOwnershipPageComponent implements OnInit {
     public readonly bookService: BookService
   ) {}
 
-  public bookOptions$?: Observable<Result<BookContentType[]>>
-  public bookOwnership$?: Observable<Result<BookOwnershipContentType>>
+  public bookOptions$?: Observable<BookContentType[]>
+  public bookOwnership$?: Observable<BookOwnershipContentType>
   public bookOwnershipBookTitle$?: Observable<string>
   public bookOwnershipMutations$?: Observable<Result<BookOwnershipContentType>>
   public mode: 'update' | 'create' = 'create'
 
   ngOnInit(): void {
-    this.bookOptions$ = this.bookService.queryBooks()
-    this.bookOwnership$ = this.route.params.pipe(
+    const bookOwnershipResult$ = this.route.params.pipe(
       filter((params) => params['id'] != null),
       switchMap((params) =>
         this.bookOwnershipService.queryBookOwnership(+params['id'])
       )
     )
-    this.bookOwnershipBookTitle$ = this.bookOwnership$.pipe(
+    this.bookOwnership$ = bookOwnershipResult$.pipe(
+      filter((result) => result.result?.data != null),
+      map((result) => result.result!.data!)
+    )
+    this.bookOwnershipBookTitle$ = bookOwnershipResult$.pipe(
       map(
-        (bookOwnershipQuery) =>
-          bookOwnershipQuery.result?.data?.attributes?.book?.data?.attributes
+        (ownershipResult) =>
+          ownershipResult.result?.data?.attributes?.book?.data?.attributes
             ?.title
       ),
       filter((title): title is string => title != null)
+    )
+    this.bookOptions$ = combineLatest([
+      this.bookService.queryBooks(),
+      this.bookOwnershipService.queryBookOwnerships(),
+    ]).pipe(
+      filter(
+        ([options, ownerships]) =>
+          options.result != null && ownerships.result != null
+      ),
+      map(([options, ownerships]) => {
+        const bookOptions = options.result?.data ?? []
+        const bookOwnerships = ownerships.result?.data ?? []
+        const bookOwnershipsBookIds = bookOwnerships.map(
+          (ownership) => ownership.attributes.book.data.id
+        )
+        return bookOptions.filter(
+          (book) => !bookOwnershipsBookIds.includes(book.id)
+        )
+      })
     )
     this.mode =
       this.route.snapshot.params['id'] != null

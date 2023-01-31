@@ -35,19 +35,13 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
           <div *ngIf="mode === 'create'" class="flex flex-col">
             <label for="book">Book</label>
             <select id="book" name="book" formControlName="book" uiInput>
-              <ng-container
-                *ngIf="
-                  bookOptionsQuery != null && bookOptionsQuery.result != null
-                "
+              <option
+                *ngFor="let book of bookOptions"
+                [ngValue]="book"
+                [selected]="book === form.controls.book.value"
               >
-                <option
-                  *ngFor="let book of bookOptionsQuery.result.data"
-                  [ngValue]="book"
-                  [selected]="book === form.controls.book.value"
-                >
-                  {{ book.attributes.title }}
-                </option>
-              </ng-container>
+                {{ book.attributes.title }}
+              </option>
             </select>
             <ui-input-error controlName="book"></ui-input-error>
           </div>
@@ -114,7 +108,9 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
         </div>
         <div class="mt-4 flex items-center justify-center gap-3">
           <a routerLink="/" uiSecondaryButton>Back</a>
-          <button type="submit" uiPrimaryButton>Save</button>
+          <button type="submit" uiPrimaryButton>
+            {{ mode === 'create' ? 'Add' : 'Save' }}
+          </button>
         </div>
       </form>
     </ng-container>
@@ -122,8 +118,8 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
   styles: [],
 })
 export class BookOwnershipFormComponent implements OnInit, OnChanges {
-  @Input() bookOptionsQuery: Result<BookContentType[]> | null = null
-  @Input() bookOwnershipQuery: Result<BookOwnershipContentType> | null = null
+  @Input() bookOptions: BookContentType[] = []
+  @Input() bookOwnership: BookOwnershipContentType | null = null
   @Input() mode: 'create' | 'update' = 'create'
   @Output() save = new EventEmitter<WithId<BookOwnershipAttributes>>()
 
@@ -154,15 +150,13 @@ export class BookOwnershipFormComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['bookOwnershipQuery'] != null) {
-      const bookOwnershipQuery = changes['bookOwnershipQuery']
-        .currentValue as typeof this.bookOwnershipQuery
-      if (bookOwnershipQuery?.result?.data != null) {
+      const bookOwnership = changes['bookOwnershipQuery']
+        .currentValue as typeof this.bookOwnership
+      if (bookOwnership != null) {
         const { book, startReading, finishReading, rating, currentPage, note } =
-          bookOwnershipQuery.result.data.attributes
-        const { id } = bookOwnershipQuery.result.data
-        const bookOriginal = this.bookOptionsQuery?.result?.data?.find(
-          (b) => b.id === book.data.id
-        )
+          bookOwnership.attributes
+        const { id } = bookOwnership
+        const bookOriginal = this.bookOptions.find((b) => b.id === book.data.id)
         // console.log(bookOriginal)
         this.form.patchValue({
           id,
