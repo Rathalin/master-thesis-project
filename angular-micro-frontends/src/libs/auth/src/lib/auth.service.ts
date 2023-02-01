@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { BehaviorSubject, map } from 'rxjs'
 
 export type LoginError = {
@@ -11,16 +11,18 @@ type DateString = string
 
 export type Authentication = {
   jwt: string
-  user: {
-    id: number
-    username: string
-    email: string
-    provider: string
-    confirmed: boolean
-    blocked: boolean
-    createdAt: DateString
-    updatedAt: DateString
-  }
+  user: User
+}
+
+export type User = {
+  id: number
+  username: string
+  email: string
+  provider: string
+  confirmed: boolean
+  blocked: boolean
+  createdAt: DateString
+  updatedAt: DateString
 }
 
 @Injectable({
@@ -39,6 +41,24 @@ export class AuthService {
     return this.authSubject.value?.user ?? null
   }
 
+  private currentUserSubject = new BehaviorSubject<User | null>(null)
+  public currentUser$ = this.currentUserSubject.asObservable()
+
+  public queryCurrentUser() {
+    axios.get<User>('http://localhost:1337/api/users/me').then((response) => {
+      this.currentUserSubject.next(response.data)
+    })
+    return this.currentUser$
+  }
+
+  public invalidateCurrentUserCache() {
+    this.queryCurrentUser()
+  }
+
+  public setCurrentUserData(userData: User) {
+    this.currentUserSubject.next(userData)
+  }
+
   async autheticate(
     identifier: string,
     password: string
@@ -51,8 +71,8 @@ export class AuthService {
           password,
         }
       )
-      // console.log(response.data)
       this.authSubject.next(response.data)
+      this.currentUserSubject.next(response.data.user)
     } catch (_error) {
       return {
         key: 'invalid-credentials',

@@ -90,7 +90,7 @@ import { Observable } from 'rxjs'
       </article>
 
       <article id="add-book" class="pt-4">
-        <a routerLink="/my-book/new" uiPrimaryButton>Add a new book</a>
+        <a routerLink="/my-book/new" uiPrimaryButton>Add a book to my list</a>
       </article>
     </main>
   `,

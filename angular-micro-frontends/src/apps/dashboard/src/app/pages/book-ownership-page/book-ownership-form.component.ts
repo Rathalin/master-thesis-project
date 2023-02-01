@@ -37,6 +37,7 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
             <select id="book" name="book" formControlName="book" uiInput>
               <option
                 *ngFor="let book of bookOptions"
+                class="p-2"
                 [ngValue]="book"
                 [selected]="book === form.controls.book.value"
               >
@@ -44,6 +45,11 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
               </option>
             </select>
             <ui-input-error controlName="book"></ui-input-error>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div>Book not in the list?</div>
+            <button type="button" uiPrimaryButton>Add</button>
           </div>
 
           <div class="flex flex-col">

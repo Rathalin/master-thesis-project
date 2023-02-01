@@ -13,6 +13,7 @@ import { BookOwnershipPageComponent } from './pages/book-ownership-page/book-own
 import { PageNotFoundComponent } from './pages/page-not-found.component'
 import { BookOwnershipFormComponent } from './pages/book-ownership-page/book-ownership-form.component'
 import { ReactiveFormsModule } from '@angular/forms'
+import { BookPageComponent } from './pages/book-page/book-page.component'
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ReactiveFormsModule } from '@angular/forms'
     BookOwnershipPageComponent,
     PageNotFoundComponent,
     BookOwnershipFormComponent,
+    BookPageComponent,
   ],
   imports: [
     BrowserModule,

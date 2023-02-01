@@ -20,7 +20,9 @@ import { Router } from '@angular/router'
         </menu>
       </nav>
       <div class="w-3/12 flex justify-end items-center gap-2">
-        <div>{{ authService.currentUser?.username }}</div>
+        <ng-container *ngIf="authService.currentUser$ | async as user">
+          <div>{{ user.username }}</div>
+        </ng-container>
         <button type="button" (click)="onLogoutClick()" uiSecondaryButton>
           Logout
         </button>
