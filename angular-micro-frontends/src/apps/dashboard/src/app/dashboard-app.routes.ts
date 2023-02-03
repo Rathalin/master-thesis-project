@@ -8,7 +8,7 @@ import {
 } from '@angular/router'
 import { HomePageComponent } from './pages/home-page/home-page.component'
 import { AuthService } from '@angular-micro-frontends/auth'
-import { BookOwnershipPageComponent } from './pages/book-ownership-page/book-ownership-page.component'
+import { MyBookPageComponent } from './pages/my-book-page/my-book-page.component'
 import { PageNotFoundComponent } from './pages/page-not-found.component'
 
 @Injectable()
@@ -51,7 +51,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'my-book/new',
-    component: BookOwnershipPageComponent,
+    component: MyBookPageComponent,
     canActivate: [AuthGuard],
     data: {
       mode: 'CREATE',
@@ -59,7 +59,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'my-book/:id',
-    component: BookOwnershipPageComponent,
+    component: MyBookPageComponent,
     canActivate: [AuthGuard],
     data: {
       mode: 'EDIT',

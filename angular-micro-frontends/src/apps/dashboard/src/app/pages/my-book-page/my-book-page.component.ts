@@ -82,7 +82,7 @@ import {
   `,
   styles: [],
 })
-export class BookOwnershipPageComponent implements OnInit {
+export class MyBookPageComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     public readonly bookOwnershipService: BookOwnershipService,

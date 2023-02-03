@@ -9,11 +9,15 @@ import { FooterComponent } from './ui/footer.component'
 import { HeaderComponent } from './ui/header/header.component'
 import { NavLinkComponent } from './ui/header/nav-link.component'
 import { UiModule } from '@angular-micro-frontends/ui'
-import { BookOwnershipPageComponent } from './pages/book-ownership-page/book-ownership-page.component'
+import { MyBookPageComponent } from './pages/my-book-page/my-book-page.component'
 import { PageNotFoundComponent } from './pages/page-not-found.component'
-import { BookOwnershipFormComponent } from './pages/book-ownership-page/book-ownership-form.component'
+import { MyBookFormComponent } from './pages/my-book-page/my-book-form.component'
 import { ReactiveFormsModule } from '@angular/forms'
 import { BookPageComponent } from './pages/book-page/book-page.component'
+import { MyBookProgressComponent } from './pages/home-page/my-book-progress.component'
+import { MyBookReadingComponent } from './pages/home-page/my-book-reading.component'
+import { MyBookReadComponent } from './pages/home-page/my-book-read.component'
+import { MyBookNotReadComponent } from './pages/home-page/my-book-not-read.component'
 
 @NgModule({
   declarations: [
@@ -22,10 +26,14 @@ import { BookPageComponent } from './pages/book-page/book-page.component'
     FooterComponent,
     HeaderComponent,
     NavLinkComponent,
-    BookOwnershipPageComponent,
+    MyBookPageComponent,
     PageNotFoundComponent,
-    BookOwnershipFormComponent,
+    MyBookFormComponent,
     BookPageComponent,
+    MyBookProgressComponent,
+    MyBookReadingComponent,
+    MyBookReadComponent,
+    MyBookNotReadComponent,
   ],
   imports: [
     BrowserModule,

@@ -123,7 +123,7 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
   `,
   styles: [],
 })
-export class BookOwnershipFormComponent implements OnInit, OnChanges {
+export class MyBookFormComponent implements OnInit, OnChanges {
   @Input() bookOptions: BookContentType[] = []
   @Input() bookOwnership: BookOwnershipContentType | null = null
   @Input() mode: 'create' | 'update' = 'create'

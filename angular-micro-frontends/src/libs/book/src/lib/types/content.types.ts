@@ -4,6 +4,9 @@ export type BookAttributes = {
   title: string
   pages: number | null
   year: number | null
+  authors: {
+    data: AuthorContentType[]
+  }
 }
 export type BookContentType = ContentType<BookAttributes>
 

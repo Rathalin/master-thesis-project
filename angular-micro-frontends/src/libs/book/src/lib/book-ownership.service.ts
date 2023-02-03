@@ -15,7 +15,11 @@ export class BookOwnershipService extends CollectionService {
   public queryBookOwnerships() {
     const query = qs.stringify(
       {
-        populate: ['book'],
+        populate: {
+          book: {
+            populate: ['authors'],
+          },
+        },
         filters: {
           user: {
             id: {
@@ -34,7 +38,11 @@ export class BookOwnershipService extends CollectionService {
   public queryBookOwnership(id: number) {
     const query = qs.stringify(
       {
-        populate: ['book'],
+        populate: {
+          book: {
+            populate: ['authors'],
+          },
+        },
         filters: {
           user: {
             id: {
@@ -55,7 +63,11 @@ export class BookOwnershipService extends CollectionService {
   public queryCurrentlyReadingBooks() {
     const query = qs.stringify(
       {
-        populate: ['book'],
+        populate: {
+          book: {
+            populate: ['authors'],
+          },
+        },
         filters: {
           $and: [
             {
@@ -88,7 +100,11 @@ export class BookOwnershipService extends CollectionService {
   public queryReadNextBooks() {
     const query = qs.stringify(
       {
-        populate: ['book'],
+        populate: {
+          book: {
+            populate: ['authors'],
+          },
+        },
         filters: {
           $and: [
             {
@@ -121,7 +137,11 @@ export class BookOwnershipService extends CollectionService {
   public queryRecentlyReadBooks() {
     const query = qs.stringify(
       {
-        populate: ['book'],
+        populate: {
+          book: {
+            populate: ['authors'],
+          },
+        },
         filters: {
           $and: [
             {

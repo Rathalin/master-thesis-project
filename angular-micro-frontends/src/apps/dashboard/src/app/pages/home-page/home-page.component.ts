@@ -16,38 +16,26 @@ import { Observable } from 'rxjs'
 @Component({
   selector: 'app-home-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [
-    `
-      article {
-        @apply mb-4;
-      }
-
-      h1 {
-        @apply uppercase text-xl mb-2;
-      }
-
-      ul {
-        @apply px-5 py-1 dark:bg-slate-700 dark:border-slate-600 border shadow-lg rounded-md;
-      }
-
-      li {
-        @apply dark:border-b-slate-500 border-b last:border-b-0 py-3 cursor-pointer;
-      }
-    `,
-  ],
+  styles: [],
   template: `
     <main>
-      <article id="currently-reading">
-        <h1>Currently reading</h1>
+      <article id="currently-reading" class="mb-4">
+        <h1 class="uppercase text-xl mb-2">Currently reading</h1>
         <ng-container
           *ngIf="this.currentlyReadingBooksQuery$ | async as readingQuery"
         >
-          <ul *ngIf="readingQuery.result != null">
+          <ul
+            *ngIf="readingQuery.result != null"
+            class="px-5 py-1 dark:bg-slate-700 dark:border-slate-600 border shadow-lg rounded-md"
+          >
             <li
               *ngFor="let readingBook of readingQuery.result.data"
               [routerLink]="['/my-book', readingBook.id]"
+              class="dark:border-b-slate-500 border-b last:border-b-0 py-3 cursor-pointer"
             >
-              {{ readingBook.attributes.book.data.attributes.title }}
+              <dashboard-my-book-reading
+                [myBook]="readingBook"
+              ></dashboard-my-book-reading>
             </li>
           </ul>
           <ui-loading *ngIf="readingQuery.isLoading"></ui-loading>
@@ -55,15 +43,21 @@ import { Observable } from 'rxjs'
         </ng-container>
       </article>
 
-      <article id="read-next">
-        <h1>Read next</h1>
+      <article id="read-next" class="mb-4">
+        <h1 class="uppercase text-xl mb-2">Read next</h1>
         <ng-container *ngIf="this.readNextBooksQuery$ | async as readNextQuery">
-          <ul *ngIf="readNextQuery.result != null" uiCard>
+          <ul
+            *ngIf="readNextQuery.result != null"
+            class="px-5 py-1 dark:bg-slate-700 dark:border-slate-600 border shadow-lg rounded-md"
+          >
             <li
               *ngFor="let readNextBook of readNextQuery.result.data"
               [routerLink]="['/my-book', readNextBook.id]"
+              class="dark:border-b-slate-500 border-b last:border-b-0 py-3 cursor-pointer"
             >
-              {{ readNextBook.attributes.book.data.attributes.title }}
+              <dashboard-my-book-not-read
+                [myBook]="readNextBook"
+              ></dashboard-my-book-not-read>
             </li>
           </ul>
           <ui-loading *ngIf="readNextQuery.isLoading"></ui-loading>
@@ -71,17 +65,23 @@ import { Observable } from 'rxjs'
         </ng-container>
       </article>
 
-      <article id="recently-read">
-        <h1>Recently read</h1>
+      <article id="recently-read" class="mb-4">
+        <h1 class="uppercase text-xl mb-2">Recently read</h1>
         <ng-container
           *ngIf="this.recentlyReadBooksQuery$ | async as recentlyReadQuery"
         >
-          <ul *ngIf="recentlyReadQuery.result != null" uiCard>
+          <ul
+            *ngIf="recentlyReadQuery.result != null"
+            class="px-5 py-1 dark:bg-slate-700 dark:border-slate-600 border shadow-lg rounded-md"
+          >
             <li
               *ngFor="let recentlyReadBook of recentlyReadQuery.result.data"
               [routerLink]="['/my-book', recentlyReadBook.id]"
+              class="dark:border-b-slate-500 border-b last:border-b-0 py-3 cursor-pointer"
             >
-              {{ recentlyReadBook.attributes.book.data.attributes.title }}
+              <dashboard-my-book-read
+                [myBook]="recentlyReadBook"
+              ></dashboard-my-book-read>
             </li>
           </ul>
           <ui-loading *ngIf="recentlyReadQuery.isLoading"></ui-loading>
