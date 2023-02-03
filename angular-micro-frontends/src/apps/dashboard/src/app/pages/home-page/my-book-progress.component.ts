@@ -1,5 +1,10 @@
 import { BookOwnershipContentType } from '@angular-micro-frontends/book'
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core'
 
 @Component({
   selector: 'dashboard-my-book-progress',
@@ -16,11 +21,30 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
           </span>
         </ng-container>
       </div>
-      <progress max="100" value="70">70%</progress>
+      <progress
+        class="h-1 w-24"
+        [value]="currentPage"
+        [max]="pages"
+        [title]="(percent | number : '1.2-2') + '%'"
+      >
+        {{ this.percent | number : '1.2-2' }}%
+      </progress>
     </div>
   `,
   styles: [],
 })
-export class MyBookProgressComponent {
+export class MyBookProgressComponent implements OnInit {
   @Input() bookOwnership: BookOwnershipContentType | null = null
+
+  public currentPage = 0
+  public pages = 1
+  public percent = 0
+
+  ngOnInit(): void {
+    if (this.bookOwnership != null) {
+      this.currentPage = this.bookOwnership.attributes.currentPage ?? 0
+      this.pages = this.bookOwnership.attributes.book.data.attributes.pages ?? 1
+      this.percent = (this.currentPage / this.pages) * 100
+    }
+  }
 }
