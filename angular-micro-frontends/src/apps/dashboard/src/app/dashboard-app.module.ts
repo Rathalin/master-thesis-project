@@ -11,14 +11,16 @@ import { NavLinkComponent } from './ui/header/nav-link.component'
 import { UiModule } from '@angular-micro-frontends/ui'
 import { MyBookPageComponent } from './pages/my-book-page/my-book-page.component'
 import { PageNotFoundComponent } from './pages/page-not-found.component'
-import { MyBookUpdateComponent } from './pages/my-book-page/my-book-update.component'
+import { MyBookUpdateComponent } from './pages/my-book-page/update/my-book-update.component'
 import { ReactiveFormsModule } from '@angular/forms'
 import { BookPageComponent } from './pages/book-page/book-page.component'
 import { MyBookProgressComponent } from './pages/home-page/my-book-progress.component'
 import { MyBookReadingComponent } from './pages/home-page/my-book-reading.component'
 import { MyBookReadComponent } from './pages/home-page/my-book-read.component'
 import { MyBookNotReadComponent } from './pages/home-page/my-book-not-read.component'
-import { MyBookCreateComponent } from './pages/my-book-page/my-book-create.component'
+import { MyBookCreateComponent } from './pages/my-book-page/create/my-book-create.component'
+import { MyBookCreateFormComponent } from './pages/my-book-page/create/my-book-create-form.component'
+import { MyBookUpdateFormComponent } from './pages/my-book-page/update/my-book-update-form.component'
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { MyBookCreateComponent } from './pages/my-book-page/my-book-create.compo
     MyBookReadComponent,
     MyBookNotReadComponent,
     MyBookCreateComponent,
+    MyBookCreateFormComponent,
+    MyBookUpdateFormComponent,
   ],
   imports: [
     BrowserModule,

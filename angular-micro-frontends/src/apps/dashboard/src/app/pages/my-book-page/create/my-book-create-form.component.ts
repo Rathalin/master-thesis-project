@@ -4,6 +4,8 @@ import {
   BookOwnershipContentType,
   BookOwnershipRating,
   BookOwnershipRatingOptions,
+  BookOwnershipService,
+  BookService,
   DateString,
 } from '@angular-micro-frontends/book'
 import {
@@ -11,12 +13,14 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnInit,
   Output,
 } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { Observable, combineLatest, filter, map, tap } from 'rxjs'
 
 @Component({
-  selector: 'dashboard-my-book-create',
+  selector: 'dashboard-my-book-create-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container>
@@ -26,7 +30,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms'
             <label for="book">Book</label>
             <select id="book" name="book" formControlName="book" uiInput>
               <option
-                *ngFor="let book of bookOptions"
+                *ngFor="let book of newBookOptions"
                 class="p-2"
                 [ngValue]="book"
                 [selected]="book === form.controls.book.value"
@@ -111,9 +115,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms'
   `,
   styles: [],
 })
-export class MyBookCreateComponent {
-  @Input() bookOptions: BookContentType[] = []
+export class MyBookCreateFormComponent {
+  @Input() newBookOptions: BookContentType[] = []
   @Output() create = new EventEmitter<BookOwnershipAttributes>()
+
+  public newBookOptions$?: Observable<BookContentType[]>
 
   public readonly form = new FormGroup({
     book: new FormControl<BookContentType | null>(null, [Validators.required]),
