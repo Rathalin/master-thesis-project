@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core'
 
 @Component({
-  selector: 'dashboard-page-not-found',
+  selector: 'dashboard-page-not-found-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div>

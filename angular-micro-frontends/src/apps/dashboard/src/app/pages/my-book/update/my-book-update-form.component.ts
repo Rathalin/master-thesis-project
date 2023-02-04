@@ -1,4 +1,22 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core'
+import {
+  BookOwnershipAttributes,
+  BookOwnershipContentType,
+  BookOwnershipRating,
+  BookOwnershipRatingOptions,
+  DateString,
+  WithId,
+} from '@angular-micro-frontends/book'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core'
+import { FormControl, FormGroup } from '@angular/forms'
 
 @Component({
   selector: 'dashboard-my-book-update-form',
@@ -74,4 +92,64 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MyBookUpdateFormComponent {}
+export class MyBookUpdateFormComponent implements OnInit, OnChanges {
+  @Input() myBook: BookOwnershipContentType | null = null
+  @Output() update = new EventEmitter<WithId<BookOwnershipAttributes>>()
+
+  public readonly form = new FormGroup({
+    startReading: new FormControl<DateString | null>(null),
+    finishReading: new FormControl<DateString | null>(null),
+    rating: new FormControl<BookOwnershipRating>('No Rating'),
+    currentPage: new FormControl<number | null>(null),
+    note: new FormControl<string | null>(null),
+  })
+  public ratingOptions = BookOwnershipRatingOptions
+
+  ngOnInit(): void {
+    this.form.controls.startReading.valueChanges.subscribe((value) => {
+      if (value == null) {
+        this.form.controls.currentPage.disable()
+        this.form.controls.finishReading.disable()
+      } else {
+        this.form.controls.currentPage.enable()
+        this.form.controls.finishReading.enable()
+      }
+    })
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['myBook'] != null) {
+      const myBook = changes['myBook'].currentValue as typeof this.myBook
+      if (myBook != null) {
+        const { startReading, finishReading, rating, currentPage, note } =
+          myBook.attributes
+        this.form.patchValue({
+          startReading,
+          finishReading,
+          rating,
+          currentPage,
+          note,
+        })
+      }
+    }
+  }
+
+  onSubmit() {
+    const myBook = this.myBook
+    if (this.form.invalid || myBook == null) {
+      return
+    }
+    const { startReading, finishReading, rating, currentPage, note } =
+      this.form.controls
+    this.update.emit({
+      id: myBook.attributes.book.data.id,
+      book: myBook.attributes.book,
+      startReading: startReading.value,
+      finishReading: finishReading.value,
+      rating: rating.value,
+      currentPage: currentPage.value,
+      note: note.value,
+      order: null,
+    })
+  }
+}

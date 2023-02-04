@@ -2,26 +2,15 @@ import {
   BookContentType,
   BookOwnershipAttributes,
   BookOwnershipContentType,
-  BookOwnershipRating,
-  BookOwnershipRatingOptions,
   BookOwnershipService,
   BookService,
-  DateString,
   Result,
 } from '@angular-micro-frontends/book'
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core'
-import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
 import { Observable, combineLatest, filter, map, tap } from 'rxjs'
 
 @Component({
-  selector: 'dashboard-my-book-create',
+  selector: 'dashboard-my-book-create-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container>
@@ -36,7 +25,7 @@ import { Observable, combineLatest, filter, map, tap } from 'rxjs'
   `,
   styles: [],
 })
-export class MyBookCreateComponent implements OnInit {
+export class MyBookCreatePageComponent implements OnInit {
   constructor(
     private readonly bookService: BookService,
     private readonly myBookService: BookOwnershipService
@@ -63,8 +52,7 @@ export class MyBookCreateComponent implements OnInit {
           (myBook) => myBook.attributes.book.data.id
         )
         return books.filter((book) => !myBookBookIds.includes(book.id))
-      }),
-      tap((options) => console.log('bookOptions', options))
+      })
     )
   }
 

@@ -6,10 +6,11 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router'
-import { HomePageComponent } from './pages/home-page/home-page.component'
+import { HomePageComponent } from './pages/home/home-page.component'
 import { AuthService } from '@angular-micro-frontends/auth'
-import { MyBookPageComponent } from './pages/my-book-page/my-book-page.component'
-import { PageNotFoundComponent } from './pages/page-not-found.component'
+import { PageNotFoundComponent } from './pages/error/page-not-found-page.component'
+import { MyBookCreatePageComponent } from './pages/my-book/create/my-book-create-page.component'
+import { MyBookUpdatePageComponent } from './pages/my-book/update/my-book-update-page.component'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -51,19 +52,13 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'my-book/new',
-    component: MyBookPageComponent,
+    component: MyBookCreatePageComponent,
     canActivate: [AuthGuard],
-    data: {
-      mode: 'create',
-    },
   },
   {
     path: 'my-book/:id',
-    component: MyBookPageComponent,
+    component: MyBookUpdatePageComponent,
     canActivate: [AuthGuard],
-    data: {
-      mode: 'edit',
-    },
   },
   {
     path: 'login',
