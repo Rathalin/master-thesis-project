@@ -54,7 +54,7 @@ export const appRoutes: Route[] = [
     component: MyBookPageComponent,
     canActivate: [AuthGuard],
     data: {
-      mode: 'CREATE',
+      mode: 'create',
     },
   },
   {
@@ -62,7 +62,7 @@ export const appRoutes: Route[] = [
     component: MyBookPageComponent,
     canActivate: [AuthGuard],
     data: {
-      mode: 'EDIT',
+      mode: 'edit',
     },
   },
   {

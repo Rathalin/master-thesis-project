@@ -11,13 +11,14 @@ import { NavLinkComponent } from './ui/header/nav-link.component'
 import { UiModule } from '@angular-micro-frontends/ui'
 import { MyBookPageComponent } from './pages/my-book-page/my-book-page.component'
 import { PageNotFoundComponent } from './pages/page-not-found.component'
-import { MyBookFormComponent } from './pages/my-book-page/my-book-form.component'
+import { MyBookUpdateComponent } from './pages/my-book-page/my-book-update.component'
 import { ReactiveFormsModule } from '@angular/forms'
 import { BookPageComponent } from './pages/book-page/book-page.component'
 import { MyBookProgressComponent } from './pages/home-page/my-book-progress.component'
 import { MyBookReadingComponent } from './pages/home-page/my-book-reading.component'
 import { MyBookReadComponent } from './pages/home-page/my-book-read.component'
 import { MyBookNotReadComponent } from './pages/home-page/my-book-not-read.component'
+import { MyBookCreateComponent } from './pages/my-book-page/my-book-create.component'
 
 @NgModule({
   declarations: [
@@ -28,12 +29,13 @@ import { MyBookNotReadComponent } from './pages/home-page/my-book-not-read.compo
     NavLinkComponent,
     MyBookPageComponent,
     PageNotFoundComponent,
-    MyBookFormComponent,
+    MyBookUpdateComponent,
     BookPageComponent,
     MyBookProgressComponent,
     MyBookReadingComponent,
     MyBookReadComponent,
     MyBookNotReadComponent,
+    MyBookCreateComponent,
   ],
   imports: [
     BrowserModule,

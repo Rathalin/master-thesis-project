@@ -26,32 +26,12 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { BehaviorSubject, Observable, map } from 'rxjs'
 
 @Component({
-  selector: 'dashboard-book-ownership-form',
+  selector: 'dashboard-my-book-update',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="flex flex-col gap-y-2">
-          <div *ngIf="mode === 'create'" class="flex flex-col">
-            <label for="book">Book</label>
-            <select id="book" name="book" formControlName="book" uiInput>
-              <option
-                *ngFor="let book of bookOptions"
-                class="p-2"
-                [ngValue]="book"
-                [selected]="book === form.controls.book.value"
-              >
-                {{ book.attributes.title }}
-              </option>
-            </select>
-            <ui-input-error controlName="book"></ui-input-error>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <div>Book not in the list?</div>
-            <button type="button" uiPrimaryButton>Add</button>
-          </div>
-
           <div class="flex flex-col">
             <label for="startReading">Started Reading</label>
             <input
@@ -114,20 +94,17 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
         </div>
         <div class="mt-4 flex items-center justify-center gap-3">
           <a routerLink="/" uiSecondaryButton>Back</a>
-          <button type="submit" uiPrimaryButton>
-            {{ mode === 'create' ? 'Add' : 'Save' }}
-          </button>
+          <button type="submit" uiPrimaryButton>Update</button>
         </div>
       </form>
     </ng-container>
   `,
   styles: [],
 })
-export class MyBookFormComponent implements OnInit, OnChanges {
+export class MyBookUpdateComponent implements OnInit, OnChanges {
   @Input() bookOptions: BookContentType[] = []
   @Input() bookOwnership: BookOwnershipContentType | null = null
-  @Input() mode: 'create' | 'update' = 'create'
-  @Output() save = new EventEmitter<WithId<BookOwnershipAttributes>>()
+  @Output() update = new EventEmitter<WithId<BookOwnershipAttributes>>()
 
   constructor(public readonly bookService: BookService) {}
 
@@ -185,7 +162,7 @@ export class MyBookFormComponent implements OnInit, OnChanges {
     const { id, book, startReading, finishReading, rating, currentPage, note } =
       this.form.controls
     // console.log(book)
-    this.save.emit({
+    this.update.emit({
       id: id.value ?? -1,
       book: {
         data: {

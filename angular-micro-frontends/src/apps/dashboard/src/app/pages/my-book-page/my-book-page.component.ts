@@ -34,49 +34,49 @@ import {
   selector: 'dashboard-overview-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container>
-      <ng-container>
-        <h1 *ngIf="mode != null" class="text-3xl mb-5 flex items-center gap-3">
-          <ng-container *ngIf="mode === 'create'; else titleUpdate">
-            <span>Add a new Book</span>
-          </ng-container>
-          <ng-template #titleUpdate>
+    <ng-container *ngIf="mode$ | async as mode">
+      <ng-container *ngIf="mode === 'create'; else myBookUpdate">
+        <h1 class="text-3xl mb-5 flex items-center gap-3">
+          <span>Add a new Book</span>
+        </h1>
+        <dashboard-my-book-create
+          [bookOptions]="(bookOptions$ | async) ?? []"
+          (create)="onCreate($event)"
+        ></dashboard-my-book-create>
+      </ng-container>
+      <ng-template #myBookUpdate>
+        <ng-container *ngIf="myBook$ | async as myBook">
+          <h1 class="text-3xl mb-5 flex items-center gap-3">
             <span>Update</span>
-            <span
-              *ngIf="bookOwnershipBookTitle$ | async as bookOwnershipBookTitle"
-              class="uppercase"
-            >
-              {{ bookOwnershipBookTitle }}
+            <span class="uppercase">
+              {{ myBook.attributes.book.data.attributes.title }}
             </span>
             <button
-              *ngIf="bookOwnership$ | async as bookOwnership"
               type="button"
               class="text-base dark:bg-red-600 dark:hover:bg-red-500"
-              (click)="onDelete(bookOwnership.id)"
+              (click)="onDelete(myBook.id)"
               uiSecondaryButton
             >
               Delete
             </button>
-          </ng-template>
-        </h1>
-        <ng-container *ngIf="bookOptions$ | async as bookOptions">
-          <dashboard-book-ownership-form
-            [bookOptions]="bookOptions"
-            [bookOwnership]="bookOwnership$ | async"
-            [mode]="mode"
-            (save)="onSubmit($event)"
-          ></dashboard-book-ownership-form>
+          </h1>
+          <dashboard-my-book-update
+            [bookOptions]="(bookOptions$ | async) ?? []"
+            [bookOwnership]="myBook"
+            (update)="onUpdate($event)"
+          ></dashboard-my-book-update>
         </ng-container>
-        <ng-container *ngIf="bookOwnershipMutations$ | async as mutation">
-          <ui-success
-            *ngIf="mutation.result != null && mutation.result.error == null"
-          ></ui-success>
-          <ui-loading *ngIf="mutation.isLoading"></ui-loading>
-          <ui-error
-            *ngIf="mutation.error != null"
-            text="Could not reach the server."
-          ></ui-error>
-        </ng-container>
+      </ng-template>
+
+      <ng-container *ngIf="myBookMutations$ | async as mutation">
+        <ui-success
+          *ngIf="mutation.result != null && mutation.result.error == null"
+        ></ui-success>
+        <ui-loading *ngIf="mutation.isLoading"></ui-loading>
+        <ui-error
+          *ngIf="mutation.error != null"
+          text="Could not reach the server."
+        ></ui-error>
       </ng-container>
     </ng-container>
   `,
@@ -90,29 +90,23 @@ export class MyBookPageComponent implements OnInit {
   ) {}
 
   public bookOptions$?: Observable<BookContentType[]>
-  public bookOwnership$?: Observable<BookOwnershipContentType>
-  public bookOwnershipBookTitle$?: Observable<string>
-  public bookOwnershipMutations$?: Observable<Result<BookOwnershipContentType>>
-  public mode: 'update' | 'create' = 'create'
+  public myBook$?: Observable<BookOwnershipContentType>
+  public myBookMutations$?: Observable<Result<BookOwnershipContentType>>
+  public mode$?: Observable<'update' | 'create'>
 
   ngOnInit(): void {
-    const bookOwnershipResult$ = this.route.params.pipe(
+    this.mode$ = this.route.params.pipe(
+      map((params) => (params['id'] != null ? 'update' : 'create')),
+      tap((mode) => console.log('mode', mode))
+    )
+    this.myBook$ = this.route.params.pipe(
       filter((params) => params['id'] != null),
       switchMap((params) =>
         this.bookOwnershipService.queryBookOwnership(+params['id'])
-      )
-    )
-    this.bookOwnership$ = bookOwnershipResult$.pipe(
-      filter((result) => result.result?.data != null),
-      map((result) => result.result!.data!)
-    )
-    this.bookOwnershipBookTitle$ = bookOwnershipResult$.pipe(
-      map(
-        (ownershipResult) =>
-          ownershipResult.result?.data?.attributes?.book?.data?.attributes
-            ?.title
       ),
-      filter((title): title is string => title != null)
+      filter((result) => result.result?.data != null),
+      map((result) => result.result!.data!),
+      tap((myBook) => console.log('myBook', myBook))
     )
     this.bookOptions$ = combineLatest([
       this.bookService.queryBooks(),
@@ -133,25 +127,19 @@ export class MyBookPageComponent implements OnInit {
         )
       })
     )
-    this.mode =
-      this.route.snapshot.params['id'] != null
-        ? ('update' as const)
-        : ('create' as const)
   }
 
-  onSubmit(bookOwnership: WithId<BookOwnershipAttributes>) {
-    if (this.mode === null) return
-    if (this.mode === 'create') {
-      this.bookOwnershipMutations$ =
-        this.bookOwnershipService.createBookOwnership(bookOwnership)
-    } else {
-      this.bookOwnershipMutations$ =
-        this.bookOwnershipService.updateBookOwnership(bookOwnership)
-    }
+  onCreate(bookOwnership: BookOwnershipAttributes) {
+    this.myBookMutations$ =
+      this.bookOwnershipService.createBookOwnership(bookOwnership)
+  }
+
+  onUpdate(bookOwnership: WithId<BookOwnershipAttributes>) {
+    this.myBookMutations$ =
+      this.bookOwnershipService.updateBookOwnership(bookOwnership)
   }
 
   onDelete(id: ID) {
-    this.bookOwnershipMutations$ =
-      this.bookOwnershipService.deleteBookOwnership(id)
+    this.myBookMutations$ = this.bookOwnershipService.deleteBookOwnership(id)
   }
 }
