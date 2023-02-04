@@ -103,14 +103,12 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
 })
 export class MyBookUpdateComponent implements OnInit, OnChanges {
   @Input() bookOptions: BookContentType[] = []
-  @Input() bookOwnership: BookOwnershipContentType | null = null
+  @Input() myBook: BookOwnershipContentType | null = null
   @Output() update = new EventEmitter<WithId<BookOwnershipAttributes>>()
 
   constructor(public readonly bookService: BookService) {}
 
   public readonly form = new FormGroup({
-    id: new FormControl<number | null>(null),
-    book: new FormControl<BookContentType | null>(null, [Validators.required]),
     startReading: new FormControl<DateString | null>(null),
     finishReading: new FormControl<DateString | null>(null),
     rating: new FormControl<BookOwnershipRating>('No Rating'),
@@ -132,18 +130,13 @@ export class MyBookUpdateComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['bookOwnershipQuery'] != null) {
-      const bookOwnership = changes['bookOwnershipQuery']
-        .currentValue as typeof this.bookOwnership
-      if (bookOwnership != null) {
-        const { book, startReading, finishReading, rating, currentPage, note } =
-          bookOwnership.attributes
-        const { id } = bookOwnership
-        const bookOriginal = this.bookOptions.find((b) => b.id === book.data.id)
+    if (changes['myBook'] != null) {
+      const myBook = changes['myBook'].currentValue as typeof this.myBook
+      if (myBook != null) {
+        const { startReading, finishReading, rating, currentPage, note } =
+          myBook.attributes
         // console.log(bookOriginal)
         this.form.patchValue({
-          id,
-          book: bookOriginal,
           startReading,
           finishReading,
           rating,
@@ -156,18 +149,17 @@ export class MyBookUpdateComponent implements OnInit, OnChanges {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
+    const myBook = this.myBook
+    if (this.form.invalid || myBook == null) {
       return
     }
-    const { id, book, startReading, finishReading, rating, currentPage, note } =
+    const { startReading, finishReading, rating, currentPage, note } =
       this.form.controls
-    // console.log(book)
+    const bookOriginal = this.bookOptions.find((b) => b.id === myBook.id)!
     this.update.emit({
-      id: id.value ?? -1,
+      id: bookOriginal.id,
       book: {
-        data: {
-          ...book.value!,
-        },
+        data: bookOriginal,
       },
       startReading: startReading.value,
       finishReading: finishReading.value,

@@ -62,7 +62,7 @@ import {
           </h1>
           <dashboard-my-book-update
             [bookOptions]="(bookOptions$ | async) ?? []"
-            [bookOwnership]="myBook"
+            [myBook]="myBook"
             (update)="onUpdate($event)"
           ></dashboard-my-book-update>
         </ng-container>
