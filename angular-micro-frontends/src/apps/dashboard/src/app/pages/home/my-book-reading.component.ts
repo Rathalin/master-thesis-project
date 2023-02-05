@@ -5,16 +5,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
   selector: 'dashboard-my-book-reading',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div *ngIf="myBook != null" class="flex flex-col">
-      <div class="flex items-center justify-between">
+    <div *ngIf="myBook != null" class="flex justify-between">
+      <div class="flex flex-col">
         <div>
           {{ myBook.attributes.book.data.attributes.title }}
         </div>
-        <dashboard-my-book-progress
-          [bookOwnership]="myBook"
-        ></dashboard-my-book-progress>
-      </div>
-      <div class="flex items-center">
         <div
           *ngFor="
             let author of myBook.attributes.book.data.attributes.authors.data
@@ -25,6 +20,12 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
             {{ author.attributes.lastname }}
           </span>
         </div>
+      </div>
+
+      <div class="flex flex-col">
+        <dashboard-my-book-progress
+          [bookOwnership]="myBook"
+        ></dashboard-my-book-progress>
       </div>
     </div>
   `,

@@ -7,7 +7,7 @@ import { Component } from '@angular/core'
     <main
       class="container px-4 mx-auto flex flex-col justify-center max-w-sm mt-16"
     >
-      <h1 class="mx-auto text-3xl">Login</h1>
+      <h1 class="mx-auto text-3xl mb-4">Login</h1>
       <login-login-form
         *ngIf="!(authService.isAuthenticated$ | async)"
       ></login-login-form>

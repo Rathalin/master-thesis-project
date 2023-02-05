@@ -14,7 +14,7 @@ import {
   OnInit,
 } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { Observable, filter, map, switchMap, tap } from 'rxjs'
+import { Observable, filter, lastValueFrom, map, switchMap, tap } from 'rxjs'
 
 @Component({
   selector: 'dashboard-my-book-update-page',
@@ -39,6 +39,28 @@ import { Observable, filter, map, switchMap, tap } from 'rxjs'
         [myBook]="myBook"
         (update)="onUpdate($event)"
       ></dashboard-my-book-update-form>
+
+      <div class="flex flex-col">
+        <ng-container *ngIf="updateMutation$ | async as update">
+          <ui-loading *ngIf="update.isLoading" text="Updating"></ui-loading>
+          <ui-success *ngIf="update.result != null" text="Updated"></ui-success>
+          <ui-error
+            *ngIf="update.error != null"
+            text="Could not update."
+          ></ui-error>
+        </ng-container>
+        <ng-container *ngIf="deleteMutation$ | async as delete">
+          <ui-loading *ngIf="delete.isLoading" text="Deleting"></ui-loading>
+          <ui-success
+            *ngIf="delete.result?.data != null"
+            text="Deleted"
+          ></ui-success>
+          <ui-error
+            *ngIf="delete.error != null || delete.result?.error != null"
+            text="Could not delete."
+          ></ui-error>
+        </ng-container>
+      </div>
     </ng-container>
   `,
   styles: [],
@@ -73,36 +95,4 @@ export class MyBookUpdatePageComponent implements OnInit {
   onDelete(id: ID) {
     this.deleteMutation$ = this.myBookService.deleteBookOwnership(id)
   }
-
-  // this.mode$.pipe(
-  //   tap((mode) => {
-  //     console.log('Mode changed to ', mode)
-  //     if (mode === 'create') {
-  //       this.newBookOptions$ = combineLatest([
-  //         this.bookService.queryBooks().pipe(
-  //           filter(
-  //             (books) => books.result != null && books.result.data != null
-  //           ),
-  //           map((books) => books.result!.data!)
-  //         ),
-  //         this.bookOwnershipService.queryBookOwnerships(),
-  //       ]).pipe(
-  //         filter(
-  //           ([_books, myBookResults]) =>
-  //             myBookResults.result != null &&
-  //             myBookResults.result.data != null
-  //         ),
-  //         map(([books, myBookResults]) => {
-  //           const myBooks = myBookResults.result!.data!
-  //           const myBookBookIds = myBooks.map(
-  //             (myBook) => myBook.attributes.book.data.id
-  //           )
-  //           return books.filter((book) => !myBookBookIds.includes(book.id))
-  //         }),
-  //         tap((options) => console.log('bookOptions', options))
-  //       )
-
-  //     }
-  //   })
-  // )
 }

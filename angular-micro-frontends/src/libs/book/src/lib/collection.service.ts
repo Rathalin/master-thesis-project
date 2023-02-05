@@ -33,7 +33,6 @@ export class CollectionService {
           isLoading: false,
         })
       )
-      .finally(() => query.complete())
     return query.asObservable()
   }
 
@@ -121,14 +120,14 @@ export class CollectionService {
         mutation.next({
           result,
           error: null,
-          isLoading: true,
+          isLoading: false,
         })
       )
       .catch((error) =>
         mutation.next({
           ...mutation.value,
           error,
-          isLoading: true,
+          isLoading: false,
         })
       )
       .finally(() => mutation.complete())
