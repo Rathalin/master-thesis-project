@@ -32,6 +32,12 @@ export class AuthService {
   private authSubject = new BehaviorSubject<Authentication | null>(null)
   auth$ = this.authSubject.asObservable()
   isAuthenticated$ = this.auth$.pipe(map((auth) => auth != null))
+  private readonly localStorageTokenKey = 'auth'
+  private readonly localStorageUserKey = 'user'
+
+  constructor() {
+    this.loadFromLocalStorage()
+  }
 
   get isAuthenticated() {
     return this.authSubject.value != null
@@ -73,6 +79,7 @@ export class AuthService {
       )
       this.authSubject.next(response.data)
       this.currentUserSubject.next(response.data.user)
+      this.saveToLocalStorage(response.data)
     } catch (_error) {
       return {
         key: 'invalid-credentials',
@@ -84,5 +91,23 @@ export class AuthService {
 
   logout() {
     this.authSubject.next(null)
+  }
+
+  private loadFromLocalStorage() {
+    const cachedToken = localStorage.getItem(this.localStorageTokenKey)
+    const cachedUser = localStorage.getItem(this.localStorageUserKey)
+    if (cachedToken != null && cachedUser != null) {
+      this.authSubject.next({
+        jwt: cachedToken,
+        user: JSON.parse(cachedUser),
+      })
+    }
+    console.log('Loading AUTH', this.authSubject.value)
+  }
+
+  private saveToLocalStorage(auth: Authentication) {
+    localStorage.setItem(this.localStorageTokenKey, auth.jwt)
+    localStorage.setItem(this.localStorageUserKey, JSON.stringify(auth.user))
+    console.log('Saving AUTH', this.authSubject.value)
   }
 }
