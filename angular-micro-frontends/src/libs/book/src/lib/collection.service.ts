@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core'
-import { RequestState, OperationError } from 'src/libs/book/src/lib/types'
+import {
+  RequestState,
+  OperationError,
+  WithMeta,
+} from 'src/libs/book/src/lib/types'
 import { BehaviorSubject, Subject } from 'rxjs'
 import { AuthService } from '@angular-micro-frontends/auth'
 
@@ -12,27 +16,11 @@ export class CollectionService {
   protected readonly url = 'http://localhost:1337/api'
 
   protected query<T>(path: string) {
-    const query = new BehaviorSubject<RequestState<T>>({
-      result: null,
-      error: null,
-      isLoading: true,
-    })
+    const query = this.createRequestState<T>()
     fetch(this.apiUrl(path))
       .then((response) => response.json())
-      .then((data) =>
-        query.next({
-          result: data,
-          error: null,
-          isLoading: false,
-        })
-      )
-      .catch((error) =>
-        query.next({
-          ...query.value,
-          error,
-          isLoading: false,
-        })
-      )
+      .then((data) => this.onSuccess(query, data))
+      .catch((error) => this.onError(query, error))
     return query.asObservable()
   }
 
@@ -40,11 +28,7 @@ export class CollectionService {
     path: string,
     payload?: TPayload
   ) {
-    const mutation = new BehaviorSubject<RequestState<TResult>>({
-      result: null,
-      error: null,
-      isLoading: true,
-    })
+    const mutation = this.createRequestState<TResult>()
     fetch(this.apiUrl(path), {
       method: 'POST',
       headers: {
@@ -53,20 +37,8 @@ export class CollectionService {
       body: JSON.stringify(payload),
     })
       .then((response) => response.json())
-      .then((result) =>
-        mutation.next({
-          result,
-          error: null,
-          isLoading: false,
-        })
-      )
-      .catch((error) =>
-        mutation.next({
-          ...mutation.value,
-          error,
-          isLoading: false,
-        })
-      )
+      .then((result) => this.onSuccess(mutation, result))
+      .catch((error) => this.onError(mutation, error))
       .finally(() => mutation.complete())
     return mutation.asObservable()
   }
@@ -75,11 +47,7 @@ export class CollectionService {
     path: string,
     payload?: TPayload
   ) {
-    const mutation = new BehaviorSubject<RequestState<TResult>>({
-      result: null,
-      error: null,
-      isLoading: true,
-    })
+    const mutation = this.createRequestState<TResult>()
     fetch(this.apiUrl(path), {
       method: 'PUT',
       headers: {
@@ -88,53 +56,55 @@ export class CollectionService {
       body: JSON.stringify(payload),
     })
       .then((response) => response.json())
-      .then((result) =>
-        mutation.next({
-          result,
-          error: null,
-          isLoading: false,
-        })
-      )
-      .catch((error) =>
-        mutation.next({
-          ...mutation.value,
-          error,
-          isLoading: false,
-        })
-      )
+      .then((result) => this.onSuccess(mutation, result))
+      .catch((error) => this.onError(mutation, error))
       .finally(() => mutation.complete())
     return mutation.asObservable()
   }
 
   protected delete<TResult>(path: string) {
-    const mutation = new BehaviorSubject<RequestState<TResult>>({
-      result: null,
-      error: null,
-      isLoading: true,
-    })
+    const mutation = this.createRequestState<TResult>()
     fetch(this.apiUrl(path), {
       method: 'DELETE',
     })
       .then((response) => response.json())
-      .then((result) =>
-        mutation.next({
-          result,
-          error: null,
-          isLoading: false,
-        })
-      )
-      .catch((error) =>
-        mutation.next({
-          ...mutation.value,
-          error,
-          isLoading: false,
-        })
-      )
+      .then((result) => this.onSuccess(mutation, result))
+      .catch((error) => this.onError(mutation, error))
       .finally(() => mutation.complete())
     return mutation.asObservable()
   }
 
   protected apiUrl(path: string) {
     return `${this.url}${path}`
+  }
+
+  private createRequestState<T>(): BehaviorSubject<RequestState<T>> {
+    return new BehaviorSubject<RequestState<T>>({
+      result: null,
+      error: null,
+      isLoading: true,
+    })
+  }
+
+  private onSuccess<
+    TSubject extends BehaviorSubject<RequestState<any>>,
+    TData extends WithMeta<any>
+  >(subject: TSubject, result: TData) {
+    subject.next({
+      result,
+      error: null,
+      isLoading: false,
+    })
+  }
+
+  private onError<TSubject extends BehaviorSubject<RequestState<any>>, TError>(
+    subject: TSubject,
+    error: TError
+  ) {
+    subject.next({
+      ...subject.value,
+      error,
+      isLoading: false,
+    })
   }
 }
