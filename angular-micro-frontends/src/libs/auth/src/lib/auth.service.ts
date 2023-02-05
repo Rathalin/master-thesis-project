@@ -102,12 +102,10 @@ export class AuthService {
         user: JSON.parse(cachedUser),
       })
     }
-    console.log('Loading AUTH', this.authSubject.value)
   }
 
   private saveToLocalStorage(auth: Authentication) {
     localStorage.setItem(this.localStorageTokenKey, auth.jwt)
     localStorage.setItem(this.localStorageUserKey, JSON.stringify(auth.user))
-    console.log('Saving AUTH', this.authSubject.value)
   }
 }
