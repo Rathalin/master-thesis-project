@@ -10,3 +10,5 @@ export * from './lib/state/loading.component'
 export * from './lib/state/error.component'
 
 export * from './lib/state/success.component'
+
+export * from './lib/state/request-state.component'

@@ -1,11 +1,13 @@
 import {
+  BookOwnershipService,
+  BookService,
+} from '@angular-micro-frontends/book'
+import {
   BookContentType,
   BookOwnershipAttributes,
   BookOwnershipContentType,
-  BookOwnershipService,
-  BookService,
   RequestState,
-} from '@angular-micro-frontends/book'
+} from '@angular-micro-frontends/types'
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
 import { Observable, combineLatest, filter, map, tap } from 'rxjs'
 

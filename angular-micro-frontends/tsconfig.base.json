@@ -17,6 +17,7 @@
     "paths": {
       "@angular-micro-frontends/auth": ["src/libs/auth/src/index.ts"],
       "@angular-micro-frontends/book": ["src/libs/book/src/index.ts"],
+      "@angular-micro-frontends/types": ["src/libs/types/src/index.ts"],
       "@angular-micro-frontends/ui": ["src/libs/ui/src/index.ts"]
     }
   },

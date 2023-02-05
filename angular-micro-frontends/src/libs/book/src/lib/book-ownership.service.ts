@@ -4,7 +4,7 @@ import {
   BookOwnershipContentType,
   ID,
   WithId,
-} from 'src/libs/book/src/lib/types'
+} from '@angular-micro-frontends/types'
 import { CollectionService } from './collection.service'
 import * as qs from 'qs'
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { RequestState, WithMeta } from 'src/libs/book/src/lib/types'
+import { RequestState, WithMeta } from '@angular-micro-frontends/types'
 import { BehaviorSubject } from 'rxjs'
 import { AuthService } from '@angular-micro-frontends/auth'
 

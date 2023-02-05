@@ -1,13 +1,10 @@
 import {
   BookContentType,
   BookOwnershipAttributes,
-  BookOwnershipContentType,
   BookOwnershipRating,
   BookOwnershipRatingOptions,
-  BookOwnershipService,
-  BookService,
   DateString,
-} from '@angular-micro-frontends/book'
+} from '@angular-micro-frontends/types'
 import {
   ChangeDetectionStrategy,
   Component,

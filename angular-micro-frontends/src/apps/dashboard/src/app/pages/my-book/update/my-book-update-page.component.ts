@@ -1,12 +1,14 @@
 import {
-  BookOwnershipAttributes,
-  BookOwnershipContentType,
   BookOwnershipService,
   BookService,
+} from '@angular-micro-frontends/book'
+import {
+  BookOwnershipAttributes,
+  BookOwnershipContentType,
   ID,
   RequestState,
   WithId,
-} from '@angular-micro-frontends/book'
+} from '@angular-micro-frontends/types'
 import {
   ChangeDetectionStrategy,
   Component,

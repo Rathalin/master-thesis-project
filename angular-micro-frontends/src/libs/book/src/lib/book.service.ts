@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { BookContentType } from 'src/libs/book/src/lib/types'
+import { BookContentType } from '@angular-micro-frontends/types'
 import { CollectionService } from './collection.service'
 
 @Injectable({

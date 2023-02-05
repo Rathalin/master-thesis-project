@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { CollectionService } from './collection.service'
 import { BehaviorSubject } from 'rxjs'
-import { AuthorContentType, RequestState } from 'src/libs/book/src/lib/types'
+import { AuthorContentType, RequestState } from '@angular-micro-frontends/types'
 
 @Injectable({
   providedIn: 'root',
