@@ -2,6 +2,8 @@ export type RequestState<TData> = {
   result: WithMeta<TData> | null
   error: unknown | null
   isLoading: boolean
+  isSuccess: boolean
+  isError: boolean
 }
 
 export type WithMeta<TData> = {

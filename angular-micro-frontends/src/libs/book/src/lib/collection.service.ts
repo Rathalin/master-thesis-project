@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core'
-import {
-  RequestState,
-  OperationError,
-  WithMeta,
-} from 'src/libs/book/src/lib/types'
-import { BehaviorSubject, Subject } from 'rxjs'
+import { RequestState, WithMeta } from 'src/libs/book/src/lib/types'
+import { BehaviorSubject } from 'rxjs'
 import { AuthService } from '@angular-micro-frontends/auth'
 
 @Injectable({
@@ -83,6 +79,8 @@ export class CollectionService {
       result: null,
       error: null,
       isLoading: true,
+      isSuccess: false,
+      isError: false,
     })
   }
 
@@ -94,6 +92,8 @@ export class CollectionService {
       result,
       error: null,
       isLoading: false,
+      isSuccess: true,
+      isError: false,
     })
   }
 
@@ -105,6 +105,8 @@ export class CollectionService {
       ...subject.value,
       error,
       isLoading: false,
+      isSuccess: false,
+      isError: true,
     })
   }
 }
