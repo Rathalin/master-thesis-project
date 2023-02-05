@@ -4,7 +4,7 @@ import {
   BookOwnershipService,
   BookService,
   ID,
-  Result,
+  RequestState,
   WithId,
 } from '@angular-micro-frontends/book'
 import {
@@ -73,8 +73,8 @@ export class MyBookUpdatePageComponent implements OnInit {
   ) {}
 
   public myBook$?: Observable<BookOwnershipContentType>
-  public updateMutation$?: Observable<Result<BookOwnershipContentType>>
-  public deleteMutation$?: Observable<Result<BookOwnershipContentType>>
+  public updateMutation$?: Observable<RequestState<BookOwnershipContentType>>
+  public deleteMutation$?: Observable<RequestState<BookOwnershipContentType>>
 
   ngOnInit(): void {
     this.myBook$ = this.route.params.pipe(

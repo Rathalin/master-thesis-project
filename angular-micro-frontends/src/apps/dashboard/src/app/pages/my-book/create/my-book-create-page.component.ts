@@ -4,7 +4,7 @@ import {
   BookOwnershipContentType,
   BookOwnershipService,
   BookService,
-  Result,
+  RequestState,
 } from '@angular-micro-frontends/book'
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
 import { Observable, combineLatest, filter, map, tap } from 'rxjs'
@@ -32,7 +32,9 @@ export class MyBookCreatePageComponent implements OnInit {
   ) {}
 
   public newBookOptions$?: Observable<BookContentType[]>
-  public createMyBookMutation$?: Observable<Result<BookOwnershipContentType>>
+  public createMyBookMutation$?: Observable<
+    RequestState<BookOwnershipContentType>
+  >
 
   ngOnInit(): void {
     this.newBookOptions$ = combineLatest([

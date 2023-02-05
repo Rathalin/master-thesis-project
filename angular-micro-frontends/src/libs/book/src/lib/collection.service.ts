@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Result, OperationError } from 'src/libs/book/src/lib/types'
+import { RequestState, OperationError } from 'src/libs/book/src/lib/types'
 import { BehaviorSubject, Subject } from 'rxjs'
 import { AuthService } from '@angular-micro-frontends/auth'
 
@@ -12,7 +12,7 @@ export class CollectionService {
   protected readonly url = 'http://localhost:1337/api'
 
   protected query<T>(path: string) {
-    const query = new BehaviorSubject<Result<T>>({
+    const query = new BehaviorSubject<RequestState<T>>({
       result: null,
       error: null,
       isLoading: true,
@@ -40,7 +40,7 @@ export class CollectionService {
     path: string,
     payload?: TPayload
   ) {
-    const mutation = new BehaviorSubject<Result<TResult>>({
+    const mutation = new BehaviorSubject<RequestState<TResult>>({
       result: null,
       error: null,
       isLoading: true,
@@ -75,7 +75,7 @@ export class CollectionService {
     path: string,
     payload?: TPayload
   ) {
-    const mutation = new BehaviorSubject<Result<TResult>>({
+    const mutation = new BehaviorSubject<RequestState<TResult>>({
       result: null,
       error: null,
       isLoading: true,
@@ -107,7 +107,7 @@ export class CollectionService {
   }
 
   protected delete<TResult>(path: string) {
-    const mutation = new BehaviorSubject<Result<TResult>>({
+    const mutation = new BehaviorSubject<RequestState<TResult>>({
       result: null,
       error: null,
       isLoading: true,

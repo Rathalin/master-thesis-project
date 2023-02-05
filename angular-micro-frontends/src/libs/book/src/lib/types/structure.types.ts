@@ -1,4 +1,4 @@
-export type Result<TData> = {
+export type RequestState<TData> = {
   result: WithMeta<TData> | null
   error: unknown | null
   isLoading: boolean
