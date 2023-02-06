@@ -28,6 +28,6 @@ export class BookCreatePageComponent implements OnInit {
   public authorOptionsRequest$?: Observable<RequestState<AuthorContentType[]>>
 
   ngOnInit(): void {
-    this.authorOptionsRequest$ = this.authorService.queryAuthors()
+    this.authorOptionsRequest$ = this.authorService.getAuthors()
   }
 }

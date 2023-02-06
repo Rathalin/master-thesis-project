@@ -21,9 +21,9 @@ import { Observable, Subscription } from 'rxjs'
       <h1 class="text-3xl mb-5 flex items-center gap-3">
         <span>Add a new author</span>
       </h1>
-      <dashboard-author-create-form>
+      <dashboard-author-create-form
         (create)="onCreate($event)"
-      </dashboard-author-create-form>
+      ></dashboard-author-create-form>
 
       <ui-request-state
         [state]="createMutation$ | async"

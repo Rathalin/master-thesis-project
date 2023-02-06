@@ -10,21 +10,24 @@ import {
   providedIn: 'root',
 })
 export class AuthorService extends CollectionService {
-  public queryAuthors() {
+  public getAuthors() {
     return this.query<AuthorContentType[]>('/authors')
   }
 
   public createAuthor(authorData: AuthorAttributes) {
-    return this.create<typeof authorData, AuthorContentType>(
-      `/authors`,
-      authorData
-    )
+    const payload = {
+      data: authorData,
+    }
+    return this.create<typeof payload, AuthorContentType>(`/authors`, payload)
   }
 
   public updateAuthor(id: ID, authorData: Partial<AuthorAttributes>) {
-    return this.update<typeof authorData, AuthorContentType>(
+    const payload = {
+      data: authorData,
+    }
+    return this.update<typeof payload, AuthorContentType>(
       `/authors/${id}`,
-      authorData
+      payload
     )
   }
 
