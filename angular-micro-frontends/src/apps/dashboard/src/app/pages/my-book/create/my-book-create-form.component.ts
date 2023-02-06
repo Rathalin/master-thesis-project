@@ -41,7 +41,7 @@ import { Observable, Subscription } from 'rxjs'
 
           <div class="flex items-center gap-2">
             <div>Book not in the list?</div>
-            <button type="button" uiPrimaryButton>Add</button>
+            <a [routerLink]="['/book/new']" uiPrimaryButton>Add</a>
           </div>
 
           <div class="flex flex-col">

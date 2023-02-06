@@ -1,6 +1,21 @@
 import { AuthorContentType } from '@angular-micro-frontends/type-definitions'
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
-import { FormControl, FormGroup, Validators } from '@angular/forms'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core'
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
+import {
+  BehaviorSubject,
+  Observable,
+  combineLatest,
+  from,
+  map,
+  of,
+  startWith,
+  tap,
+} from 'rxjs'
 
 @Component({
   selector: 'dashboard-book-create-form',
@@ -20,24 +35,54 @@ import { FormControl, FormGroup, Validators } from '@angular/forms'
           <ui-input-error controlName="title"></ui-input-error>
         </div>
 
-        <div class="flex flex-col">
-          <label for="author">Author</label>
-          <select id="author" name="author" formControlName="author" uiInput>
-            <option
-              *ngFor="let author of authorOptions"
-              class="p-2"
-              [ngValue]="author"
-              [selected]="author.id === form.controls.author.value?.id"
+        <div>
+          <div
+            *ngFor="
+              let control of this.form.controls.authors.controls;
+              index as i
+            "
+            class="flex gap-2 items-end mb-2"
+          >
+            <div class="flex-1 flex flex-col">
+              <label [for]="'author' + i">Author {{ i + 1 }}</label>
+              <select
+                [id]="'author' + i"
+                [name]="'author' + i"
+                [formControl]="control"
+                uiInput
+              >
+                <option
+                  *ngFor="let author of authorOptions"
+                  class="p-2"
+                  [ngValue]="author"
+                  [selected]="author.id === selectedAuthor?.id"
+                >
+                  {{ author.attributes.firstname }}
+                  {{ author.attributes.lastname }}
+                </option>
+              </select>
+            </div>
+            <button
+              (click)="removeAuthorClick(i)"
+              type="button"
+              class="dark:bg-red-700 dark:hover:bg-red-600"
+              [class]="{ invisible: i === 0 }"
+              uiSecondaryButton
             >
-              {{ author.attributes.firstname }} {{ author.attributes.lastname }}
-            </option>
-          </select>
-          <ui-input-error controlName="book"></ui-input-error>
+              🗑️
+            </button>
+            <!-- <ui-input-error [controlName]="'author' + i"></ui-input-error> -->
+          </div>
         </div>
 
-        <div class="flex items-center gap-2">
-          <div>Author not in the list?</div>
-          <a routerLink="/author/new" uiPrimaryButton>Add</a>
+        <div class="flex justify-between">
+          <button type="button" (click)="addAuthorClick()" uiPrimaryButton>
+            Add another author
+          </button>
+          <div class="flex  items-center gap-2">
+            <div>Author not in the list?</div>
+            <a routerLink="/author/new" uiPrimaryButton>Create</a>
+          </div>
         </div>
 
         <div class="flex flex-col">
@@ -86,16 +131,57 @@ import { FormControl, FormGroup, Validators } from '@angular/forms'
   `,
   styles: [],
 })
-export class BookCreateFormComponent {
+export class BookCreateFormComponent implements OnInit {
+  // @Input() set authorOptions(value: AuthorContentType[]) {
+  //   this.allAuthorOptions$.next(value)
+  // }
   @Input() authorOptions: AuthorContentType[] = []
 
-  public readonly form = new FormGroup({
-    title: new FormControl<string>('', [Validators.required]),
-    author: new FormControl<AuthorContentType | null>(null, [
-      Validators.required,
-    ]),
-    pages: new FormControl<number | null>(null),
-    year: new FormControl<number | null>(null),
-    // cover: new FormControl<string | null>(null),
+  constructor(private readonly fb: FormBuilder) {}
+
+  public selectedAuthor: AuthorContentType | null = null
+  public readonly form = this.fb.group({
+    title: this.fb.nonNullable.control('', [Validators.required]),
+    authors: this.fb.nonNullable.array<FormControl<AuthorContentType | null>>(
+      [this.fb.control<AuthorContentType | null>(null)],
+      [Validators.required]
+    ),
+    pages: this.fb.control<number | null>(null),
+    year: this.fb.control<number | null>(null),
+    // cover: this.fb.control<string | null>(null),
   })
+  public allAuthorOptions$ = new BehaviorSubject<AuthorContentType[]>([])
+  public availableAuthorOptions$?: Observable<AuthorContentType[]>
+
+  ngOnInit(): void {
+    this.availableAuthorOptions$ = combineLatest([
+      this.allAuthorOptions$,
+      this.form.controls.authors.valueChanges.pipe(startWith(null)),
+    ]).pipe(
+      tap(([authorOptions, selectedAuthors]) =>
+        console.log(authorOptions, selectedAuthors)
+      ),
+      map(([authorOptions, selectedAuthors]) => {
+        let selectedAuthorIds: number[] = []
+        if (selectedAuthors != null) {
+          selectedAuthorIds = selectedAuthors
+            .filter((author): author is AuthorContentType => author != null)
+            .map((author) => author.id)
+        }
+        return authorOptions.filter(
+          (author) => !selectedAuthorIds.includes(author.id)
+        )
+      })
+    )
+  }
+
+  public addAuthorClick() {
+    this.form.controls.authors.push(
+      this.fb.control<AuthorContentType | null>(null)
+    )
+  }
+
+  public removeAuthorClick(index: number) {
+    this.form.controls.authors.removeAt(index)
+  }
 }

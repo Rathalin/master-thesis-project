@@ -15,6 +15,16 @@ import { Observable, filter, map } from 'rxjs'
         <h1></h1>
       </ng-container>
 
+      <ng-container
+        *ngIf="authorOptionsRequest$ | async as authorOptionsRequest"
+      >
+        <ng-container *ngIf="authorOptionsRequest.isSuccess">
+          <dashboard-book-create-form
+            [authorOptions]="authorOptionsRequest.result!.data!"
+          ></dashboard-book-create-form>
+        </ng-container>
+      </ng-container>
+
       <!-- <ui-request-statem 
         [state]="authorOptionsRequest$ | async"
       ></ui-request-statem> -->
