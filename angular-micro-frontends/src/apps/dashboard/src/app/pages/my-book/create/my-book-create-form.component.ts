@@ -10,11 +10,12 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
 } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { Observable } from 'rxjs'
+import { Observable, Subscription } from 'rxjs'
 
 @Component({
   selector: 'dashboard-my-book-create-form',
@@ -112,7 +113,7 @@ import { Observable } from 'rxjs'
   `,
   styles: [],
 })
-export class MyBookCreateFormComponent {
+export class MyBookCreateFormComponent implements OnInit, OnDestroy {
   @Input() newBookOptions: BookContentType[] = []
   @Output() create = new EventEmitter<BookOwnershipAttributes>()
 
@@ -127,6 +128,35 @@ export class MyBookCreateFormComponent {
     note: new FormControl<string | null>(null),
   })
   public ratingOptions = BookOwnershipRatingOptions
+  private subscriptions: Subscription[] = []
+
+  ngOnInit(): void {
+    this.subscriptions.push(
+      this.form.controls.startReading.valueChanges.subscribe((value) => {
+        if (value === '') {
+          this.form.controls.startReading.setValue(null)
+          return
+        }
+        if (value == null) {
+          this.form.controls.currentPage.disable()
+          this.form.controls.finishReading.disable()
+        } else {
+          this.form.controls.currentPage.enable()
+          this.form.controls.finishReading.enable()
+        }
+      }),
+      this.form.controls.finishReading.valueChanges.subscribe((value) => {
+        if (value === '') {
+          this.form.controls.finishReading.setValue(null)
+          return
+        }
+      })
+    )
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe())
+  }
 
   public onSubmit() {
     if (this.form.invalid) {

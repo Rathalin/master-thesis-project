@@ -13,10 +13,19 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
+  OnDestroy,
   OnInit,
 } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
-import { Observable, filter, lastValueFrom, map, switchMap, tap } from 'rxjs'
+import { ActivatedRoute, Router } from '@angular/router'
+import {
+  Observable,
+  Subscription,
+  filter,
+  lastValueFrom,
+  map,
+  switchMap,
+  tap,
+} from 'rxjs'
 
 @Component({
   selector: 'dashboard-my-book-update-page',
@@ -51,32 +60,32 @@ import { Observable, filter, lastValueFrom, map, switchMap, tap } from 'rxjs'
             text="Could not update."
           ></ui-error>
         </ng-container>
-        <ng-container *ngIf="deleteMutation$ | async as delete">
-          <ui-loading *ngIf="delete.isLoading" text="Deleting"></ui-loading>
-          <ui-success
-            *ngIf="delete.result?.data != null"
-            text="Deleted"
-          ></ui-success>
-          <ui-error
-            *ngIf="delete.error != null || delete.result?.error != null"
-            text="Could not delete."
-          ></ui-error>
-        </ng-container>
+        <ui-request-state
+          [state]="updateMutation$ | async"
+          errorText="Could not update."
+        ></ui-request-state>
+        <ui-request-state
+          [state]="deleteMutation$ | async"
+          errorText="Could not delete."
+        ></ui-request-state>
       </div>
     </ng-container>
   `,
   styles: [],
 })
-export class MyBookUpdatePageComponent implements OnInit {
+export class MyBookUpdatePageComponent implements OnInit, OnDestroy {
   constructor(
-    private route: ActivatedRoute,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
     public readonly bookService: BookService,
     public readonly myBookService: BookOwnershipService
   ) {}
 
   public myBook$?: Observable<BookOwnershipContentType>
   public updateMutation$?: Observable<RequestState<BookOwnershipContentType>>
+  private updateMutationSubscription?: Subscription
   public deleteMutation$?: Observable<RequestState<BookOwnershipContentType>>
+  private deleteMutationSubscription?: Subscription
 
   ngOnInit(): void {
     this.myBook$ = this.route.params.pipe(
@@ -90,11 +99,22 @@ export class MyBookUpdatePageComponent implements OnInit {
     )
   }
 
-  onUpdate(bookOwnership: WithId<BookOwnershipAttributes>) {
-    this.updateMutation$ = this.myBookService.updateBookOwnership(bookOwnership)
+  ngOnDestroy(): void {
+    this.updateMutationSubscription?.unsubscribe()
+    this.deleteMutationSubscription?.unsubscribe()
+  }
+
+  onUpdate([id, myBook]: [ID, Partial<BookOwnershipAttributes>]) {
+    this.updateMutation$ = this.myBookService.updateBookOwnership(id, myBook)
+    this.updateMutationSubscription = this.updateMutation$.subscribe(() =>
+      this.router.navigate(['/'])
+    )
   }
 
   onDelete(id: ID) {
     this.deleteMutation$ = this.myBookService.deleteBookOwnership(id)
+    this.deleteMutationSubscription = this.deleteMutation$.subscribe(() =>
+      this.router.navigate(['/'])
+    )
   }
 }

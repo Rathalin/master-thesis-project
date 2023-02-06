@@ -4,6 +4,7 @@ import {
   BookOwnershipRating,
   BookOwnershipRatingOptions,
   DateString,
+  ID,
   WithId,
 } from '@angular-micro-frontends/type-definitions'
 import {
@@ -12,11 +13,13 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'dashboard-my-book-update-form',
@@ -92,9 +95,9 @@ import { FormControl, FormGroup } from '@angular/forms'
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MyBookUpdateFormComponent implements OnInit, OnChanges {
+export class MyBookUpdateFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() myBook: BookOwnershipContentType | null = null
-  @Output() update = new EventEmitter<WithId<BookOwnershipAttributes>>()
+  @Output() update = new EventEmitter<[ID, Partial<BookOwnershipAttributes>]>()
 
   public readonly form = new FormGroup({
     startReading: new FormControl<DateString | null>(null),
@@ -104,18 +107,7 @@ export class MyBookUpdateFormComponent implements OnInit, OnChanges {
     note: new FormControl<string | null>(null),
   })
   public ratingOptions = BookOwnershipRatingOptions
-
-  ngOnInit(): void {
-    this.form.controls.startReading.valueChanges.subscribe((value) => {
-      if (value == null) {
-        this.form.controls.currentPage.disable()
-        this.form.controls.finishReading.disable()
-      } else {
-        this.form.controls.currentPage.enable()
-        this.form.controls.finishReading.enable()
-      }
-    })
-  }
+  private subscriptions: Subscription[] = []
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['myBook'] != null) {
@@ -134,6 +126,34 @@ export class MyBookUpdateFormComponent implements OnInit, OnChanges {
     }
   }
 
+  ngOnInit(): void {
+    this.subscriptions.push(
+      this.form.controls.startReading.valueChanges.subscribe((value) => {
+        if (value === '') {
+          this.form.controls.startReading.setValue(null)
+          return
+        }
+        if (value == null) {
+          this.form.controls.currentPage.disable()
+          this.form.controls.finishReading.disable()
+        } else {
+          this.form.controls.currentPage.enable()
+          this.form.controls.finishReading.enable()
+        }
+      }),
+      this.form.controls.finishReading.valueChanges.subscribe((value) => {
+        if (value === '') {
+          this.form.controls.finishReading.setValue(null)
+          return
+        }
+      })
+    )
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe())
+  }
+
   onSubmit() {
     const myBook = this.myBook
     if (this.form.invalid || myBook == null) {
@@ -141,15 +161,15 @@ export class MyBookUpdateFormComponent implements OnInit, OnChanges {
     }
     const { startReading, finishReading, rating, currentPage, note } =
       this.form.controls
-    this.update.emit({
-      id: myBook.attributes.book.data.id,
-      book: myBook.attributes.book,
-      startReading: startReading.value,
-      finishReading: finishReading.value,
-      rating: rating.value,
-      currentPage: currentPage.value,
-      note: note.value,
-      order: null,
-    })
+    this.update.emit([
+      myBook.id,
+      {
+        startReading: startReading.value,
+        finishReading: finishReading.value,
+        rating: rating.value,
+        currentPage: currentPage.value,
+        note: note.value,
+      },
+    ])
   }
 }

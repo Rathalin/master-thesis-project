@@ -186,12 +186,11 @@ export class BookOwnershipService extends CollectionService {
   }
 
   public updateBookOwnership(
-    bookOwnershipData: WithId<BookOwnershipAttributes>
+    id: ID,
+    bookOwnershipData: Partial<BookOwnershipAttributes>
   ) {
     const payload = {
       data: {
-        book: bookOwnershipData.book.data.id,
-        user: this.authService.currentUser?.id ?? -1,
         startReading: bookOwnershipData.startReading,
         finishReading: bookOwnershipData.finishReading,
         rating: bookOwnershipData.rating,
@@ -201,7 +200,7 @@ export class BookOwnershipService extends CollectionService {
       },
     }
     return this.update<typeof payload, BookOwnershipContentType>(
-      `/book-ownerships/${bookOwnershipData.id}`,
+      `/book-ownerships/${id}`,
       payload
     )
   }
