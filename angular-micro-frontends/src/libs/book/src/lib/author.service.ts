@@ -11,7 +11,11 @@ import {
 })
 export class AuthorService extends CollectionService {
   public getAuthors() {
-    return this.query<AuthorContentType[]>('/authors')
+    return this.query<AuthorContentType[]>(`/authors`)
+  }
+
+  public getAuthor(id: ID) {
+    return this.query<AuthorContentType>(`/authors/${id}`)
   }
 
   public createAuthor(authorData: AuthorAttributes) {

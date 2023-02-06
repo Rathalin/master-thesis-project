@@ -1,4 +1,4 @@
-import { BookOwnershipContentType } from '@angular-micro-frontends/type-definitions'
+import { MyBookContentType } from '@angular-micro-frontends/type-definitions'
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
 
 @Component({
@@ -26,5 +26,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyBookNotReadComponent {
-  @Input() myBook: BookOwnershipContentType | null = null
+  @Input() myBook: MyBookContentType | null = null
 }

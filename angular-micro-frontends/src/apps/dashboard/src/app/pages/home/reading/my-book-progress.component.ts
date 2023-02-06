@@ -1,4 +1,4 @@
-import { BookOwnershipContentType } from '@angular-micro-frontends/type-definitions'
+import { MyBookContentType } from '@angular-micro-frontends/type-definitions'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -37,7 +37,7 @@ import {
   styles: [],
 })
 export class MyBookProgressComponent implements OnInit {
-  @Input() bookOwnership: BookOwnershipContentType | null = null
+  @Input() bookOwnership: MyBookContentType | null = null
 
   public currentPage: number | null = null
   public pages: number | null = null

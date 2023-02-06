@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import {
-  BookOwnershipAttributes,
-  BookOwnershipContentType,
+  MyBookAttributes,
+  MyBookContentType,
   ID,
   WithId,
 } from '@angular-micro-frontends/type-definitions'
@@ -11,8 +11,8 @@ import * as qs from 'qs'
 @Injectable({
   providedIn: 'root',
 })
-export class BookOwnershipService extends CollectionService {
-  public queryBookOwnerships() {
+export class MyBookService extends CollectionService {
+  public getMyBooks() {
     const query = qs.stringify(
       {
         populate: {
@@ -32,10 +32,10 @@ export class BookOwnershipService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    return this.query<BookOwnershipContentType[]>(`/book-ownerships?${query}`)
+    return this.query<MyBookContentType[]>(`/book-ownerships?${query}`)
   }
 
-  public queryBookOwnership(id: number) {
+  public getMyBook(id: number) {
     const query = qs.stringify(
       {
         populate: {
@@ -55,12 +55,10 @@ export class BookOwnershipService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    return this.query<BookOwnershipContentType>(
-      `/book-ownerships/${id}?${query}`
-    )
+    return this.query<MyBookContentType>(`/book-ownerships/${id}?${query}`)
   }
 
-  public queryCurrentlyReadingBooks() {
+  public getMyCurrentlyReadingBooks() {
     const query = qs.stringify(
       {
         populate: {
@@ -94,10 +92,10 @@ export class BookOwnershipService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    return this.query<BookOwnershipContentType[]>(`/book-ownerships?${query}`)
+    return this.query<MyBookContentType[]>(`/book-ownerships?${query}`)
   }
 
-  public queryReadNextBooks() {
+  public getMyUnreadBooks() {
     const query = qs.stringify(
       {
         populate: {
@@ -131,10 +129,10 @@ export class BookOwnershipService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    return this.query<BookOwnershipContentType[]>(`/book-ownerships?${query}`)
+    return this.query<MyBookContentType[]>(`/book-ownerships?${query}`)
   }
 
-  public queryRecentlyReadBooks() {
+  public getMyReadBooks() {
     const query = qs.stringify(
       {
         populate: {
@@ -163,10 +161,10 @@ export class BookOwnershipService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    return this.query<BookOwnershipContentType[]>(`/book-ownerships?${query}`)
+    return this.query<MyBookContentType[]>(`/book-ownerships?${query}`)
   }
 
-  public createBookOwnership(bookOwnershipData: BookOwnershipAttributes) {
+  public createMyBook(bookOwnershipData: MyBookAttributes) {
     const payload = {
       data: {
         book: bookOwnershipData.book.data.id,
@@ -179,16 +177,13 @@ export class BookOwnershipService extends CollectionService {
         order: bookOwnershipData.order,
       },
     }
-    return this.create<typeof payload, BookOwnershipContentType>(
+    return this.create<typeof payload, MyBookContentType>(
       `/book-ownerships`,
       payload
     )
   }
 
-  public updateBookOwnership(
-    id: ID,
-    bookOwnershipData: Partial<BookOwnershipAttributes>
-  ) {
+  public updateMyBook(id: ID, bookOwnershipData: Partial<MyBookAttributes>) {
     const payload = {
       data: {
         startReading: bookOwnershipData.startReading,
@@ -199,13 +194,13 @@ export class BookOwnershipService extends CollectionService {
         order: bookOwnershipData.order,
       },
     }
-    return this.update<typeof payload, BookOwnershipContentType>(
+    return this.update<typeof payload, MyBookContentType>(
       `/book-ownerships/${id}`,
       payload
     )
   }
 
-  public deleteBookOwnership(id: ID) {
-    return this.delete<BookOwnershipContentType>(`/book-ownerships/${id}`)
+  public deleteMyBook(id: ID) {
+    return this.delete<MyBookContentType>(`/book-ownerships/${id}`)
   }
 }

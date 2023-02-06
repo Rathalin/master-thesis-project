@@ -1,9 +1,9 @@
 import {
   AuthorService,
-  BookOwnershipService,
+  MyBookService,
   BookService,
 } from '@angular-micro-frontends/book'
-import { BookOwnershipContentType } from '@angular-micro-frontends/type-definitions'
+import { MyBookContentType } from '@angular-micro-frontends/type-definitions'
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
 import { Observable, combineLatest, filter, map } from 'rxjs'
 
@@ -91,30 +91,29 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
 export class HomePageComponent implements OnInit {
   constructor(
     public readonly bookService: BookService,
-    public readonly bookOwnershipService: BookOwnershipService,
+    public readonly bookOwnershipService: MyBookService,
     public readonly authorService: AuthorService
   ) {}
 
-  public currentlyReadingBooks$?: Observable<BookOwnershipContentType[]>
-  public readNextBooks$?: Observable<BookOwnershipContentType[]>
-  public recentlyReadBooks$?: Observable<BookOwnershipContentType[]>
+  public currentlyReadingBooks$?: Observable<MyBookContentType[]>
+  public readNextBooks$?: Observable<MyBookContentType[]>
+  public recentlyReadBooks$?: Observable<MyBookContentType[]>
   public isError$?: Observable<boolean>
   public isLoading$?: Observable<boolean>
 
   ngOnInit(): void {
     const currentlyReadingBooksQuery$ =
-      this.bookOwnershipService.queryCurrentlyReadingBooks()
+      this.bookOwnershipService.getMyCurrentlyReadingBooks()
     this.currentlyReadingBooks$ = currentlyReadingBooksQuery$.pipe(
       filter((query) => query.result != null && query.result.data != null),
       map((query) => query.result!.data!)
     )
-    const readNextBooksQuery$ = this.bookOwnershipService.queryReadNextBooks()
+    const readNextBooksQuery$ = this.bookOwnershipService.getMyUnreadBooks()
     this.readNextBooks$ = readNextBooksQuery$.pipe(
       filter((query) => query.result != null && query.result.data != null),
       map((query) => query.result!.data!)
     )
-    const recentlyReadBooksQuery$ =
-      this.bookOwnershipService.queryRecentlyReadBooks()
+    const recentlyReadBooksQuery$ = this.bookOwnershipService.getMyReadBooks()
     this.recentlyReadBooks$ = recentlyReadBooksQuery$.pipe(
       filter((query) => query.result != null && query.result.data != null),
       map((query) => query.result!.data!)

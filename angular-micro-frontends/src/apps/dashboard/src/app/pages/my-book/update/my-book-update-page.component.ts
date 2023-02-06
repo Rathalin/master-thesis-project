@@ -1,10 +1,7 @@
+import { MyBookService, BookService } from '@angular-micro-frontends/book'
 import {
-  BookOwnershipService,
-  BookService,
-} from '@angular-micro-frontends/book'
-import {
-  BookOwnershipAttributes,
-  BookOwnershipContentType,
+  MyBookAttributes,
+  MyBookContentType,
   ID,
   RequestState,
   WithId,
@@ -78,20 +75,20 @@ export class MyBookUpdatePageComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     public readonly bookService: BookService,
-    public readonly myBookService: BookOwnershipService
+    public readonly myBookService: MyBookService
   ) {}
 
-  public myBook$?: Observable<BookOwnershipContentType>
-  public updateMutation$?: Observable<RequestState<BookOwnershipContentType>>
+  public myBook$?: Observable<MyBookContentType>
+  public updateMutation$?: Observable<RequestState<MyBookContentType>>
   private updateMutationSubscription?: Subscription
-  public deleteMutation$?: Observable<RequestState<BookOwnershipContentType>>
+  public deleteMutation$?: Observable<RequestState<MyBookContentType>>
   private deleteMutationSubscription?: Subscription
 
   ngOnInit(): void {
     this.myBook$ = this.route.params.pipe(
       map((params) => +params['id']),
       switchMap((id) =>
-        this.myBookService.queryBookOwnership(id).pipe(
+        this.myBookService.getMyBook(id).pipe(
           filter((result) => result.result?.data != null),
           map((result) => result.result!.data!)
         )
@@ -104,15 +101,18 @@ export class MyBookUpdatePageComponent implements OnInit, OnDestroy {
     this.deleteMutationSubscription?.unsubscribe()
   }
 
-  onUpdate([id, myBook]: [ID, Partial<BookOwnershipAttributes>]) {
-    this.updateMutation$ = this.myBookService.updateBookOwnership(id, myBook)
+  onUpdate(myBook: Partial<MyBookAttributes>) {
+    this.updateMutation$ = this.myBookService.updateMyBook(
+      +this.route.snapshot.params['id'],
+      myBook
+    )
     this.updateMutationSubscription = this.updateMutation$.subscribe(() =>
       this.router.navigate(['/'])
     )
   }
 
   onDelete(id: ID) {
-    this.deleteMutation$ = this.myBookService.deleteBookOwnership(id)
+    this.deleteMutation$ = this.myBookService.deleteMyBook(id)
     this.deleteMutationSubscription = this.deleteMutation$.subscribe(() =>
       this.router.navigate(['/'])
     )

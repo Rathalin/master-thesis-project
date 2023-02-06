@@ -1,11 +1,8 @@
-import {
-  BookOwnershipService,
-  BookService,
-} from '@angular-micro-frontends/book'
+import { MyBookService, BookService } from '@angular-micro-frontends/book'
 import {
   BookContentType,
-  BookOwnershipAttributes,
-  BookOwnershipContentType,
+  MyBookAttributes,
+  MyBookContentType,
   RequestState,
 } from '@angular-micro-frontends/type-definitions'
 import {
@@ -42,13 +39,11 @@ export class MyBookCreatePageComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly bookService: BookService,
-    private readonly myBookService: BookOwnershipService
+    private readonly myBookService: MyBookService
   ) {}
 
   public newBookOptions$?: Observable<BookContentType[]>
-  public createMyBookMutation$?: Observable<
-    RequestState<BookOwnershipContentType>
-  >
+  public createMyBookMutation$?: Observable<RequestState<MyBookContentType>>
   private createMyBookMutationSubscription$?: Subscription
 
   ngOnInit(): void {
@@ -57,7 +52,7 @@ export class MyBookCreatePageComponent implements OnInit, OnDestroy {
         filter((books) => books.result != null && books.result.data != null),
         map((books) => books.result!.data!)
       ),
-      this.myBookService.queryBookOwnerships(),
+      this.myBookService.getMyBooks(),
     ]).pipe(
       filter(
         ([_books, myBookResults]) =>
@@ -77,9 +72,8 @@ export class MyBookCreatePageComponent implements OnInit, OnDestroy {
     this.createMyBookMutationSubscription$?.unsubscribe()
   }
 
-  onCreate(bookOwnership: BookOwnershipAttributes) {
-    this.createMyBookMutation$ =
-      this.myBookService.createBookOwnership(bookOwnership)
+  onCreate(bookOwnership: MyBookAttributes) {
+    this.createMyBookMutation$ = this.myBookService.createMyBook(bookOwnership)
     this.createMyBookMutationSubscription$ =
       this.createMyBookMutation$.subscribe(() => this.router.navigate(['/']))
   }

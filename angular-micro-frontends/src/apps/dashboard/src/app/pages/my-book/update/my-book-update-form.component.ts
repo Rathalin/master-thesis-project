@@ -1,8 +1,8 @@
 import {
-  BookOwnershipAttributes,
-  BookOwnershipContentType,
-  BookOwnershipRating,
-  BookOwnershipRatingOptions,
+  MyBookAttributes,
+  MyBookContentType,
+  MyBookRating,
+  MyBookRatingOptions,
   DateString,
   ID,
   WithId,
@@ -96,17 +96,17 @@ import { Subscription } from 'rxjs'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyBookUpdateFormComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() myBook: BookOwnershipContentType | null = null
-  @Output() update = new EventEmitter<[ID, Partial<BookOwnershipAttributes>]>()
+  @Input() myBook: MyBookContentType | null = null
+  @Output() update = new EventEmitter<Partial<MyBookAttributes>>()
 
   public readonly form = new FormGroup({
     startReading: new FormControl<DateString | null>(null),
     finishReading: new FormControl<DateString | null>(null),
-    rating: new FormControl<BookOwnershipRating>('No Rating'),
+    rating: new FormControl<MyBookRating>('No Rating'),
     currentPage: new FormControl<number | null>(null),
     note: new FormControl<string | null>(null),
   })
-  public ratingOptions = BookOwnershipRatingOptions
+  public ratingOptions = MyBookRatingOptions
   private subscriptions: Subscription[] = []
 
   ngOnChanges(changes: SimpleChanges) {
@@ -161,15 +161,12 @@ export class MyBookUpdateFormComponent implements OnInit, OnChanges, OnDestroy {
     }
     const { startReading, finishReading, rating, currentPage, note } =
       this.form.controls
-    this.update.emit([
-      myBook.id,
-      {
-        startReading: startReading.value,
-        finishReading: finishReading.value,
-        rating: rating.value,
-        currentPage: currentPage.value,
-        note: note.value,
-      },
-    ])
+    this.update.emit({
+      startReading: startReading.value,
+      finishReading: finishReading.value,
+      rating: rating.value,
+      currentPage: currentPage.value,
+      note: note.value,
+    })
   }
 }

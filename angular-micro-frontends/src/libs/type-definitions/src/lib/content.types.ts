@@ -10,18 +10,18 @@ export type BookAttributes = {
 }
 export type BookContentType = ContentType<BookAttributes>
 
-export type BookOwnershipAttributes = {
+export type MyBookAttributes = {
   book: {
     data: BookContentType
   }
   startReading: DateString | null
   finishReading: DateString | null
-  rating: BookOwnershipRating | null
+  rating: MyBookRating | null
   currentPage: number | null
   note: string | null
   order: number | null
 }
-export type BookOwnershipContentType = ContentType<BookOwnershipAttributes>
+export type MyBookContentType = ContentType<MyBookAttributes>
 
 export type AuthorAttributes = {
   firstname: string
@@ -30,7 +30,7 @@ export type AuthorAttributes = {
 }
 export type AuthorContentType = ContentType<AuthorAttributes>
 
-export const BookOwnershipRatingOptions = [
+export const MyBookRatingOptions = [
   'No Rating',
   'Very Bad',
   'Bad',
@@ -39,4 +39,4 @@ export const BookOwnershipRatingOptions = [
   'Very Good',
 ] as const
 
-export type BookOwnershipRating = typeof BookOwnershipRatingOptions[number]
+export type MyBookRating = typeof MyBookRatingOptions[number]

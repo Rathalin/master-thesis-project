@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { BookService } from './book.service'
-import { BookOwnershipService } from './book-ownership.service'
+import { MyBookService } from './my-book.service'
 import { AuthorService } from './author.service'
 import { combineLatest, combineLatestAll, filter, map, merge } from 'rxjs'
 
@@ -10,7 +10,7 @@ import { combineLatest, combineLatestAll, filter, map, merge } from 'rxjs'
 export class FilterServiceService {
   constructor(
     private readonly booksService: BookService,
-    private readonly bookOwnershipService: BookOwnershipService,
+    private readonly bookOwnershipService: MyBookService,
     private readonly authorService: AuthorService
   ) {}
 }

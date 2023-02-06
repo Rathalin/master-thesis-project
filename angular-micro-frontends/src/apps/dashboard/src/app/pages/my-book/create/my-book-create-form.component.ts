@@ -1,8 +1,8 @@
 import {
   BookContentType,
-  BookOwnershipAttributes,
-  BookOwnershipRating,
-  BookOwnershipRatingOptions,
+  MyBookAttributes,
+  MyBookRating,
+  MyBookRatingOptions,
   DateString,
 } from '@angular-micro-frontends/type-definitions'
 import {
@@ -115,7 +115,7 @@ import { Observable, Subscription } from 'rxjs'
 })
 export class MyBookCreateFormComponent implements OnInit, OnDestroy {
   @Input() newBookOptions: BookContentType[] = []
-  @Output() create = new EventEmitter<BookOwnershipAttributes>()
+  @Output() create = new EventEmitter<MyBookAttributes>()
 
   public newBookOptions$?: Observable<BookContentType[]>
 
@@ -123,11 +123,11 @@ export class MyBookCreateFormComponent implements OnInit, OnDestroy {
     book: new FormControl<BookContentType | null>(null, [Validators.required]),
     startReading: new FormControl<DateString | null>(null),
     finishReading: new FormControl<DateString | null>(null),
-    rating: new FormControl<BookOwnershipRating>('No Rating'),
+    rating: new FormControl<MyBookRating>('No Rating'),
     currentPage: new FormControl<number | null>(null),
     note: new FormControl<string | null>(null),
   })
-  public ratingOptions = BookOwnershipRatingOptions
+  public ratingOptions = MyBookRatingOptions
   private subscriptions: Subscription[] = []
 
   ngOnInit(): void {
