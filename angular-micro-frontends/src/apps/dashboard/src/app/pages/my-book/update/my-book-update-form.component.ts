@@ -5,7 +5,7 @@ import {
   BookOwnershipRatingOptions,
   DateString,
   WithId,
-} from '@angular-micro-frontends/types'
+} from '@angular-micro-frontends/type-definitions'
 import {
   ChangeDetectionStrategy,
   Component,

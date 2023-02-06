@@ -1,4 +1,4 @@
-import { RequestState } from '@angular-micro-frontends/types'
+import { RequestState } from '@angular-micro-frontends/type-definitions'
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
 import { Observable } from 'rxjs'
 

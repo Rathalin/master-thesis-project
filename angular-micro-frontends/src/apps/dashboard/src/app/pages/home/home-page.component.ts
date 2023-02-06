@@ -3,7 +3,7 @@ import {
   BookOwnershipService,
   BookService,
 } from '@angular-micro-frontends/book'
-import { BookOwnershipContentType } from '@angular-micro-frontends/types'
+import { BookOwnershipContentType } from '@angular-micro-frontends/type-definitions'
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
 import { Observable, combineLatest, filter, map } from 'rxjs'
 

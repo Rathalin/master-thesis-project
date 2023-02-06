@@ -1,4 +1,4 @@
-import { BookOwnershipContentType } from '@angular-micro-frontends/types'
+import { BookOwnershipContentType } from '@angular-micro-frontends/type-definitions'
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
 
 @Component({

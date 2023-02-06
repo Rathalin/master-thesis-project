@@ -1,0 +1,26 @@
+{
+  "name": "type-definitions",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "src/libs/type-definitions/src",
+  "prefix": "type-def",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "options": {
+        "project": "src/libs/type-definitions/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "src/libs/type-definitions/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "src/libs/type-definitions/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    }
+  },
+  "tags": []
+}
