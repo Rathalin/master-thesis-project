@@ -1,5 +1,6 @@
 export * from './lib/ui.module'
 export * from './lib/inputs/input.directive'
+export * from './lib/buttons/accent-button.directive'
 export * from './lib/buttons/primary-button.directive'
 export * from './lib/buttons/secondary-button.directive'
 export * from './lib/buttons/subtle-button.directive'
@@ -10,5 +11,4 @@ export * from './lib/state/loading.component'
 export * from './lib/state/error.component'
 export * from './lib/state/success.component'
 export * from './lib/state/request-state.component'
-
 export * from './lib/progress/progress-bar.component'

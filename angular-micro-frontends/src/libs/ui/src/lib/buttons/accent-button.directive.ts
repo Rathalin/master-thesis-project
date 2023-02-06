@@ -3,15 +3,15 @@ import { applyStyleClasses } from '../util/applyStyleClasses'
 import { buttonStyleClasses } from './button-style-classes'
 
 @Directive({
-  selector: '[uiSecondaryButton]',
+  selector: '[uiAccentButton]',
 })
-export class SecondaryButtonDirective {
+export class AccentButtonDirective {
   constructor(private el: ElementRef) {
     applyStyleClasses(this.el, [...buttonStyleClasses, ...this.styleClasses])
   }
 
   private readonly styleClasses = [
-    'dark:bg-secondary-700',
-    'dark:hover:bg-secondary-600',
+    'dark:bg-accent-700',
+    'dark:hover:bg-accent-600',
   ] as const
 }

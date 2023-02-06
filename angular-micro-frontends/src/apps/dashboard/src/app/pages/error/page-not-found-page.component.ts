@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
   template: `
     <div>
       <h1 class="text-3xl mb-6">Page not found 😮</h1>
-      <a routerLink="/" uiPrimaryButton>Back</a>
+      <a routerLink="/" uiAccentButton>Back</a>
     </div>
   `,
   styles: [],

@@ -67,7 +67,7 @@ import {
               type="button"
               class="dark:bg-red-700 dark:hover:bg-red-600"
               [class]="{ invisible: i === 0 }"
-              uiSecondaryButton
+              uiPrimaryButton
             >
               🗑️
             </button>
@@ -76,12 +76,12 @@ import {
         </div>
 
         <div class="flex justify-between">
-          <button type="button" (click)="addAuthorClick()" uiPrimaryButton>
+          <button type="button" (click)="addAuthorClick()" uiAccentButton>
             Add another author
           </button>
           <div class="flex  items-center gap-2">
             <div>Author not in the list?</div>
-            <a routerLink="/author/new" uiPrimaryButton>Create</a>
+            <a routerLink="/author/new" uiAccentButton>Create</a>
           </div>
         </div>
 
@@ -124,8 +124,8 @@ import {
         </div> -->
       </div>
       <div class="mt-4 flex items-center justify-center gap-3">
-        <a routerLink="/" uiSecondaryButton>Back</a>
-        <button type="submit" uiPrimaryButton>Add</button>
+        <a routerLink="/" uiPrimaryButton>Back</a>
+        <button type="submit" uiAccentButton>Add</button>
       </div>
     </form>
   `,

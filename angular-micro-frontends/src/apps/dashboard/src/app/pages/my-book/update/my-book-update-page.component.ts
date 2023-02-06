@@ -38,7 +38,7 @@ import {
           type="button"
           class="text-base dark:bg-red-600 dark:hover:bg-red-500"
           (click)="onDelete(myBook.id)"
-          uiSecondaryButton
+          uiPrimaryButton
         >
           Delete
         </button>

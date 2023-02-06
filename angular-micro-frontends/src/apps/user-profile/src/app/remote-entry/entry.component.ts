@@ -27,7 +27,7 @@ import { FormControl, FormGroup } from '@angular/forms'
             <button
               type="button"
               (click)="onChangeUsernameClick()"
-              uiPrimaryButton
+              uiAccentButton
             >
               Confirm
             </button>

@@ -41,7 +41,7 @@ import { Observable, Subscription } from 'rxjs'
 
           <div class="flex items-center gap-2">
             <div>Book not in the list?</div>
-            <a [routerLink]="['/book/new']" uiPrimaryButton>Add</a>
+            <a [routerLink]="['/book/new']" uiAccentButton>Add</a>
           </div>
 
           <div class="flex flex-col">
@@ -105,8 +105,8 @@ import { Observable, Subscription } from 'rxjs'
           </div>
         </div>
         <div class="mt-4 flex items-center justify-center gap-3">
-          <a routerLink="/" uiSecondaryButton>Back</a>
-          <button type="submit" uiPrimaryButton>Add</button>
+          <a routerLink="/" uiPrimaryButton>Back</a>
+          <button type="submit" uiAccentButton>Add</button>
         </div>
       </form>
     </ng-container>

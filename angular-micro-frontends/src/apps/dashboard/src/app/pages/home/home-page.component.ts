@@ -18,9 +18,7 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
         <ng-container
           *ngIf="this.currentlyReadingBooks$ | async as readingBooks"
         >
-          <ul
-            class="px-5 py-1 dark:bg-primary-700 dark:bg-primary-600 border shadow-lg rounded-md"
-          >
+          <ul class="px-5 py-1 dark:bg-primary-700 border shadow-lg rounded-md">
             <li
               *ngFor="let readingBook of readingBooks"
               [routerLink]="['/my-book', readingBook.id]"
@@ -37,9 +35,7 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
       <article id="read-next" class="mb-4">
         <h1 class="uppercase text-xl mb-2">Read next</h1>
         <ng-container *ngIf="this.readNextBooks$ | async as readNextBooks">
-          <ul
-            class="px-5 py-1 dark:bg-primary-700 dark:bg-primary-600 border shadow-lg rounded-md"
-          >
+          <ul class="px-5 py-1 dark:bg-primary-700 border shadow-lg rounded-md">
             <li
               *ngFor="let readNextBook of readNextBooks"
               [routerLink]="['/my-book', readNextBook.id]"
@@ -58,9 +54,7 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
         <ng-container
           *ngIf="this.recentlyReadBooks$ | async as recentlyReadBooks"
         >
-          <ul
-            class="px-5 py-1 dark:bg-primary-700 dark:bg-primary-600 border shadow-lg rounded-md"
-          >
+          <ul class="px-5 py-1 dark:bg-primary-700 border shadow-lg rounded-md">
             <li
               *ngFor="let recentlyReadBook of recentlyReadBooks"
               [routerLink]="['/my-book', recentlyReadBook.id]"
@@ -83,7 +77,7 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
       </div>
 
       <article id="add-book" class="pt-4 flex justify-center">
-        <a routerLink="/my-book/new" uiPrimaryButton>Add a book to my list</a>
+        <a routerLink="/my-book/new" uiAccentButton>Add a book to my list</a>
       </article>
     </main>
   `,

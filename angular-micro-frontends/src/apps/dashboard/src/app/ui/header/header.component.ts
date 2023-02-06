@@ -23,7 +23,7 @@ import { Router } from '@angular/router'
         <ng-container *ngIf="authService.currentUser$ | async as user">
           <div>{{ user.username }}</div>
         </ng-container>
-        <button type="button" (click)="onLogoutClick()" uiSecondaryButton>
+        <button type="button" (click)="onLogoutClick()" uiPrimaryButton>
           Logout
         </button>
       </div>

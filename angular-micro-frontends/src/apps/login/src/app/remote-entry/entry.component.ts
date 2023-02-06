@@ -16,7 +16,7 @@ import { Component } from '@angular/core'
         class="flex flex-col items-center"
       >
         <div>You are now logged in.</div>
-        <button type="button" (click)="onLogoutClick()" uiPrimaryButton>
+        <button type="button" (click)="onLogoutClick()" uiAccentButton>
           Logout
         </button>
       </div>

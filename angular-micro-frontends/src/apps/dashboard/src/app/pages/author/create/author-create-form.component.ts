@@ -75,8 +75,8 @@ import { Subscription } from 'rxjs'
           </div> -->
         </div>
         <div class="mt-4 flex items-center justify-center gap-3">
-          <a routerLink="/" uiSecondaryButton>Back</a>
-          <button type="submit" uiPrimaryButton>Add</button>
+          <a routerLink="/" uiPrimaryButton>Back</a>
+          <button type="submit" uiAccentButton>Add</button>
         </div>
       </form>
     </ng-container>

@@ -15,7 +15,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
             let author of myBook.attributes.book.data.attributes.authors.data
           "
         >
-          <span class="text-sm dark:text-gray-400">
+          <span class="text-sm dark:text-primary-400">
             {{ author.attributes.firstname }}
             {{ author.attributes.lastname }}
           </span>

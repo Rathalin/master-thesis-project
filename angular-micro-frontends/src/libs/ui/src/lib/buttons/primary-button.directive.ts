@@ -11,7 +11,7 @@ export class PrimaryButtonDirective {
   }
 
   private readonly styleClasses = [
-    'dark:bg-accent-700',
-    'dark:hover:bg-accent-600',
+    'dark:bg-primary-700',
+    'dark:hover:bg-primary-600',
   ] as const
 }

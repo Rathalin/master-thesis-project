@@ -39,7 +39,7 @@ import { BehaviorSubject, Subscription } from 'rxjs'
         </div>
       </div>
       <div class="mt-4 flex items-center justify-center gap-1">
-        <button type="submit" uiPrimaryButton>Login</button>
+        <button type="submit" uiAccentButton>Login</button>
       </div>
     </form>
   `,

@@ -11,6 +11,7 @@ import { ErrorComponent } from './state/error.component'
 import { SuccessComponent } from './state/success.component'
 import { RequestStateComponent } from './state/request-state.component'
 import { ProgressBarComponent } from './progress/progress-bar.component'
+import { AccentButtonDirective } from './buttons/accent-button.directive'
 
 @NgModule({
   imports: [CommonModule],
@@ -26,6 +27,7 @@ import { ProgressBarComponent } from './progress/progress-bar.component'
     SuccessComponent,
     RequestStateComponent,
     ProgressBarComponent,
+    AccentButtonDirective,
   ],
   exports: [
     InputDirective,
@@ -39,6 +41,7 @@ import { ProgressBarComponent } from './progress/progress-bar.component'
     SuccessComponent,
     RequestStateComponent,
     ProgressBarComponent,
+    AccentButtonDirective,
   ],
 })
 export class UiModule {}
