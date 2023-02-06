@@ -19,7 +19,8 @@ import { MyBookNotReadComponent } from './pages/home/my-book-not-read.component'
 import { MyBookCreateFormComponent } from './pages/my-book/create/my-book-create-form.component'
 import { MyBookCreatePageComponent } from './pages/my-book/create/my-book-create-page.component'
 import { MyBookUpdateFormComponent } from './pages/my-book/update/my-book-update-form.component'
-import { MyBookUpdatePageComponent } from './pages/my-book/update/my-book-update-page.component'
+import { MyBookUpdatePageComponent } from './pages/my-book/update/my-book-update-page.component';
+import { BookTitlePipe } from './pages/my-book/create/book-title.pipe'
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { MyBookUpdatePageComponent } from './pages/my-book/update/my-book-update
     MyBookCreateFormComponent,
     MyBookUpdatePageComponent,
     MyBookUpdateFormComponent,
+    BookTitlePipe,
   ],
   imports: [
     BrowserModule,

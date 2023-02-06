@@ -33,7 +33,7 @@ import { Observable, Subscription } from 'rxjs'
                 [ngValue]="book"
                 [selected]="book === form.controls.book.value"
               >
-                {{ book.attributes.title }}
+                {{ book | bookTitle }}
               </option>
             </select>
             <ui-input-error controlName="book"></ui-input-error>
