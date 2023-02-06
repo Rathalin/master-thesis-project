@@ -82,7 +82,7 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
         ></ui-error>
       </div>
 
-      <article id="add-book" class="pt-4">
+      <article id="add-book" class="pt-4 flex justify-center">
         <a routerLink="/my-book/new" uiPrimaryButton>Add a book to my list</a>
       </article>
     </main>

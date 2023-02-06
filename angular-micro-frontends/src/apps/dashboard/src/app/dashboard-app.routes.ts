@@ -11,6 +11,10 @@ import { AuthService } from '@angular-micro-frontends/auth'
 import { PageNotFoundComponent } from './pages/error/page-not-found-page.component'
 import { MyBookCreatePageComponent } from './pages/my-book/create/my-book-create-page.component'
 import { MyBookUpdatePageComponent } from './pages/my-book/update/my-book-update-page.component'
+import { BookCreatePageComponent } from './pages/book/create/book-create-page.component'
+import { BookUpdatePageComponent } from './pages/book/update/book-update-page.component'
+import { AuthorCreatePageComponent } from './pages/author/create/author-create-page.component'
+import { AuthorUpdatePageComponent } from './pages/author/update/author-update-page.component'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -48,6 +52,26 @@ export const appRoutes: Route[] = [
   {
     path: '',
     component: HomePageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'author/new',
+    component: AuthorCreatePageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'author/:id',
+    component: AuthorUpdatePageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'book/new',
+    component: BookCreatePageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'book/:id',
+    component: BookUpdatePageComponent,
     canActivate: [AuthGuard],
   },
   {
