@@ -10,5 +10,5 @@ export class SubtleButtonDirective {
     applyStyleClasses(this.el, [...buttonStyleClasses, ...this.styleClasses])
   }
 
-  private readonly styleClasses = ['dark:hover:bg-neutral-700'] as const
+  private readonly styleClasses = ['dark:hover:bg-secondary-700'] as const
 }

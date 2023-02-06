@@ -6,9 +6,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: tailwindColors.purple,
+        primary: tailwindColors.stone,
         secondary: tailwindColors.gray,
-        accent: tailwindColors.blue,
+        accent: tailwindColors.amber,
       },
     },
   },

@@ -11,7 +11,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: tailwindColors.amber,
+        primary: tailwindColors.stone,
+        secondary: tailwindColors.gray,
+        accent: tailwindColors.amber,
       },
     },
   },
