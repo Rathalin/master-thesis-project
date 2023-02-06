@@ -10,6 +10,7 @@ import { LoadingComponent } from './state/loading.component'
 import { ErrorComponent } from './state/error.component'
 import { SuccessComponent } from './state/success.component'
 import { RequestStateComponent } from './state/request-state.component'
+import { ProgressBarComponent } from './progress/progress-bar.component'
 
 @NgModule({
   imports: [CommonModule],
@@ -24,6 +25,7 @@ import { RequestStateComponent } from './state/request-state.component'
     ErrorComponent,
     SuccessComponent,
     RequestStateComponent,
+    ProgressBarComponent,
   ],
   exports: [
     InputDirective,
@@ -36,6 +38,7 @@ import { RequestStateComponent } from './state/request-state.component'
     ErrorComponent,
     SuccessComponent,
     RequestStateComponent,
+    ProgressBarComponent,
   ],
 })
 export class UiModule {}

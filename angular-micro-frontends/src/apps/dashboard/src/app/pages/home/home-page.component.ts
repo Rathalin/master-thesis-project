@@ -19,12 +19,12 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
           *ngIf="this.currentlyReadingBooks$ | async as readingBooks"
         >
           <ul
-            class="px-5 py-1 dark:bg-slate-700 dark:border-slate-600 border shadow-lg rounded-md"
+            class="px-5 py-1 dark:bg-primary-700 dark:bg-primary-600 border shadow-lg rounded-md"
           >
             <li
               *ngFor="let readingBook of readingBooks"
               [routerLink]="['/my-book', readingBook.id]"
-              class="dark:border-b-slate-500 border-b last:border-b-0 py-3 cursor-pointer"
+              class="dark:border-b-primary-500 border-b last:border-b-0 py-3 cursor-pointer"
             >
               <dashboard-my-book-reading
                 [myBook]="readingBook"
@@ -38,12 +38,12 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
         <h1 class="uppercase text-xl mb-2">Read next</h1>
         <ng-container *ngIf="this.readNextBooks$ | async as readNextBooks">
           <ul
-            class="px-5 py-1 dark:bg-slate-700 dark:border-slate-600 border shadow-lg rounded-md"
+            class="px-5 py-1 dark:bg-primary-700 dark:bg-primary-600 border shadow-lg rounded-md"
           >
             <li
               *ngFor="let readNextBook of readNextBooks"
               [routerLink]="['/my-book', readNextBook.id]"
-              class="dark:border-b-slate-500 border-b last:border-b-0 py-3 cursor-pointer"
+              class="dark:border-b-primary-500 border-b last:border-b-0 py-3 cursor-pointer"
             >
               <dashboard-my-book-not-read
                 [myBook]="readNextBook"
@@ -59,12 +59,12 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
           *ngIf="this.recentlyReadBooks$ | async as recentlyReadBooks"
         >
           <ul
-            class="px-5 py-1 dark:bg-slate-700 dark:border-slate-600 border shadow-lg rounded-md"
+            class="px-5 py-1 dark:bg-primary-700 dark:bg-primary-600 border shadow-lg rounded-md"
           >
             <li
               *ngFor="let recentlyReadBook of recentlyReadBooks"
               [routerLink]="['/my-book', recentlyReadBook.id]"
-              class="dark:border-b-slate-500 border-b last:border-b-0 py-3 cursor-pointer"
+              class="dark:border-b-primary-500 border-b last:border-b-0 py-3 cursor-pointer"
             >
               <dashboard-my-book-read
                 [myBook]="recentlyReadBook"

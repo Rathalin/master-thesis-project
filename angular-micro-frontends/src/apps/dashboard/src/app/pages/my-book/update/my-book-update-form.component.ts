@@ -46,7 +46,7 @@ import { Subscription } from 'rxjs'
             type="number"
             formControlName="currentPage"
             [min]="1"
-            class="dark:bg-slate-700 disabled:hover:bg-slate-700 disabled:hover:outline-none"
+            class="dark:bg-primary-700 disabled:hover:bg-primary-700 disabled:hover:outline-none"
             uiInput
           />
           <ui-input-error controlName="currentPage"></ui-input-error>

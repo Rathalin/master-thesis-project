@@ -93,7 +93,7 @@ import {
             type="number"
             formControlName="pages"
             [min]="1"
-            class="dark:bg-slate-700 disabled:hover:bg-slate-700 disabled:hover:outline-none"
+            class="dark:bg-primary-700 disabled:hover:bg-primary-700 disabled:hover:outline-none"
             uiInput
           />
           <ui-input-error controlName="pages"></ui-input-error>

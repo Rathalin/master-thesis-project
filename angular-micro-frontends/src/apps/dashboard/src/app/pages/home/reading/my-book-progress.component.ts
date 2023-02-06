@@ -24,14 +24,7 @@ import {
           </span>
         </ng-container>
       </div>
-      <progress
-        class="h-1 w-24"
-        [value]="currentPage"
-        [max]="pages"
-        [title]="(percent | number : '1.2-2') + '%'"
-      >
-        {{ this.percent | number : '1.2-2' }}%
-      </progress>
+      <ui-progress-bar></ui-progress-bar>
     </div>
   `,
   styles: [],

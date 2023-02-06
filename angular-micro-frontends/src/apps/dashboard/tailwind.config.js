@@ -7,6 +7,8 @@ module.exports = {
     extend: {
       colors: {
         primary: tailwindColors.purple,
+        secondary: tailwindColors.gray,
+        accent: tailwindColors.blue,
       },
     },
   },
