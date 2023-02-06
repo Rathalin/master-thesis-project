@@ -1,4 +1,4 @@
-import { ContentType, DateString } from './structure.types'
+import { ContentType, DateString, MediaImage } from './structure.types'
 
 export type BookAttributes = {
   title: string
@@ -7,7 +7,11 @@ export type BookAttributes = {
   authors: {
     data: AuthorContentType[]
   }
+  cover: {
+    data: ContentType<MediaImage> | null
+  }
 }
+
 export type BookContentType = ContentType<BookAttributes>
 
 export type MyBookAttributes = {
@@ -40,3 +44,10 @@ export const MyBookRatingOptions = [
 ] as const
 
 export type MyBookRating = typeof MyBookRatingOptions[number]
+
+export type PlaceholderAttributes = {
+  bookCover: {
+    data: ContentType<MediaImage> | null
+  }
+}
+export type PlaceholderContentType = ContentType<PlaceholderAttributes>

@@ -17,7 +17,7 @@ export class MyBookService extends CollectionService {
       {
         populate: {
           book: {
-            populate: ['authors'],
+            populate: ['authors', 'cover'],
           },
         },
         filters: {
@@ -40,7 +40,7 @@ export class MyBookService extends CollectionService {
       {
         populate: {
           book: {
-            populate: ['authors'],
+            populate: ['authors', 'cover'],
           },
         },
         filters: {
@@ -63,7 +63,7 @@ export class MyBookService extends CollectionService {
       {
         populate: {
           book: {
-            populate: ['authors'],
+            populate: ['authors', 'cover'],
           },
         },
         filters: {
@@ -100,7 +100,7 @@ export class MyBookService extends CollectionService {
       {
         populate: {
           book: {
-            populate: ['authors'],
+            populate: ['authors', 'cover'],
           },
         },
         filters: {
@@ -137,7 +137,7 @@ export class MyBookService extends CollectionService {
       {
         populate: {
           book: {
-            populate: ['authors'],
+            populate: ['authors', 'cover'],
           },
         },
         filters: {

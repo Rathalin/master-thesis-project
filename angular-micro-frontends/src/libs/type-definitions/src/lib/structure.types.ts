@@ -40,3 +40,35 @@ export type WithId<T> = {
 
 export type DateString = string
 export type ID = number
+
+export type MediaImageFormat = {
+  name: string
+  hash: string
+  ext: string
+  mime: string
+  path: string | null
+  width: number
+  height: number
+  size: number
+  url: string
+}
+
+export type MediaImage = {
+  name: string
+  alternativeText: string | null
+  caption: string | null
+  width: number
+  height: number
+  formats: {
+    thumbnail: MediaImageFormat
+    small?: MediaImageFormat
+  }
+  hash: string
+  ext: string
+  mime: string
+  size: number
+  url: string
+  previewUrl: string | null
+  provider: string
+  provider_metadata: unknown
+}
