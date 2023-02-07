@@ -19,7 +19,7 @@ import { Observable, Subscription, filter, map } from 'rxjs'
   template: `
     <ng-container>
       <ng-container *ngIf="author$ | async as author">
-        <h1 class="text-3xl mb-5 flex items-center gap-3">
+        <h1 class="text-3xl mb-5 flex items-center gap-3 flex-wrap">
           <span>Update author</span>
         </h1>
         <dashboard-author-update-form

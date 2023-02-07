@@ -13,7 +13,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
       [routerLink]="['/my-book', myBook.id]"
       class="dark:hover:bg-primary-600 px-3 py-4 cursor-pointer transition-colors duration-100"
     >
-      <div class="flex justify-between mx-2">
+      <div class="flex flex-wrap justify-between mx-2 gap-y-2">
         <div class="flex gap-4">
           <ng-container
             *ngIf="

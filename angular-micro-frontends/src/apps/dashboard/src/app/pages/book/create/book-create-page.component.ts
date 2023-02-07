@@ -14,7 +14,9 @@ import { Observable, Subscription, filter, map } from 'rxjs'
   template: `
     <ng-container>
       <ng-container>
-        <h1></h1>
+        <h1 class="text-3xl mb-5 flex items-center gap-3 flex-wrap">
+          <span>Create Book</span>
+        </h1>
       </ng-container>
 
       <ng-container

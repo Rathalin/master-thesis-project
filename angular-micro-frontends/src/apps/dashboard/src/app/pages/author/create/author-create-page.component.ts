@@ -18,7 +18,7 @@ import { Observable, Subscription, filter } from 'rxjs'
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container>
-      <h1 class="text-3xl mb-5 flex items-center gap-3">
+      <h1 class="text-3xl mb-5 flex items-center gap-3 flex-wrap">
         <span>Add a new author</span>
       </h1>
       <dashboard-author-create-form

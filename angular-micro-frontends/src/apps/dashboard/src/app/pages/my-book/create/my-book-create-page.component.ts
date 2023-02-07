@@ -19,7 +19,7 @@ import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs'
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container>
-      <h1 class="text-3xl mb-5 flex items-center gap-3">
+      <h1 class="text-3xl mb-5 flex items-center gap-3 flex-wrap">
         <span>Add a new Book</span>
       </h1>
       <dashboard-my-book-create-form
