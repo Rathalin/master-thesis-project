@@ -3,7 +3,10 @@ import {
   MyBookService,
   BookService,
 } from '@angular-micro-frontends/book'
-import { MyBookContentType } from '@angular-micro-frontends/type-definitions'
+import {
+  ImageFile,
+  MyBookContentType,
+} from '@angular-micro-frontends/type-definitions'
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
 import { Observable, combineLatest, filter, map } from 'rxjs'
 
@@ -24,9 +27,11 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
               [routerLink]="['/my-book', readingBook.id]"
               class="dark:border-b-primary-500 border-b last:border-b-0 py-3 cursor-pointer"
             >
-              <dashboard-my-book-reading
+              <dashboard-my-book-list-entry
                 [myBook]="readingBook"
-              ></dashboard-my-book-reading>
+                [placeholderCover]="bookPlaceholderCover$ | async"
+                [showProgress]="true"
+              ></dashboard-my-book-list-entry>
             </li>
           </ul>
         </ng-container>
@@ -41,9 +46,10 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
               [routerLink]="['/my-book', readNextBook.id]"
               class="dark:border-b-primary-500 border-b last:border-b-0 py-3 cursor-pointer"
             >
-              <dashboard-my-book-not-read
+              <dashboard-my-book-list-entry
                 [myBook]="readNextBook"
-              ></dashboard-my-book-not-read>
+                [placeholderCover]="bookPlaceholderCover$ | async"
+              ></dashboard-my-book-list-entry>
             </li>
           </ul>
         </ng-container>
@@ -60,9 +66,10 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
               [routerLink]="['/my-book', recentlyReadBook.id]"
               class="dark:border-b-primary-500 border-b last:border-b-0 py-3 cursor-pointer"
             >
-              <dashboard-my-book-read
+              <dashboard-my-book-list-entry
                 [myBook]="recentlyReadBook"
-              ></dashboard-my-book-read>
+                [placeholderCover]="bookPlaceholderCover$ | async"
+              ></dashboard-my-book-list-entry>
             </li>
           </ul>
         </ng-container>
@@ -92,6 +99,7 @@ export class HomePageComponent implements OnInit {
   public currentlyReadingBooks$?: Observable<MyBookContentType[]>
   public readNextBooks$?: Observable<MyBookContentType[]>
   public recentlyReadBooks$?: Observable<MyBookContentType[]>
+  public bookPlaceholderCover$?: Observable<ImageFile>
   public isError$?: Observable<boolean>
   public isLoading$?: Observable<boolean>
 
@@ -112,6 +120,20 @@ export class HomePageComponent implements OnInit {
       filter((query) => query.result != null && query.result.data != null),
       map((query) => query.result!.data!)
     )
+    this.bookPlaceholderCover$ = this.bookService
+      .getBookCoverPlaceholder()
+      .pipe(
+        filter(
+          (request) =>
+            request.isSuccess &&
+            request.result!.data != null &&
+            request.result!.data.attributes.bookCover.data != null
+        ),
+        map(
+          (request) =>
+            request.result!.data!.attributes.bookCover.data!.attributes
+        )
+      )
     const results$ = combineLatest([
       currentlyReadingBooksQuery$,
       readNextBooksQuery$,

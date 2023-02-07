@@ -1,25 +1,20 @@
-import { BookService } from '@angular-micro-frontends/book'
 import {
-  ContentType,
+  ImageFile,
   MyBookContentType,
-  MediaImage,
 } from '@angular-micro-frontends/type-definitions'
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core'
-import { Observable, filter, map } from 'rxjs'
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
 
 @Component({
-  selector: 'dashboard-my-book-reading',
+  selector: 'dashboard-my-book-list-entry',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div *ngIf="myBook != null" class="flex justify-between">
       <div class="flex gap-4">
         <ng-container
-          *ngIf="myBook | getMyBookCover as cover; else placeholderCover"
+          *ngIf="
+            myBook | getMyBookCover as cover;
+            else placeholderCoverTemplate
+          "
         >
           <img
             [src]="'http://localhost:1337' + cover.formats.thumbnail.url"
@@ -27,13 +22,13 @@ import { Observable, filter, map } from 'rxjs'
             class="w-12"
           />
         </ng-container>
-        <ng-template #placeholderCover>
-          <ng-container *ngIf="bookCoverPlaceholder$ | async as placeholder">
+        <ng-template #placeholderCoverTemplate>
+          <ng-container *ngIf="placeholderCover != null">
             <img
               [src]="
-                'http://localhost:1337' + placeholder.formats.thumbnail.url
+                'http://localhost:1337' + placeholderCover.formats.thumbnail.url
               "
-              [alt]="placeholder.formats.thumbnail.url"
+              [alt]="placeholderCover.formats.thumbnail.url"
               class="w-12"
             />
           </ng-container>
@@ -55,7 +50,7 @@ import { Observable, filter, map } from 'rxjs'
         </div>
       </div>
 
-      <div class="flex flex-col">
+      <div *ngIf="showProgress" class="flex flex-col">
         <dashboard-my-book-progress
           [bookOwnership]="myBook"
         ></dashboard-my-book-progress>
@@ -64,27 +59,8 @@ import { Observable, filter, map } from 'rxjs'
   `,
   styles: [],
 })
-export class MyBookReadingComponent implements OnInit {
+export class MyBookListEntryComponent {
   @Input() myBook: MyBookContentType | null = null
-
-  constructor(private readonly bookService: BookService) {}
-
-  public bookCoverPlaceholder$?: Observable<MediaImage>
-
-  ngOnInit(): void {
-    this.bookCoverPlaceholder$ = this.bookService
-      .getBookCoverPlaceholder()
-      .pipe(
-        filter(
-          (request) =>
-            request.isSuccess &&
-            request.result!.data != null &&
-            request.result!.data.attributes.bookCover.data != null
-        ),
-        map(
-          (request) =>
-            request.result!.data!.attributes.bookCover.data!.attributes
-        )
-      )
-  }
+  @Input() placeholderCover: ImageFile | null = null
+  @Input() showProgress = false
 }

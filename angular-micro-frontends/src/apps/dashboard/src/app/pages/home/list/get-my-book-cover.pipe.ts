@@ -1,5 +1,5 @@
 import {
-  MediaImage,
+  ImageFile,
   MyBookContentType,
 } from '@angular-micro-frontends/type-definitions'
 import { Pipe, PipeTransform } from '@angular/core'
@@ -8,7 +8,7 @@ import { Pipe, PipeTransform } from '@angular/core'
   name: 'getMyBookCover',
 })
 export class GetMyBookCoverPipe implements PipeTransform {
-  transform(myBook: MyBookContentType): MediaImage | null {
+  transform(myBook: MyBookContentType): ImageFile | null {
     return myBook.attributes.book.data.attributes.cover.data?.attributes ?? null
   }
 }
