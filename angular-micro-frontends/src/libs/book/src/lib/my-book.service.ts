@@ -61,6 +61,7 @@ export class MyBookService extends CollectionService {
   public getMyCurrentlyReadingBooks() {
     const query = qs.stringify(
       {
+        sort: 'startReading',
         populate: {
           book: {
             populate: ['authors', 'cover'],
@@ -135,6 +136,7 @@ export class MyBookService extends CollectionService {
   public getMyReadBooks() {
     const query = qs.stringify(
       {
+        sort: 'finishReading:desc',
         populate: {
           book: {
             populate: ['authors', 'cover'],
