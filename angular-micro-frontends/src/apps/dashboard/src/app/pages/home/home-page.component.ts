@@ -22,14 +22,19 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
       </h1>
 
       <article id="currently-reading" class="mb-4">
-        <h2 class="text-xl mb-2 capitalize">Currently reading</h2>
+        <h2 class="text-xl mb-2 capitalize">
+          <span>Currently reading</span>
+          <span *ngIf="currentlyReadingBooks$ | async as readingBooks">
+            ({{ readingBooks.length }})
+          </span>
+        </h2>
         <ng-container
           *ngIf="this.currentlyReadingBooks$ | async as readingBooks"
         >
           <ul class="dark:bg-primary-700 border shadow-lg rounded-md">
             <li
               *ngFor="let readingBook of readingBooks"
-              class="border-b last:border-b-0 dark:border-b-primary-500 first:rounded-t-md first:rounded-b-none last:rounded-t-none last:rounded-b-md "
+              class="border-b last:border-b-0 dark:border-b-primary-500 first:rounded-t-md last:rounded-b-md"
             >
               <dashboard-my-book-list-entry
                 [myBook]="readingBook"
@@ -42,16 +47,22 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
       </article>
 
       <article id="read-next" class="mb-4">
-        <h2 class="text-xl mb-2 capitalize">Read next</h2>
+        <h2 class="text-xl mb-2 capitalize">
+          <span>Read next</span>
+          <span *ngIf="this.readNextBooks$ | async as readNextBooks">
+            ({{ readNextBooks.length }})
+          </span>
+        </h2>
         <ng-container *ngIf="this.readNextBooks$ | async as readNextBooks">
           <ul class="dark:bg-primary-700 border shadow-lg rounded-md">
             <li
               *ngFor="let readNextBook of readNextBooks"
-              class="border-b last:border-b-0 dark:border-b-primary-500 first:rounded-t-md first:rounded-b-none last:rounded-t-none last:rounded-b-md "
+              class="border-b last:border-b-0 dark:border-b-primary-500 first:rounded-t-md last:rounded-b-md"
             >
               <dashboard-my-book-list-entry
                 [myBook]="readNextBook"
                 [placeholderCover]="bookPlaceholderCover$ | async"
+                [showPages]="true"
               ></dashboard-my-book-list-entry>
             </li>
           </ul>
@@ -59,18 +70,24 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
       </article>
 
       <article id="recently-read" class="mb-4">
-        <h2 class="text-xl mb-2 capitalize">Recently read</h2>
+        <h2 class="text-xl mb-2 capitalize">
+          <span>Recently read</span>
+          <span *ngIf="recentlyReadBooks$ | async as recentlyReadBooks">
+            ({{ recentlyReadBooks.length }})
+          </span>
+        </h2>
         <ng-container
           *ngIf="this.recentlyReadBooks$ | async as recentlyReadBooks"
         >
           <ul class="dark:bg-primary-700 border shadow-lg rounded-md">
             <li
               *ngFor="let recentlyReadBook of recentlyReadBooks"
-              class="border-b last:border-b-0 dark:border-b-primary-500 first:rounded-t-md first:rounded-b-none last:rounded-t-none last:rounded-b-md "
+              class="border-b last:border-b-0 dark:border-b-primary-500 first:rounded-t-md last:rounded-b-md"
             >
               <dashboard-my-book-list-entry
                 [myBook]="recentlyReadBook"
                 [placeholderCover]="bookPlaceholderCover$ | async"
+                [showReadDate]="true"
               ></dashboard-my-book-list-entry>
             </li>
           </ul>

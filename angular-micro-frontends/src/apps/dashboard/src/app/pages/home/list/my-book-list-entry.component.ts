@@ -21,22 +21,24 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
               else placeholderCoverTemplate
             "
           >
-            <img
-              [src]="'http://localhost:1337' + cover.formats.thumbnail.url"
-              [alt]="cover.name"
-              class="w-12"
-            />
+            <div class="w-12 max-h-20">
+              <img
+                [src]="'http://localhost:1337' + cover.formats.thumbnail.url"
+                [alt]="cover.name"
+              />
+            </div>
           </ng-container>
           <ng-template #placeholderCoverTemplate>
             <ng-container *ngIf="placeholderCover != null">
-              <img
-                [src]="
-                  'http://localhost:1337' +
-                  placeholderCover.formats.thumbnail.url
-                "
-                [alt]="placeholderCover.formats.thumbnail.url"
-                class="w-12"
-              />
+              <div class="w-12 max-h-20">
+                <img
+                  [src]="
+                    'http://localhost:1337' +
+                    placeholderCover.formats.thumbnail.url
+                  "
+                  [alt]="placeholderCover.formats.thumbnail.url"
+                />
+              </div>
             </ng-container>
           </ng-template>
           <div class="flex flex-col">
@@ -55,6 +57,18 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
               </span>
             </div>
           </div>
+        </div>
+
+        <div *ngIf="showPages">
+          <dashboard-my-book-pages
+            [pages]="myBook.attributes.book.data.attributes.pages"
+          ></dashboard-my-book-pages>
+        </div>
+
+        <div *ngIf="showReadDate">
+          <dashboard-my-book-date
+            [date]="myBook.attributes.finishReading"
+          ></dashboard-my-book-date>
         </div>
 
         <div *ngIf="showProgress" class="flex flex-col">
@@ -81,4 +95,6 @@ export class MyBookListEntryComponent {
   @Input() myBook: MyBookContentType | null = null
   @Input() placeholderCover: ImageFile | null = null
   @Input() showProgress = false
+  @Input() showPages = false
+  @Input() showReadDate = false
 }

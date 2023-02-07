@@ -27,6 +27,8 @@ import { BookUpdatePageComponent } from './pages/book/update/book-update-page.co
 import { BookUpdateFormComponent } from './pages/book/update/book-update-form.component'
 import { GetMyBookCoverPipe } from './pages/home/list/get-my-book-cover.pipe'
 import { MyBookListEntryComponent } from './pages/home/list/my-book-list-entry.component'
+import { MyBookDateComponent } from './pages/home/list/my-book-date.component'
+import { MyBookPagesComponent } from './pages/home/list/my-book-pages.component'
 
 @NgModule({
   declarations: [
@@ -52,6 +54,8 @@ import { MyBookListEntryComponent } from './pages/home/list/my-book-list-entry.c
     BookUpdateFormComponent,
     GetMyBookCoverPipe,
     MyBookListEntryComponent,
+    MyBookDateComponent,
+    MyBookPagesComponent,
   ],
   imports: [
     BrowserModule,
