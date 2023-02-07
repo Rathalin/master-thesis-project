@@ -16,16 +16,20 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
   styles: [],
   template: `
     <main>
+      <h1 class="mb-4 flex flex-wrap gap-4 justify-between">
+        <span class="text-3xl uppercase">My Books</span>
+        <a routerLink="/my-book/new" uiAccentButton>Add a book to my list</a>
+      </h1>
+
       <article id="currently-reading" class="mb-4">
-        <h1 class="uppercase text-xl mb-2">Currently reading</h1>
+        <h2 class="text-xl mb-2 capitalize">Currently reading</h2>
         <ng-container
           *ngIf="this.currentlyReadingBooks$ | async as readingBooks"
         >
-          <ul class="px-5 py-1 dark:bg-primary-700 border shadow-lg rounded-md">
+          <ul class="dark:bg-primary-700 border shadow-lg rounded-md">
             <li
               *ngFor="let readingBook of readingBooks"
-              [routerLink]="['/my-book', readingBook.id]"
-              class="dark:border-b-primary-500 border-b last:border-b-0 py-3 cursor-pointer"
+              class="border-b last:border-b-0 dark:border-b-primary-500 first:rounded-t-md first:rounded-b-none last:rounded-t-none last:rounded-b-md "
             >
               <dashboard-my-book-list-entry
                 [myBook]="readingBook"
@@ -38,13 +42,12 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
       </article>
 
       <article id="read-next" class="mb-4">
-        <h1 class="uppercase text-xl mb-2">Read next</h1>
+        <h2 class="text-xl mb-2 capitalize">Read next</h2>
         <ng-container *ngIf="this.readNextBooks$ | async as readNextBooks">
-          <ul class="px-5 py-1 dark:bg-primary-700 border shadow-lg rounded-md">
+          <ul class="dark:bg-primary-700 border shadow-lg rounded-md">
             <li
               *ngFor="let readNextBook of readNextBooks"
-              [routerLink]="['/my-book', readNextBook.id]"
-              class="dark:border-b-primary-500 border-b last:border-b-0 py-3 cursor-pointer"
+              class="border-b last:border-b-0 dark:border-b-primary-500 first:rounded-t-md first:rounded-b-none last:rounded-t-none last:rounded-b-md "
             >
               <dashboard-my-book-list-entry
                 [myBook]="readNextBook"
@@ -56,15 +59,14 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
       </article>
 
       <article id="recently-read" class="mb-4">
-        <h1 class="uppercase text-xl mb-2">Recently read</h1>
+        <h2 class="text-xl mb-2 capitalize">Recently read</h2>
         <ng-container
           *ngIf="this.recentlyReadBooks$ | async as recentlyReadBooks"
         >
-          <ul class="px-5 py-1 dark:bg-primary-700 border shadow-lg rounded-md">
+          <ul class="dark:bg-primary-700 border shadow-lg rounded-md">
             <li
               *ngFor="let recentlyReadBook of recentlyReadBooks"
-              [routerLink]="['/my-book', recentlyReadBook.id]"
-              class="dark:border-b-primary-500 border-b last:border-b-0 py-3 cursor-pointer"
+              class="border-b last:border-b-0 dark:border-b-primary-500 first:rounded-t-md first:rounded-b-none last:rounded-t-none last:rounded-b-md "
             >
               <dashboard-my-book-list-entry
                 [myBook]="recentlyReadBook"
@@ -82,10 +84,6 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
           text="Could not reach the server."
         ></ui-error>
       </div>
-
-      <article id="add-book" class="pt-4 flex justify-center">
-        <a routerLink="/my-book/new" uiAccentButton>Add a book to my list</a>
-      </article>
     </main>
   `,
 })
