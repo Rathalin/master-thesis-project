@@ -27,7 +27,7 @@ export class ProgressBarComponent {
   @Input() max = 100
 
   private calculatePercent(newValue: number) {
-    this.percent.next((newValue / this.max) * 100)
+    this.percent.next(Math.min((newValue / this.max) * this.max, 100))
   }
 
   public percent = new BehaviorSubject(20)
