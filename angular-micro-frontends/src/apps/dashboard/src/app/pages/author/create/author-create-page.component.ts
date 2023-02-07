@@ -11,7 +11,7 @@ import {
   OnInit,
 } from '@angular/core'
 import { Router } from '@angular/router'
-import { Observable, Subscription } from 'rxjs'
+import { Observable, Subscription, filter } from 'rxjs'
 
 @Component({
   selector: 'dashboard-author-create-page',
@@ -26,7 +26,7 @@ import { Observable, Subscription } from 'rxjs'
       ></dashboard-author-create-form>
 
       <ui-request-state
-        [state]="createMutation$ | async"
+        [state]="createRequest$ | async"
         errorText="Could not add new author."
       ></ui-request-state>
     </ng-container>
@@ -39,17 +39,19 @@ export class AuthorCreatePageComponent implements OnDestroy {
     public readonly authorService: AuthorService
   ) {}
 
-  public createMutation$?: Observable<RequestState<AuthorContentType>>
-  private createMutationSubscription?: Subscription
+  public createRequest$?: Observable<RequestState<AuthorContentType>>
+  private subscriptions: Subscription[] = []
 
   ngOnDestroy(): void {
-    this.createMutationSubscription?.unsubscribe()
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe())
   }
 
   onCreate(author: AuthorAttributes) {
-    this.createMutation$ = this.authorService.createAuthor(author)
-    this.createMutationSubscription = this.createMutation$.subscribe(() =>
-      this.router.navigate(['/'])
+    this.createRequest$ = this.authorService.createAuthor(author)
+    this.subscriptions.push(
+      this.createRequest$
+        .pipe(filter((request) => request.isSuccess))
+        .subscribe(() => this.router.navigate(['/']))
     )
   }
 }

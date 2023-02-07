@@ -24,7 +24,7 @@ import {
           </span>
         </ng-container>
       </div>
-      <ui-progress-bar></ui-progress-bar>
+      <ui-progress-bar [value]="percent"></ui-progress-bar>
     </div>
   `,
   styles: [],
@@ -34,14 +34,16 @@ export class MyBookProgressComponent implements OnInit {
 
   public currentPage: number | null = null
   public pages: number | null = null
-  public percent: number | null = null
+  public percent: number = 0
 
   ngOnInit(): void {
     if (this.bookOwnership != null) {
       this.currentPage = this.bookOwnership.attributes.currentPage
       this.pages = this.bookOwnership.attributes.book.data.attributes.pages
       if (this.currentPage != null && this.pages != null) {
-        this.percent = (this.currentPage / this.pages) * 100
+        this.percent = parseFloat(
+          ((this.currentPage / this.pages) * 100).toFixed(1)
+        )
       }
     }
   }

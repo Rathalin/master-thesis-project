@@ -15,7 +15,7 @@ import { BehaviorSubject } from 'rxjs'
   styles: [
     `
       :host {
-        display: block;
+        display: flex;
       }
     `,
   ],

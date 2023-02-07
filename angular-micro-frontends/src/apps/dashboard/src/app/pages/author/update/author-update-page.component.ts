@@ -79,7 +79,9 @@ export class AuthorUpdatePageComponent implements OnInit, OnDestroy {
       authorData
     )
     this.subscriptions.push(
-      this.updateRequest$.subscribe(() => this.router.navigate(['/']))
+      this.updateRequest$
+        .pipe(filter((request) => request.isSuccess))
+        .subscribe(() => this.router.navigate(['/']))
     )
   }
 
@@ -88,7 +90,9 @@ export class AuthorUpdatePageComponent implements OnInit, OnDestroy {
   //     +this.route.snapshot.params['id']
   //   )
   //   this.subscriptions.push(
-  //     this.deleteRequest$.subscribe(() => this.router.navigate(['/']))
+  //     this.deleteRequest$
+  //       .pipe(filter((request) => request.isSuccess))
+  //       .subscribe(() => this.router.navigate(['/']))
   //   )
   // }
 }

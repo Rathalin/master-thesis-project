@@ -49,7 +49,7 @@ import {
       ></dashboard-my-book-update-form>
 
       <div class="flex flex-col">
-        <ng-container *ngIf="updateMutation$ | async as update">
+        <ng-container *ngIf="updateRequest$ | async as update">
           <ui-loading *ngIf="update.isLoading" text="Updating"></ui-loading>
           <ui-success *ngIf="update.result != null" text="Updated"></ui-success>
           <ui-error
@@ -58,11 +58,11 @@ import {
           ></ui-error>
         </ng-container>
         <ui-request-state
-          [state]="updateMutation$ | async"
+          [state]="updateRequest$ | async"
           errorText="Could not update."
         ></ui-request-state>
         <ui-request-state
-          [state]="deleteMutation$ | async"
+          [state]="deleteRequest$ | async"
           errorText="Could not delete."
         ></ui-request-state>
       </div>
@@ -79,42 +79,44 @@ export class MyBookUpdatePageComponent implements OnInit, OnDestroy {
   ) {}
 
   public myBook$?: Observable<MyBookContentType>
-  public updateMutation$?: Observable<RequestState<MyBookContentType>>
-  private updateMutationSubscription?: Subscription
-  public deleteMutation$?: Observable<RequestState<MyBookContentType>>
-  private deleteMutationSubscription?: Subscription
+  public updateRequest$?: Observable<RequestState<MyBookContentType>>
+  public deleteRequest$?: Observable<RequestState<MyBookContentType>>
+  private subscriptions: Subscription[] = []
 
   ngOnInit(): void {
     this.myBook$ = this.route.params.pipe(
       map((params) => +params['id']),
       switchMap((id) =>
         this.myBookService.getMyBook(id).pipe(
-          filter((result) => result.result?.data != null),
-          map((result) => result.result!.data!)
+          filter((request) => request.result?.data != null),
+          map((request) => request.result!.data!)
         )
       )
     )
   }
 
   ngOnDestroy(): void {
-    this.updateMutationSubscription?.unsubscribe()
-    this.deleteMutationSubscription?.unsubscribe()
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe())
   }
 
   onUpdate(myBook: Partial<MyBookAttributes>) {
-    this.updateMutation$ = this.myBookService.updateMyBook(
+    this.updateRequest$ = this.myBookService.updateMyBook(
       +this.route.snapshot.params['id'],
       myBook
     )
-    this.updateMutationSubscription = this.updateMutation$.subscribe(() =>
-      this.router.navigate(['/'])
+    this.subscriptions.push(
+      this.updateRequest$
+        .pipe(filter((request) => request.isSuccess))
+        .subscribe(() => this.router.navigate(['/']))
     )
   }
 
   onDelete(id: ID) {
-    this.deleteMutation$ = this.myBookService.deleteMyBook(id)
-    this.deleteMutationSubscription = this.deleteMutation$.subscribe(() =>
-      this.router.navigate(['/'])
+    this.deleteRequest$ = this.myBookService.deleteMyBook(id)
+    this.subscriptions.push(
+      this.deleteRequest$
+        .pipe(filter((request) => request.isSuccess))
+        .subscribe(() => this.router.navigate(['/']))
     )
   }
 }

@@ -1,10 +1,12 @@
 import { AuthorService } from '@angular-micro-frontends/book'
 import {
+  AuthorAttributes,
   AuthorContentType,
   RequestState,
 } from '@angular-micro-frontends/type-definitions'
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
-import { Observable, filter, map } from 'rxjs'
+import { Router } from '@angular/router'
+import { Observable, Subscription, filter, map } from 'rxjs'
 
 @Component({
   selector: 'dashboard-book-page',
@@ -33,11 +35,25 @@ import { Observable, filter, map } from 'rxjs'
   styles: [],
 })
 export class BookCreatePageComponent implements OnInit {
-  constructor(private readonly authorService: AuthorService) {}
+  constructor(
+    private readonly router: Router,
+    private readonly authorService: AuthorService
+  ) {}
 
   public authorOptionsRequest$?: Observable<RequestState<AuthorContentType[]>>
+  public createRequest$?: Observable<RequestState<AuthorContentType>>
+  public subscriptions: Subscription[] = []
 
   ngOnInit(): void {
     this.authorOptionsRequest$ = this.authorService.getAuthors()
+  }
+
+  onCreate(author: AuthorAttributes) {
+    this.createRequest$ = this.authorService.createAuthor(author)
+    this.subscriptions.push(
+      this.createRequest$
+        .pipe(filter((request) => request.isSuccess))
+        .subscribe(() => this.router.navigate(['/']))
+    )
   }
 }

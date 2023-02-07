@@ -28,7 +28,7 @@ import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs'
       ></dashboard-my-book-create-form>
 
       <ui-request-state
-        [state]="createMyBookMutation$ | async"
+        [state]="createMyBookRequest$ | async"
         errorText="Could not add your new book"
       ></ui-request-state>
     </ng-container>
@@ -43,8 +43,8 @@ export class MyBookCreatePageComponent implements OnInit, OnDestroy {
   ) {}
 
   public newBookOptions$?: Observable<BookContentType[]>
-  public createMyBookMutation$?: Observable<RequestState<MyBookContentType>>
-  private createMyBookMutationSubscription$?: Subscription
+  public createMyBookRequest$?: Observable<RequestState<MyBookContentType>>
+  private subscriptons: Subscription[] = []
 
   ngOnInit(): void {
     this.newBookOptions$ = combineLatest([
@@ -55,11 +55,11 @@ export class MyBookCreatePageComponent implements OnInit, OnDestroy {
       this.myBookService.getMyBooks(),
     ]).pipe(
       filter(
-        ([_books, myBookResults]) =>
-          myBookResults.result != null && myBookResults.result.data != null
+        ([_books, myBookRequest]) =>
+          myBookRequest.result != null && myBookRequest.result.data != null
       ),
-      map(([books, myBookResults]) => {
-        const myBooks = myBookResults.result!.data!
+      map(([books, myBookRequest]) => {
+        const myBooks = myBookRequest.result!.data!
         const myBookBookIds = myBooks.map(
           (myBook) => myBook.attributes.book.data.id
         )
@@ -69,12 +69,15 @@ export class MyBookCreatePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.createMyBookMutationSubscription$?.unsubscribe()
+    this.subscriptons.forEach((subscription) => subscription.unsubscribe())
   }
 
   onCreate(bookOwnership: MyBookAttributes) {
-    this.createMyBookMutation$ = this.myBookService.createMyBook(bookOwnership)
-    this.createMyBookMutationSubscription$ =
-      this.createMyBookMutation$.subscribe(() => this.router.navigate(['/']))
+    this.createMyBookRequest$ = this.myBookService.createMyBook(bookOwnership)
+    this.subscriptons.push(
+      this.createMyBookRequest$
+        .pipe(filter((request) => request.isSuccess))
+        .subscribe(() => this.router.navigate(['/']))
+    )
   }
 }
