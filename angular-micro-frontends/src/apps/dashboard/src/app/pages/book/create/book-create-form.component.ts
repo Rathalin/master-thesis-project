@@ -65,17 +65,17 @@ import {
             <button
               (click)="removeAuthorClick(i)"
               type="button"
-              class="dark:bg-red-700 dark:hover:bg-red-600"
+              class="dark:bg-red-700 dark:hover:bg-red-600 items-center"
               [class]="{ invisible: i === 0 }"
               uiPrimaryButton
             >
-              🗑️
+              <i class="material-symbols-outlined">delete</i>
             </button>
             <!-- <ui-input-error [controlName]="'author' + i"></ui-input-error> -->
           </div>
         </div>
 
-        <div class="flex justify-between">
+        <div class="flex justify-between flex-wrap gap-1">
           <button type="button" (click)="addAuthorClick()" uiAccentButton>
             Add another author
           </button>

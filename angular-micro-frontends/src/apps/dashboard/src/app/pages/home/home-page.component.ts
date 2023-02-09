@@ -7,8 +7,16 @@ import {
   ImageFile,
   MyBookContentType,
 } from '@angular-micro-frontends/type-definitions'
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
-import { Observable, combineLatest, filter, map } from 'rxjs'
+import { ViewportScroller } from '@angular/common'
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
+import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs'
 
 @Component({
   selector: 'app-home-page',
@@ -94,7 +102,7 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
         </ng-container>
       </article>
 
-      <div class="mb-4">
+      <div class="mb-4 flex flex-col gap-2 items-center">
         <ui-loading *ngIf="isLoading$ | async"></ui-loading>
         <ui-error
           *ngIf="isError$ | async"
@@ -104,19 +112,25 @@ import { Observable, combineLatest, filter, map } from 'rxjs'
     </main>
   `,
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent implements OnInit, OnDestroy {
   constructor(
+    private readonly route: ActivatedRoute,
+    private readonly scroller: ViewportScroller,
     public readonly bookService: BookService,
     public readonly bookOwnershipService: MyBookService,
     public readonly authorService: AuthorService
-  ) {}
+  ) {
+    this.scroller.setOffset([0, 100])
+  }
 
   public currentlyReadingBooks$?: Observable<MyBookContentType[]>
   public readNextBooks$?: Observable<MyBookContentType[]>
   public recentlyReadBooks$?: Observable<MyBookContentType[]>
   public bookPlaceholderCover$?: Observable<ImageFile>
-  public isError$?: Observable<boolean>
   public isLoading$?: Observable<boolean>
+  public isSuccess$?: Observable<boolean>
+  public isError$?: Observable<boolean>
+  private subscriptions: Subscription[] = []
 
   ngOnInit(): void {
     const currentlyReadingBooksQuery$ =
@@ -149,16 +163,35 @@ export class HomePageComponent implements OnInit {
             request.result!.data!.attributes.bookCover.data!.attributes
         )
       )
-    const results$ = combineLatest([
+    const requests$ = combineLatest([
       currentlyReadingBooksQuery$,
       readNextBooksQuery$,
       recentlyReadBooksQuery$,
     ])
-    this.isLoading$ = results$.pipe(
-      map((results) => results.some((result) => result.isLoading))
+    this.isLoading$ = requests$.pipe(
+      map((requests) => requests.some((request) => request.isLoading))
     )
-    this.isError$ = results$.pipe(
-      map((results) => results.some((result) => result.error != null))
+    this.isError$ = requests$.pipe(
+      map((requests) => requests.some((request) => request.error != null))
     )
+    this.isSuccess$ = requests$.pipe(
+      map((requests) => requests.every((request) => request.isSuccess))
+    )
+    this.subscriptions.push(
+      this.isSuccess$
+        .pipe(filter((isSuccess) => isSuccess))
+        .subscribe(() => setTimeout(() => this.scrollToMyBookId(), 0))
+    )
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe())
+  }
+
+  scrollToMyBookId(): void {
+    const myBookIdParam = parseInt(this.route.snapshot.queryParams['myBookId'])
+    if (!isNaN(myBookIdParam)) {
+      this.scroller.scrollToAnchor(`my-book-${myBookIdParam}`)
+    }
   }
 }

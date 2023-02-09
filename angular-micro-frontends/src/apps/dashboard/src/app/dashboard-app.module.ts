@@ -29,6 +29,7 @@ import { GetMyBookCoverPipe } from './pages/home/list/get-my-book-cover.pipe'
 import { MyBookListEntryComponent } from './pages/home/list/my-book-list-entry.component'
 import { MyBookDateComponent } from './pages/home/list/my-book-date.component'
 import { MyBookPagesComponent } from './pages/home/list/my-book-pages.component'
+import { MyBookDetailsPageComponent } from './pages/my-book/details/my-book-details-page.component'
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { MyBookPagesComponent } from './pages/home/list/my-book-pages.component'
     MyBookListEntryComponent,
     MyBookDateComponent,
     MyBookPagesComponent,
+    MyBookDetailsPageComponent,
   ],
   imports: [
     BrowserModule,

@@ -6,19 +6,13 @@ import { Component } from '@angular/core'
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <dashboard-header></dashboard-header>
-    <main class="flex-1 mx-2 mt-4 sm:mt-10">
-      <div class="max-w-2xl mx-auto overflow-auto">
+    <main class="mx-2 mt-4 sm:mt-10">
+      <div class="max-w-2xl mx-auto">
         <router-outlet></router-outlet>
       </div>
     </main>
   `,
-  styles: [
-    `
-      :host {
-        @apply flex-1 flex flex-col;
-      }
-    `,
-  ],
+  styles: [],
 })
 export class DashboardAppComponent {
   title = 'dashboard'

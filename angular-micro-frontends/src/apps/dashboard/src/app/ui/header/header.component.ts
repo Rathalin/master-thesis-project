@@ -10,7 +10,7 @@ import { Router } from '@angular/router'
       *ngIf="authService.isAuthenticated$ | async"
       class="flex justify-center p-1 dark:bg-neutral-900 shadow-sm"
     >
-      <nav class="w-6/12 flex justify-start">
+      <nav class="w-1/2 flex justify-start">
         <menu class="flex items-center gap-6 p-3">
           <dashboard-nav-link routerLink="/">Home</dashboard-nav-link>
           <dashboard-nav-link routerLink="/user-profile">
@@ -18,7 +18,7 @@ import { Router } from '@angular/router'
           </dashboard-nav-link>
         </menu>
       </nav>
-      <div class="w-6/12 flex justify-end items-center gap-2">
+      <div class="w-1/2 flex justify-end items-center gap-2">
         <ng-container *ngIf="authService.currentUser$ | async as user">
           <div>{{ user.username }}</div>
         </ng-container>
@@ -28,7 +28,14 @@ import { Router } from '@angular/router'
       </div>
     </header>
   `,
-  styles: [],
+  styles: [
+    `
+      :host {
+        position: sticky;
+        top: 0;
+      }
+    `,
+  ],
 })
 export class HeaderComponent {
   constructor(
