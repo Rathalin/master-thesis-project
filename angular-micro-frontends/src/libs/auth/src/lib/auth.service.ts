@@ -44,6 +44,10 @@ export class AuthService {
     return this.authSubject.value != null
   }
 
+  get token() {
+    return this.authSubject.value?.jwt ?? null
+  }
+
   get currentUser() {
     return this.authSubject.value?.user ?? null
   }
@@ -81,6 +85,7 @@ export class AuthService {
       this.authSubject.next(response.data)
       this.currentUserSubject.next(response.data.user)
       this.saveToStorage(response.data)
+      console.log('New Auth', response.data)
     } catch (_error) {
       return {
         key: 'invalid-credentials',

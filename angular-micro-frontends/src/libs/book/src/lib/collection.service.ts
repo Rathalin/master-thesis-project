@@ -16,7 +16,11 @@ export class CollectionService {
 
   protected query<T>(path: string) {
     const query = this.createRequestState<T>()
-    fetch(this.apiUrl(path))
+    fetch(this.apiUrl(path), {
+      headers: {
+        Authorization: this.getBaererToken(),
+      },
+    })
       .then((response) => response.json())
       .then((data) => this.onSuccess(query, data))
       .catch((error) => this.onError(query, error))
@@ -31,6 +35,7 @@ export class CollectionService {
     fetch(this.apiUrl(path), {
       method: 'POST',
       headers: {
+        Authorization: this.getBaererToken(),
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
@@ -50,6 +55,7 @@ export class CollectionService {
     fetch(this.apiUrl(path), {
       method: 'PUT',
       headers: {
+        Authorization: this.getBaererToken(),
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
@@ -65,6 +71,9 @@ export class CollectionService {
     const mutation = this.createRequestState<TResult>()
     fetch(this.apiUrl(path), {
       method: 'DELETE',
+      headers: {
+        Authorization: this.getBaererToken(),
+      },
     })
       .then((response) => response.json())
       .then((result) => this.onSuccess(mutation, result))
@@ -75,6 +84,10 @@ export class CollectionService {
 
   protected apiUrl(path: string) {
     return `${this.url}${path}`
+  }
+
+  protected getBaererToken() {
+    return `Bearer ${this.authService.token}`
   }
 
   private createRequestState<T>(): BehaviorSubject<RequestState<T>> {
