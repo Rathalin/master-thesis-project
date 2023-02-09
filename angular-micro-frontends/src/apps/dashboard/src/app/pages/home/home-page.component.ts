@@ -24,12 +24,12 @@ import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs'
   styles: [],
   template: `
     <main>
-      <h1 class="mb-4 flex flex-wrap gap-4 justify-between">
+      <h1 class="flex flex-wrap gap-4 justify-between">
         <span class="text-3xl uppercase">My Books</span>
         <a routerLink="/my-book/new" uiAccentButton>Add a book to my list</a>
       </h1>
 
-      <article id="currently-reading" class="mb-4">
+      <article id="currently-reading" class="mt-4">
         <h2 class="text-xl mb-2 capitalize">
           <span>Currently reading</span>
           <span *ngIf="currentlyReadingBooks$ | async as readingBooks">
@@ -54,7 +54,7 @@ import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs'
         </ng-container>
       </article>
 
-      <article id="read-next" class="mb-4">
+      <article id="read-next" class="mt-4">
         <h2 class="text-xl mb-2 capitalize">
           <span>Read next</span>
           <span *ngIf="this.readNextBooks$ | async as readNextBooks">
@@ -77,7 +77,7 @@ import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs'
         </ng-container>
       </article>
 
-      <article id="recently-read" class="mb-4">
+      <article id="recently-read" class="mt-4">
         <h2 class="text-xl mb-2 capitalize">
           <span>Recently read</span>
           <span *ngIf="recentlyReadBooks$ | async as recentlyReadBooks">
@@ -102,7 +102,7 @@ import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs'
         </ng-container>
       </article>
 
-      <div class="mb-4 flex flex-col gap-2 items-center">
+      <div class="mt-4 flex flex-col gap-2 items-center">
         <ui-loading *ngIf="isLoading$ | async"></ui-loading>
         <ui-error
           *ngIf="isError$ | async"

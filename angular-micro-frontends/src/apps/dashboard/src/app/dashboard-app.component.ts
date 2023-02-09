@@ -7,7 +7,7 @@ import { Component } from '@angular/core'
   template: `
     <dashboard-header></dashboard-header>
     <main class="mx-2 mt-4 sm:mt-10">
-      <div class="max-w-2xl mx-auto">
+      <div class="max-w-2xl mx-auto mb-2">
         <router-outlet></router-outlet>
       </div>
     </main>
