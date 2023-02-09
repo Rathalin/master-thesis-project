@@ -107,13 +107,7 @@ export class MyBookUpdatePageComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.updateRequest$
         .pipe(filter((request) => request.isSuccess))
-        .subscribe(() =>
-          this.router.navigate(['/'], {
-            queryParams: {
-              myBookId: +this.route.snapshot.params['id'],
-            },
-          })
-        )
+        .subscribe(() => this.navigateBackWithId())
     )
   }
 
@@ -122,14 +116,19 @@ export class MyBookUpdatePageComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.deleteRequest$
         .pipe(filter((request) => request.isSuccess))
-        .subscribe(() =>
-          this.router.navigate([
-            '/',
-            {
-              myBookId: +this.route.snapshot.params['id'],
-            },
-          ])
-        )
+        .subscribe(() => this.navigateBack())
     )
+  }
+
+  navigateBack() {
+    this.router.navigate(['/'])
+  }
+
+  navigateBackWithId() {
+    this.router.navigate(['/'], {
+      queryParams: {
+        myBookId: this.route.snapshot.params['id'],
+      },
+    })
   }
 }

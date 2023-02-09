@@ -11,7 +11,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core'
-import { Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs'
 
 @Component({
@@ -37,6 +37,7 @@ import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs'
 })
 export class MyBookCreatePageComponent implements OnInit, OnDestroy {
   constructor(
+    private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly bookService: BookService,
     private readonly myBookService: MyBookService
@@ -76,8 +77,19 @@ export class MyBookCreatePageComponent implements OnInit, OnDestroy {
     this.createMyBookRequest$ = this.myBookService.createMyBook(bookOwnership)
     this.subscriptons.push(
       this.createMyBookRequest$
-        .pipe(filter((request) => request.isSuccess))
-        .subscribe(() => this.router.navigate(['/']))
+        .pipe(
+          filter((request) => request.isSuccess),
+          map((request) => request.result!.data!.id)
+        )
+        .subscribe((id) => this.navigateBackWithId(id))
     )
+  }
+
+  navigateBackWithId(id: number) {
+    this.router.navigate(['/'], {
+      queryParams: {
+        myBookId: id,
+      },
+    })
   }
 }
