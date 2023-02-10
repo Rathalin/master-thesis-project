@@ -12,6 +12,8 @@ import * as qs from 'qs'
   providedIn: 'root',
 })
 export class MyBookService extends CollectionService {
+  protected route = '/book-ownerships-of-user'
+
   public getMyBooks() {
     const query = qs.stringify(
       {
@@ -20,19 +22,12 @@ export class MyBookService extends CollectionService {
             populate: ['authors', 'cover'],
           },
         },
-        filters: {
-          user: {
-            id: {
-              $eq: this.authService.currentUser?.id ?? -1,
-            },
-          },
-        },
       },
       {
         encodeValuesOnly: true,
       }
     )
-    return this.query<MyBookContentType[]>(`/book-ownerships?${query}`)
+    return this.query<MyBookContentType[]>(`${this.route}?${query}`)
   }
 
   public getMyBook(id: number) {
@@ -43,19 +38,12 @@ export class MyBookService extends CollectionService {
             populate: ['authors', 'cover'],
           },
         },
-        filters: {
-          user: {
-            id: {
-              $eq: this.authService.currentUser?.id ?? -1,
-            },
-          },
-        },
       },
       {
         encodeValuesOnly: true,
       }
     )
-    return this.query<MyBookContentType>(`/book-ownerships/${id}?${query}`)
+    return this.query<MyBookContentType>(`${this.route}/${id}?${query}`)
   }
 
   public getMyCurrentlyReadingBooks() {
@@ -70,13 +58,6 @@ export class MyBookService extends CollectionService {
         filters: {
           $and: [
             {
-              user: {
-                id: {
-                  $eq: this.authService.currentUser?.id ?? -1,
-                },
-              },
-            },
-            {
               startReading: {
                 $notNull: true,
               },
@@ -93,7 +74,7 @@ export class MyBookService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    return this.query<MyBookContentType[]>(`/book-ownerships?${query}`)
+    return this.query<MyBookContentType[]>(`${this.route}?${query}`)
   }
 
   public getMyUnreadBooks() {
@@ -106,13 +87,6 @@ export class MyBookService extends CollectionService {
         },
         filters: {
           $and: [
-            {
-              user: {
-                id: {
-                  $eq: this.authService.currentUser?.id ?? -1,
-                },
-              },
-            },
             {
               startReading: {
                 $null: true,
@@ -130,7 +104,7 @@ export class MyBookService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    return this.query<MyBookContentType[]>(`/book-ownerships?${query}`)
+    return this.query<MyBookContentType[]>(`${this.route}?${query}`)
   }
 
   public getMyReadBooks() {
@@ -145,13 +119,6 @@ export class MyBookService extends CollectionService {
         filters: {
           $and: [
             {
-              user: {
-                id: {
-                  $eq: this.authService.currentUser?.id ?? -1,
-                },
-              },
-            },
-            {
               finishReading: {
                 $notNull: true,
               },
@@ -163,7 +130,7 @@ export class MyBookService extends CollectionService {
         encodeValuesOnly: true,
       }
     )
-    return this.query<MyBookContentType[]>(`/book-ownerships?${query}`)
+    return this.query<MyBookContentType[]>(`${this.route}?${query}`)
   }
 
   public createMyBook(bookOwnershipData: MyBookAttributes) {
@@ -197,12 +164,12 @@ export class MyBookService extends CollectionService {
       },
     }
     return this.update<typeof payload, MyBookContentType>(
-      `/book-ownerships/${id}`,
+      `${this.route}/${id}`,
       payload
     )
   }
 
   public deleteMyBook(id: ID) {
-    return this.delete<MyBookContentType>(`/book-ownerships/${id}`)
+    return this.delete<MyBookContentType>(`${this.route}/${id}`)
   }
 }

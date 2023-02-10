@@ -2,29 +2,28 @@
  * book-ownership controller
  */
 
-import { factories } from '@strapi/strapi'
+import { factories, Strapi } from '@strapi/strapi'
+
+function addUserIdFilter(ctx: any) {
+  const userId = ctx.state.user?.id ?? -1
+  if (ctx.querystring.length > 0) {
+    ctx.querystring += '&'
+  }
+  ctx.querystring += `filters[user][id][$eq]=${userId}`
+}
 
 export default factories.createCoreController(
   'api::book-ownership.book-ownership',
-
   ({ strapi }) => ({
-    async find(ctx) {
-      const userId = ctx.state.user?.id
-      if (userId != null) {
-        if (ctx.querystring.length > 0) {
-          ctx.querystring += '&'
-        }
-        ctx.querystring += `filters[user][id][$eq]=${ctx.state.user.id}`
-      }
-      return super.find(ctx)
+    async findOneOfUser(ctx) {
+      addUserIdFilter(ctx)
+      strapi.log.debug(ctx.querystring)
+      return super.findOne(ctx.params.id, ctx)
     },
-
     async findOfUser(ctx) {
-      return strapi.service('api::book-ownership.book-ownership').find({
-        filters: {
-          user: ctx.state.user.id ?? -1,
-        },
-      })
+      addUserIdFilter(ctx)
+      strapi.log.debug(ctx.querystring)
+      return super.find(ctx)
     },
   })
 )
