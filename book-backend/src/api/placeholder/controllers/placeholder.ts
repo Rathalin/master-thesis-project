@@ -4,4 +4,4 @@
 
 import { factories } from '@strapi/strapi'
 
-export default factories.createCoreController('api::placeholder.placeholder');
+export default factories.createCoreController('api::placeholder.placeholder')

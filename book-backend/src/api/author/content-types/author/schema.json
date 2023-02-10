@@ -26,9 +26,7 @@
       "type": "date"
     },
     "profileImage": {
-      "allowedTypes": [
-        "images"
-      ],
+      "allowedTypes": ["images"],
       "type": "media",
       "multiple": false
     },
