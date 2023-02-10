@@ -1,0 +1,111 @@
+{
+  "route": {
+    "method": "GET",
+    "path": "/book-ownerships",
+    "handler": "api::book-ownership.book-ownership.find",
+    "config": {
+      "middlewares": [null],
+      "auth": { "scope": ["api::book-ownership.book-ownership.find"] }
+    },
+    "info": { "apiName": "book-ownership", "type": "content-api" }
+  },
+  "user": {
+    "id": 1,
+    "username": "Rathalin",
+    "email": "danielflo1997@hotmail.com",
+    "provider": "local",
+    "password": "$2a$10$1EKtyem104xnMuqGUmtwy.zbOkyuzlarvOL8pODdBvl2z52ACOr0a",
+    "resetPasswordToken": null,
+    "confirmationToken": null,
+    "confirmed": true,
+    "blocked": false,
+    "createdAt": "2023-01-23T14:19:21.691Z",
+    "updatedAt": "2023-01-23T14:19:21.691Z",
+    "role": {
+      "id": 1,
+      "name": "Authenticated",
+      "description": "Default role given to authenticated user.",
+      "type": "authenticated",
+      "createdAt": "2023-01-23T12:26:28.773Z",
+      "updatedAt": "2023-02-10T16:04:07.422Z"
+    }
+  },
+  "isAuthenticated": true,
+  "auth": {
+    "strategy": { "name": "users-permissions" },
+    "credentials": {
+      "id": 1,
+      "username": "Rathalin",
+      "email": "danielflo1997@hotmail.com",
+      "provider": "local",
+      "password": "$2a$10$1EKtyem104xnMuqGUmtwy.zbOkyuzlarvOL8pODdBvl2z52ACOr0a",
+      "resetPasswordToken": null,
+      "confirmationToken": null,
+      "confirmed": true,
+      "blocked": false,
+      "createdAt": "2023-01-23T14:19:21.691Z",
+      "updatedAt": "2023-01-23T14:19:21.691Z",
+      "role": {
+        "id": 1,
+        "name": "Authenticated",
+        "description": "Default role given to authenticated user.",
+        "type": "authenticated",
+        "createdAt": "2023-01-23T12:26:28.773Z",
+        "updatedAt": "2023-02-10T16:04:07.422Z"
+      }
+    },
+    "ability": {
+      "h": false,
+      "l": {},
+      "p": {},
+      "g": "manage",
+      "$": "all",
+      "A": [
+        { "action": "plugin::users-permissions.user.me", "subject": "all" },
+        {
+          "action": "plugin::users-permissions.auth.changePassword",
+          "subject": "all"
+        },
+        { "action": "api::author.author.find", "subject": "all" },
+        { "action": "api::author.author.findOne", "subject": "all" },
+        { "action": "api::author.author.create", "subject": "all" },
+        { "action": "api::author.author.update", "subject": "all" },
+        { "action": "api::author.author.delete", "subject": "all" },
+        { "action": "api::book.book.find", "subject": "all" },
+        { "action": "api::book.book.findOne", "subject": "all" },
+        { "action": "api::book.book.create", "subject": "all" },
+        { "action": "api::book.book.update", "subject": "all" },
+        { "action": "api::book.book.delete", "subject": "all" },
+        {
+          "action": "api::book-ownership.book-ownership.find",
+          "subject": "all"
+        },
+        {
+          "action": "api::book-ownership.book-ownership.findOne",
+          "subject": "all"
+        },
+        {
+          "action": "api::book-ownership.book-ownership.create",
+          "subject": "all"
+        },
+        {
+          "action": "api::book-ownership.book-ownership.update",
+          "subject": "all"
+        },
+        {
+          "action": "api::book-ownership.book-ownership.delete",
+          "subject": "all"
+        },
+        { "action": "api::placeholder.placeholder.find", "subject": "all" },
+        { "action": "plugin::upload.content-api.find", "subject": "all" },
+        { "action": "plugin::upload.content-api.findOne", "subject": "all" },
+        { "action": "plugin::upload.content-api.upload", "subject": "all" },
+        {
+          "action": "plugin::users-permissions.auth.callback",
+          "subject": "all"
+        }
+      ],
+      "m": {}
+    }
+  }
+}

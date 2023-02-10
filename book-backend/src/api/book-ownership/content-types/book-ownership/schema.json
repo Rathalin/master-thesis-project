@@ -25,14 +25,7 @@
     },
     "rating": {
       "type": "enumeration",
-      "enum": [
-        "No Rating",
-        "Very bad",
-        "Bad",
-        "Ok",
-        "Good",
-        "Very Good"
-      ]
+      "enum": ["No Rating", "Very bad", "Bad", "Ok", "Good", "Very Good"]
     },
     "currentPage": {
       "type": "integer",

@@ -1,0 +1,7 @@
+# Add files here to ignore them from prettier formatting
+
+/.cache
+/.tmp
+/database
+/dist
+/node_modules
