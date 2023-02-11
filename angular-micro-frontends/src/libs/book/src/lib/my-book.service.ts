@@ -147,7 +147,8 @@ export class MyBookService extends CollectionService {
       },
     }
     return this.create<typeof payload, MyBookContentType>(
-      `/book-ownerships`,
+      `${this.route}`,
+      // `/book-ownerships`,
       payload
     )
   }
