@@ -24,7 +24,7 @@ export default factories.createCoreController(
   'api::book-ownership.book-ownership',
   ({ strapi }) => ({
     async createOfUser(ctx) {
-      // addUserIdToBody(ctx)
+      addUserIdToBody(ctx)
       strapi.log.debug(JSON.stringify(ctx.request.body['data']))
       return super.create(ctx)
     },

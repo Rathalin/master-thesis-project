@@ -137,7 +137,6 @@ export class MyBookService extends CollectionService {
     const payload = {
       data: {
         book: bookOwnershipData.book.data.id,
-        user: this.authService.currentUser?.id ?? -1,
         startReading: bookOwnershipData.startReading,
         finishReading: bookOwnershipData.finishReading,
         rating: bookOwnershipData.rating,
@@ -148,7 +147,6 @@ export class MyBookService extends CollectionService {
     }
     return this.create<typeof payload, MyBookContentType>(
       `${this.route}`,
-      // `/book-ownerships`,
       payload
     )
   }

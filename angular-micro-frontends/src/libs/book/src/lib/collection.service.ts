@@ -10,7 +10,7 @@ import { AuthService } from '@angular-micro-frontends/auth'
   providedIn: 'root',
 })
 export class CollectionService {
-  constructor(protected readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   protected readonly url = 'http://localhost:1337/api'
 
