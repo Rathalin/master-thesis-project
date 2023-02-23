@@ -25,7 +25,7 @@ import { BookCreatePageComponent } from './pages/book/create/book-create-page.co
 import { AuthorUpdatePageComponent } from './pages/author/update/author-update-page.component'
 import { BookUpdatePageComponent } from './pages/book/update/book-update-page.component'
 import { BookUpdateFormComponent } from './pages/book/update/book-update-form.component'
-import { GetMyBookCoverPipe } from './pages/home/list/get-my-book-cover.pipe'
+import { GetMyBookCoverPipe } from './pages/my-book/get-my-book-cover.pipe'
 import { MyBookListEntryComponent } from './pages/home/list/my-book-list-entry.component'
 import { MyBookDateComponent } from './pages/home/list/my-book-date.component'
 import { MyBookPagesComponent } from './pages/home/list/my-book-pages.component'

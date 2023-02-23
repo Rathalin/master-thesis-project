@@ -30,6 +30,13 @@ import {
   template: `
     <ng-container *ngIf="myBook$ | async as myBook">
       <h1 class="text-3xl mb-5 flex items-center gap-3 flex-wrap">
+        <div class="w-12 max-h-20">
+          <img
+            *ngIf="myBook | getMyBookCover as cover"
+            [src]="'http://localhost:1337' + cover.formats.thumbnail.url"
+            [alt]="cover.name"
+          />
+        </div>
         <span>Update</span>
         <span class="uppercase">
           {{ myBook.attributes.book.data.attributes.title }}
