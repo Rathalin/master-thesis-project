@@ -5,10 +5,13 @@ import {
 import { Pipe, PipeTransform } from '@angular/core'
 
 @Pipe({
-  name: 'getMyBookCover',
+  name: 'myBookCover',
 })
 export class GetMyBookCoverPipe implements PipeTransform {
-  transform(myBook: MyBookContentType): ImageFile | null {
+  transform(myBook: MyBookContentType | null | undefined): ImageFile | null {
+    if (myBook == null) {
+      return null
+    }
     return myBook.attributes.book.data.attributes.cover.data?.attributes ?? null
   }
 }

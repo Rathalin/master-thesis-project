@@ -23,32 +23,9 @@ import {
       >
         <div class="flex flex-wrap justify-between mx-2 gap-y-2">
           <div class="flex gap-4">
-            <ng-container
-              *ngIf="
-                myBook | getMyBookCover as cover;
-                else placeholderCoverTemplate
-              "
-            >
-              <div class="w-12 max-h-20">
-                <img
-                  [src]="'http://localhost:1337' + cover.formats.thumbnail.url"
-                  [alt]="cover.name"
-                />
-              </div>
-            </ng-container>
-            <ng-template #placeholderCoverTemplate>
-              <ng-container *ngIf="placeholderCover != null">
-                <div class="w-12 max-h-20">
-                  <img
-                    [src]="
-                      'http://localhost:1337' +
-                      placeholderCover.formats.thumbnail.url
-                    "
-                    [alt]="placeholderCover.formats.thumbnail.url"
-                  />
-                </div>
-              </ng-container>
-            </ng-template>
+            <dashboard-book-cover
+              [book]="myBook.attributes.book.data"
+            ></dashboard-book-cover>
             <div class="flex flex-col">
               <div>
                 {{ myBook.attributes.book.data.attributes.title }}
@@ -102,7 +79,6 @@ import {
 })
 export class MyBookListEntryComponent {
   @Input() myBook: MyBookContentType | null = null
-  @Input() placeholderCover: ImageFile | null = null
   @Input() showProgress = false
   @Input() showPages = false
   @Input() showReadDate = false

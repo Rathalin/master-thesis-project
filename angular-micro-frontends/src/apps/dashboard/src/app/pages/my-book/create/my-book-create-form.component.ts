@@ -1,9 +1,11 @@
+import { BookService } from '@angular-micro-frontends/book'
 import {
   BookContentType,
   MyBookAttributes,
   MyBookRating,
   MyBookRatingOptions,
   DateString,
+  ImageFile,
 } from '@angular-micro-frontends/type-definitions'
 import {
   ChangeDetectionStrategy,
@@ -15,7 +17,7 @@ import {
   Output,
 } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { Observable, Subscription } from 'rxjs'
+import { Observable, Subscription, filter, map } from 'rxjs'
 
 @Component({
   selector: 'dashboard-my-book-create-form',
@@ -24,19 +26,24 @@ import { Observable, Subscription } from 'rxjs'
     <ng-container>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="flex flex-col gap-y-2">
-          <div class="flex flex-col">
-            <label for="book">Book</label>
-            <select id="book" name="book" formControlName="book" uiInput>
-              <option
-                *ngFor="let book of newBookOptions"
-                class="p-2"
-                [ngValue]="book"
-                [selected]="book === form.controls.book.value"
-              >
-                {{ book | bookTitle }}
-              </option>
-            </select>
-            <ui-input-error controlName="book"></ui-input-error>
+          <div class="flex items-end gap-1">
+            <dashboard-book-cover
+              [book]="form.controls.book.valueChanges | async"
+            ></dashboard-book-cover>
+            <div class="flex flex-col grow">
+              <label for="book">Book</label>
+              <select id="book" name="book" formControlName="book" uiInput>
+                <option
+                  *ngFor="let book of newBookOptions"
+                  class="p-2"
+                  [ngValue]="book"
+                  [selected]="book === form.controls.book.value"
+                >
+                  {{ book | bookTitle }}
+                </option>
+              </select>
+              <ui-input-error controlName="book"></ui-input-error>
+            </div>
           </div>
 
           <div class="flex items-center gap-2">
@@ -116,6 +123,8 @@ import { Observable, Subscription } from 'rxjs'
 export class MyBookCreateFormComponent implements OnInit, OnDestroy {
   @Input() newBookOptions: BookContentType[] = []
   @Output() create = new EventEmitter<MyBookAttributes>()
+
+  constructor(private readonly bookService: BookService) {}
 
   public newBookOptions$?: Observable<BookContentType[]>
 

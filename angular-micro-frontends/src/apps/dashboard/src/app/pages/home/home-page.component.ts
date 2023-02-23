@@ -54,7 +54,6 @@ import {
             >
               <dashboard-my-book-list-entry
                 [myBook]="readingBook"
-                [placeholderCover]="bookPlaceholderCover$ | async"
                 [highlight]="(highlightedMyBookId$ | async) === readingBook.id"
                 [showProgress]="true"
               ></dashboard-my-book-list-entry>
@@ -78,7 +77,6 @@ import {
             >
               <dashboard-my-book-list-entry
                 [myBook]="readNextBook"
-                [placeholderCover]="bookPlaceholderCover$ | async"
                 [highlight]="(highlightedMyBookId$ | async) === readNextBook.id"
                 [showPages]="true"
               ></dashboard-my-book-list-entry>
@@ -104,7 +102,6 @@ import {
             >
               <dashboard-my-book-list-entry
                 [myBook]="recentlyReadBook"
-                [placeholderCover]="bookPlaceholderCover$ | async"
                 [highlight]="
                   (highlightedMyBookId$ | async) === recentlyReadBook.id
                 "
@@ -139,7 +136,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
   public currentlyReadingBooks$?: Observable<MyBookContentType[]>
   public readNextBooks$?: Observable<MyBookContentType[]>
   public recentlyReadBooks$?: Observable<MyBookContentType[]>
-  public bookPlaceholderCover$?: Observable<ImageFile>
   public isLoading$?: Observable<boolean>
   public isSuccess$?: Observable<boolean>
   public isError$?: Observable<boolean>
@@ -163,20 +159,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
       filter((query) => query.result != null && query.result.data != null),
       map((query) => query.result!.data!)
     )
-    this.bookPlaceholderCover$ = this.bookService
-      .getBookCoverPlaceholder()
-      .pipe(
-        filter(
-          (request) =>
-            request.isSuccess &&
-            request.result!.data != null &&
-            request.result!.data.attributes.bookCover.data != null
-        ),
-        map(
-          (request) =>
-            request.result!.data!.attributes.bookCover.data!.attributes
-        )
-      )
     const requests$ = combineLatest([
       currentlyReadingBooksQuery$,
       readNextBooksQuery$,

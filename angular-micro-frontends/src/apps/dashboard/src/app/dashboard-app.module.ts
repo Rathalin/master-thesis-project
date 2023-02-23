@@ -16,7 +16,7 @@ import { MyBookCreateFormComponent } from './pages/my-book/create/my-book-create
 import { MyBookCreatePageComponent } from './pages/my-book/create/my-book-create-page.component'
 import { MyBookUpdateFormComponent } from './pages/my-book/update/my-book-update-form.component'
 import { MyBookUpdatePageComponent } from './pages/my-book/update/my-book-update-page.component'
-import { BookTitlePipe } from './pages/my-book/create/book-title.pipe'
+import { BookTitlePipe } from './ui/book/book-title.pipe'
 import { BookCreateFormComponent } from './pages/book/create/book-create-form.component'
 import { AuthorUpdateFormComponent } from './pages/author/update/author-update-form.component'
 import { AuthorCreateFormComponent } from './pages/author/create/author-create-form.component'
@@ -25,11 +25,13 @@ import { BookCreatePageComponent } from './pages/book/create/book-create-page.co
 import { AuthorUpdatePageComponent } from './pages/author/update/author-update-page.component'
 import { BookUpdatePageComponent } from './pages/book/update/book-update-page.component'
 import { BookUpdateFormComponent } from './pages/book/update/book-update-form.component'
-import { GetMyBookCoverPipe } from './pages/my-book/get-my-book-cover.pipe'
+import { GetMyBookCoverPipe } from './ui/my-book/my-book-cover.pipe'
 import { MyBookListEntryComponent } from './pages/home/list/my-book-list-entry.component'
 import { MyBookDateComponent } from './pages/home/list/my-book-date.component'
 import { MyBookPagesComponent } from './pages/home/list/my-book-pages.component'
 import { MyBookDetailsPageComponent } from './pages/my-book/details/my-book-details-page.component'
+import { GetBookCoverPipe } from './ui/book/book-cover.pipe'
+import { BookCoverComponent } from './ui/book/book-cover.component'
 
 @NgModule({
   declarations: [
@@ -58,6 +60,8 @@ import { MyBookDetailsPageComponent } from './pages/my-book/details/my-book-deta
     MyBookDateComponent,
     MyBookPagesComponent,
     MyBookDetailsPageComponent,
+    GetBookCoverPipe,
+    BookCoverComponent,
   ],
   imports: [
     BrowserModule,
