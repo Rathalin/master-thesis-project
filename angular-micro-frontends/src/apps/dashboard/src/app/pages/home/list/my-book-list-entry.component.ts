@@ -2,7 +2,13 @@ import {
   ImageFile,
   MyBookContentType,
 } from '@angular-micro-frontends/type-definitions'
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core'
 
 @Component({
   selector: 'dashboard-my-book-list-entry',
@@ -13,6 +19,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core'
         [id]="'my-book-' + myBook.id"
         [routerLink]="['/my-book', myBook.id]"
         class="dark:hover:bg-primary-600 px-3 py-4 cursor-pointer transition-colors duration-100 block"
+        [class.focus-visible:text-accent-300]="highlight"
       >
         <div class="flex flex-wrap justify-between mx-2 gap-y-2">
           <div class="flex gap-4">
@@ -99,4 +106,5 @@ export class MyBookListEntryComponent {
   @Input() showProgress = false
   @Input() showPages = false
   @Input() showReadDate = false
+  @Input() highlight = false
 }

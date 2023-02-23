@@ -16,7 +16,15 @@ import {
   OnInit,
 } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs'
+import {
+  Observable,
+  Subscription,
+  combineLatest,
+  filter,
+  map,
+  startWith,
+  tap,
+} from 'rxjs'
 
 @Component({
   selector: 'app-home-page',
@@ -47,6 +55,7 @@ import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs'
               <dashboard-my-book-list-entry
                 [myBook]="readingBook"
                 [placeholderCover]="bookPlaceholderCover$ | async"
+                [highlight]="(highlightedMyBookId$ | async) === readingBook.id"
                 [showProgress]="true"
               ></dashboard-my-book-list-entry>
             </li>
@@ -70,6 +79,7 @@ import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs'
               <dashboard-my-book-list-entry
                 [myBook]="readNextBook"
                 [placeholderCover]="bookPlaceholderCover$ | async"
+                [highlight]="(highlightedMyBookId$ | async) === readNextBook.id"
                 [showPages]="true"
               ></dashboard-my-book-list-entry>
             </li>
@@ -95,6 +105,9 @@ import { Observable, Subscription, combineLatest, filter, map, tap } from 'rxjs'
               <dashboard-my-book-list-entry
                 [myBook]="recentlyReadBook"
                 [placeholderCover]="bookPlaceholderCover$ | async"
+                [highlight]="
+                  (highlightedMyBookId$ | async) === recentlyReadBook.id
+                "
                 [showReadDate]="true"
               ></dashboard-my-book-list-entry>
             </li>
@@ -130,6 +143,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   public isLoading$?: Observable<boolean>
   public isSuccess$?: Observable<boolean>
   public isError$?: Observable<boolean>
+  public highlightedMyBookId$?: Observable<number | null>
   private subscriptions: Subscription[] = []
 
   ngOnInit(): void {
@@ -176,6 +190,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
     )
     this.isSuccess$ = requests$.pipe(
       map((requests) => requests.every((request) => request.isSuccess))
+    )
+    this.highlightedMyBookId$ = this.route.queryParams.pipe(
+      map((params) => parseInt(params['myBookId'])),
+      filter((myBookId) => !isNaN(myBookId)),
+      startWith(null)
     )
     this.subscriptions.push(
       this.isSuccess$
