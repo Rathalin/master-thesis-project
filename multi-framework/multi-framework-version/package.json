@@ -31,7 +31,8 @@
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "word-wrap": "^1.2.3",
-    "zone.js": "~0.11.5"
+    "zone.js": "~0.11.5",
+    "auth-library": "../auth-library"
   },
   "devDependencies": {
     "@angular-architects/module-federation": "^14.3.0",

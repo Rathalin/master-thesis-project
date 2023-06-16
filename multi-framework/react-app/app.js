@@ -1,9 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { TOKEN } from "auth-library";
 
 class App extends React.Component {
   render() {
     const reactVersion = require("./package.json").dependencies["react"];
+
+    console.log(JSON.stringify(TOKEN));
 
     return [
       <h1>
@@ -15,6 +18,7 @@ class App extends React.Component {
       </h1>,
       <p>React Version: {reactVersion}</p>,
       <div>Running on localhost</div>,
+      <div>Token from Auth Lib: {TOKEN}</div>,
     ];
   }
 }

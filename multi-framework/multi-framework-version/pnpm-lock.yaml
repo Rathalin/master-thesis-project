@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -29,6 +29,9 @@ dependencies:
   '@angular/router':
     specifier: 14.0.1
     version: 14.0.1(@angular/common@14.0.1)(@angular/core@14.0.1)(@angular/platform-browser@14.0.1)(rxjs@6.6.0)
+  auth-library:
+    specifier: ../auth-library
+    version: link:../auth-library
   concurrently:
     specifier: ^5.3.0
     version: 5.3.0

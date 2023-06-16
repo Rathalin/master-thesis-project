@@ -35,7 +35,7 @@ module.exports = (options) => {
         exposes: {
           "./web-components": "./app.js",
         },
-        shared: ["react", "react-dom"],
+        shared: ["react", "react-dom", "auth-library"],
       }),
       new CopyWebpackPlugin({
         patterns: [
